@@ -13,6 +13,4 @@ This repository has three branches.
 ## Setup instructions
 ### First steps
 - Install CockroachDB and Apache Cassandra.
-
-### CockroachDB
-- Run `cockroach_setup.sh` in the common folder to create the database.
+- Run `setup.sh` to run all setup scripts.
