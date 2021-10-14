@@ -1,5 +1,6 @@
 import logging
 
+
 def popular_item_transaction(
     conn, warehouse_number, district_number, num_last_orders_to_examine
 ):
@@ -29,7 +30,7 @@ def popular_item_transaction(
                 )
                 
             SELECT 
-                DISTINCT l1.OL_I_ID
+                l1.OL_I_ID, l1.OL_QUANTITY
             FROM
                 last_l_order_item_quantities AS l1
             WHERE l1.OL_QUANTITY >= (
@@ -48,5 +49,6 @@ def popular_item_transaction(
         result = cur.fetchall()
         logging.debug(f"popular_item_transaction(): Status Message {cur.statusmessage}")
 
+    # TODO: The question wants us to output a lot more information than just the result
     conn.commit()
     return result
