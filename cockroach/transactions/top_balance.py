@@ -1,12 +1,12 @@
 import logging
 
-def top_balance_transaction(
-    conn, warehouse_number, district_number, num_last_orders_to_examine
-):
+
+def top_balance_transaction(conn):
     result = None
+
     with conn.cursor() as cur:
         cur.execute(
-            '''
+            """
             SELECT 
                 c.C_FIRST,
                 c.C_MIDDLE,
@@ -19,10 +19,10 @@ def top_balance_transaction(
             ORDER BY
                 c.C_BALANCE DESC
             LIMIT 10
-            '''
+            """
         )
         result = cur.fetchall()
-        logging.debug(f"popular_item_transaction(): Status Message {cur.statusmessage}")
+        logging.debug(f"top_balance_transaction(): Status Message {cur.statusmessage}")
 
     conn.commit()
     return result
