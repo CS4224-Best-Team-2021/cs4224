@@ -9,7 +9,7 @@ rm -rf project_files_3
 wget http://www.comp.nus.edu.sg/~cs4224/project_files_4.zip
 
 # Unzip into a folder
-unzip project_files_3.zip -d ..
+unzip project_files_4.zip -d ..
 
 # Delete the zip file
-rm project_files_3.zip
+rm project_files_4.zip
