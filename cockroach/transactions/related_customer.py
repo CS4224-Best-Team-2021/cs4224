@@ -32,15 +32,15 @@ def related_customer_transaction(conn, customer):
                                                     SELECT 1
                                                     FROM   ORDER-line AS ol1
                                                     WHERE  ol1.ol_w_id = o1.o_w_id
-                                                    AND    ol1.ol_d_id = o1.o_d_id,
-                                                            ol1.ol_o_id = o1.o_id
+                                                    AND    ol1.ol_d_id = o1.o_d_id
+                                                    AND    ol1.ol_o_id = o1.o_id
                                                     AND    EXISTS
                                                             (
                                                                     SELECT 1
                                                                     FROM   ORDER-line AS ol2
-                                                                    WHERE  ol2.ol_w_id = o1.o_w_id,
-                                                                        ol1.ol_d_id = o1.o_d_id,
-                                                                        ol2.ol_o_id = o1.o_id
+                                                                    WHERE  ol2.ol_w_id = o1.o_w_id
+                                                                    AND ol1.ol_d_id = o1.o_d_id
+                                                                    AND ol2.ol_o_id = o1.o_id
                                                                     AND    EXISTS
                                                                         (
                                                                                 SELECT 1
