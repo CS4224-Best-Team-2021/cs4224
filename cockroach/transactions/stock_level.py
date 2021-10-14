@@ -1,10 +1,10 @@
-import psycopg2
 import logging
 
 
 def stock_level_transaction(
     conn, warehouse_num, district_num, stock_threshold, num_last_orders_to_examine
 ):
+    result = 0
     with conn.cursor() as cur:
         cur.execute(
             """
@@ -27,12 +27,14 @@ def stock_level_transaction(
                         o.O_W_ID = %s 
                         AND o.O_D_ID = %s
                     ORDER BY 
-                        O_ENTRY_D DESC
+                        o.O_ENTRY_D DESC
                     LIMIT 
                         %s);
             """,
             (stock_threshold, warehouse_num, district_num, num_last_orders_to_examine),
         )
+        result = cur.fetchone()[0]
         logging.debug(f"stock_level_transaction(): Status Message {cur.statusmessage}")
 
     conn.commit()
+    return result
