@@ -45,7 +45,7 @@ def stock_level_transaction(
                             AND l.O_ID = ol.OL_O_ID
                     );
             """,
-            (warehouse_num, district_num, num_last_orders_to_examine),
+            (warehouse_num, district_num, stock_threshold, num_last_orders_to_examine),
         )
         result = cur.fetchone()[0]
         logging.debug(f"stock_level_transaction(): Status Message {cur.statusmessage}")
