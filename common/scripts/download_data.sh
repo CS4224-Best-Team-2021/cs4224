@@ -6,7 +6,7 @@
 rm -rf project_files_3
 
 # Get the zip file
-wget http://www.comp.nus.edu.sg/~cs4224/project_files_3.zip
+wget http://www.comp.nus.edu.sg/~cs4224/project_files_4.zip
 
 # Unzip into a folder
 unzip project_files_3.zip -d ..
