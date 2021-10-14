@@ -9,10 +9,13 @@ def popular_item_transaction(
     with conn.cursor() as cur:
         # set S: set of last L orders for district (W_ID, D_ID)
         cur.execute(
-            '''
+            """
             SELECT 
-                O_ID, O_ENTRY_D,
-                (SELECT C_FIRST, C_MIDDLE, C_LAST FROM Customer AS c WHERE c.C_ID = o.O_C_ID) AS CustomerName
+                O_ID, 
+                O_ENTRY_D,
+                (SELECT C_FIRST FROM Customer AS c WHERE c.C_ID = o.O_C_ID) AS C_FIRST,
+                (SELECT C_MIDDLE FROM Customer AS c WHERE c.C_ID = o.O_C_ID) AS C_MIDDLE,
+                (SELECT C_LAST FROM Customer AS c WHERE c.C_ID = o.O_C_ID) AS C_LAST
             FROM
                 Order o
             WHERE
@@ -22,7 +25,7 @@ def popular_item_transaction(
                 o.O_ENTRY_D DESC
             LIMIT 
                 %s
-            ''',
+            """,
             (warehouse_number, district_number, num_last_orders_to_examine),
         )
         S = cur.fetchall()
@@ -30,18 +33,12 @@ def popular_item_transaction(
         # set of popular items, Px
         cur.execute(
             """
-            WITH last_l_order_item_quantities AS
+            WITH last_l_orders AS 
                 (
                     SELECT 
-                        o.O_W_ID, o.O_D_ID, o.O_ID, ol.OL_I_ID, ol.OL_QUANTITY
-                    FROM 
-                        Order AS o 
-                        INNER JOIN 
-                        Order-Line AS ol
-                    ON 
-                        o.O_W_ID = ol.OL_W_ID
-                        AND o.O_D_ID = ol.OL_D_ID
-                        AND o.O_ID = ol.OL_O_ID
+                        O_W_ID, O_D_ID, O_ID
+                    FROM
+                        Order o
                     WHERE
                         o.O_W_ID = %s 
                         AND o.O_D_ID = %s
@@ -49,10 +46,24 @@ def popular_item_transaction(
                         o.O_ENTRY_D DESC
                     LIMIT 
                         %s
+                ),
+                last_l_order_item_quantities AS 
+                (
+                    SELECT
+                        o.O_W_ID, o.O_D_ID, o.O_ID, ol.OL_I_ID, ol.OL_QUANTITY
+                    FROM 
+                        last_l_orders l
+                        INNER JOIN
+                        Order-Line ol
+                    ON
+                        l.O_W_ID = ol.OL_W_ID
+                        AND l.O_D_ID = ol.OL_D_ID
+                        AND l.O_ID = ol.OL_O_ID
                 )
                 
             SELECT 
                 (SELECT I_NAME FROM Item AS i WHERE l1.OL_I_ID = i.I_ID) AS I_NAME,
+                l1.OL_I_ID,
                 l1.OL_QUANTITY
             FROM
                 last_l_order_item_quantities AS l1
@@ -65,13 +76,57 @@ def popular_item_transaction(
                     l1.O_W_ID = l2.O_W_ID
                     AND l1.O_D_ID = l2.O_D_ID
                     AND l1.O_ID = l2.O_ID
-            );
+                );
             """,
             (warehouse_number, district_number, num_last_orders_to_examine),
         )
         popular_items = cur.fetchall()
+        popular_item_ids = tuple(map(lambda x: x[1], popular_items))
+
+        cur.execute(
+            """
+            WITH last_l_orders AS 
+                (
+                    SELECT 
+                        O_W_ID, O_D_ID, O_ID
+                    FROM
+                        Order o
+                    WHERE
+                        o.O_W_ID = %s 
+                        AND o.O_D_ID = %s
+                    ORDER BY 
+                        o.O_ENTRY_D DESC
+                    LIMIT 
+                        %s
+                ),
+                last_l_order_item_quantities AS 
+                (
+                    SELECT
+                        o.O_W_ID, o.O_D_ID, o.O_ID, ol.OL_I_ID, ol.OL_QUANTITY
+                    FROM 
+                        last_l_orders l
+                        INNER JOIN
+                        Order-Line ol
+                    ON
+                        l.O_W_ID = ol.OL_W_ID
+                        AND l.O_D_ID = ol.OL_D_ID
+                        AND l.O_ID = ol.OL_O_ID
+                )
+
+            SELECT
+                (SELECT I_NAME FROM Item AS i WHERE l1.OL_I_ID = i.I_ID) AS I_NAME,
+                COUNT(DISTINCT l.O_W_ID, l.O_D_ID, l.O_ID) / %s * 100 AS percentage
+            FROM
+                last_l_order_item_quantities AS l
+            WHERE 
+                l.OL_I_ID IN %s
+            GROUP BY
+                l.OL_I_ID
+            """,
+            popular_item_ids, num_last_orders_to_examine
+        )
+
         logging.debug(f"popular_item_transaction(): Status Message {cur.statusmessage}")
 
-    # TODO: The question wants us to output a lot more information than just the result
     conn.commit()
     return result
