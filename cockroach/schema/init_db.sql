@@ -130,13 +130,3 @@ CREATE TABLE stock(
     FAMILY stock_w(S_W_ID, S_I_ID, S_QUANTITY, S_YTD, S_ORDER_CNT, S_REMOTE_CNT),
     FAMILY stock_r(S_DIST_01, S_DIST_02, S_DIST_03, S_DIST_04, S_DIST_05, S_DIST_06, S_DIST_07, S_DIST_08, S_DIST_09, S_DIST_10, S_DATA)
 );
-
-CREATE TABLE denom_order_order_line AS
-SELECT 
-    * 
-FROM 
-    order INNER JOIN order_line
-ON 
-    order.O_W_ID = order_line.OL_W_ID
-    AND order.O_D_ID = order_line.OL_D_ID
-    AND order.O_ID = order_line.OL_O_ID;
