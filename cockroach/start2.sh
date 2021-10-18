@@ -1,11 +1,3 @@
-# Set ports of every server
-PORT_1=4001
-PORT_2=4002
-PORT_3=4003
-PORT_4=4004
-PORT_5=4005
-
-
 # Create aliases for all servers
 SERVER1="192.168.48.169" 
 SERVER2="192.168.48.170" 
@@ -15,11 +7,11 @@ SERVER5="192.168.48.173"
 
 # Create a hash table for LAN address and ports
 declare -A ports
-ports[$SERVER1]=$PORT_1 
-ports[$SERVER2]=$PORT_2 
-ports[$SERVER3]=$PORT_3 
-ports[$SERVER4]=$PORT_4 
-ports[$SERVER5]=$PORT_5
+ports[$SERVER1]=5001
+ports[$SERVER2]=5002
+ports[$SERVER3]=5003
+ports[$SERVER4]=5004
+ports[$SERVER5]=5005
 
 # Create a hash table for the store names of each db
 declare -A storenames
@@ -36,7 +28,6 @@ https[$SERVER2]=9002
 https[$SERVER3]=9003
 https[$SERVER4]=9004
 https[$SERVER5]=9005
-
 
 
 # Get the specific variables of this machine
