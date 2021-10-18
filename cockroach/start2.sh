@@ -53,7 +53,7 @@ cockroach start \
 --store=$STORE \
 --http-addr=$HOST_NAME:$HTTP_PORT
 
-if response='yes' 
-then 
-    cockroach init --insecure --host=$HOST_NAME:$PORT
-fi
+# if response='yes' 
+# then 
+#     cockroach init --insecure --host=$HOST_NAME:$PORT
+# fi
