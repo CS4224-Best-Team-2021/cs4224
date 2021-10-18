@@ -40,7 +40,7 @@ HTTP_PORT=${https[$HOST_NAME]}
 echo "This machine will advertise and listen on the address: $HOST_NAME:$PORT"
 
 # Ask if cluster has been initialised
-read -p "Type 'yes' if you need to run cockroach init, or hit the Enter key otherwise: " response
+# read -p "Type 'yes' if you need to run cockroach init, or hit the Enter key otherwise: " response
 
 # NOTE: You must use the same port configurations on all servers.
 cockroach start \
