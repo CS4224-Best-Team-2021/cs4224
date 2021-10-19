@@ -17,7 +17,7 @@ cockroach start \
 --certs-dir=$SCRIPT_DIR/$CERTS \
 --listen-addr=$HOST_NAME:$PORT \
 --advertise-addr=$HOST_NAME:$PORT \
---join=$SERVER1:$PORT_1,$SERVER2:$PORT_2,$SERVER3:$PORT_3,$SERVER4:$PORT_4,$SERVER5:$PORT_5 \
+--join=$SERVER1:${ports[$SERVER1]},$SERVER2:${ports[$SERVER2]},$SERVER3:${ports[$SERVER3]},$SERVER4:${ports[$SERVER4]},$SERVER5:${ports[$SERVER5]} \
 --cache=.25 \
 --max-sql-memory=.25 \
 --background \
