@@ -1,0 +1,1 @@
+cockroach node status --host=192.168.48.169:5001 --certs-dir=root-cert
