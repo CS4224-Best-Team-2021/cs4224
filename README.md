@@ -18,8 +18,8 @@ This repository has three branches.
 ### For CockroachDB dev testing:
 > Note that all bash files can be run from anywhere, the file resolution will work fine (e.g. you can run `bash` from `cs4224/` or inside the directory containing the script, both will work).
 - If you want a fresh set of files, run `bash download_data.sh` inside `common/scripts`.
-- Run `rm -rf store*` inside `temp/cs4224/cockroach/` to remove old session data.
 - Run `pkill cockroach` to kill any existing cluster.
+- Run `rm -rf store*` inside `temp/cs4224/cockroach/` to remove old session data.
 - Run `bash start.sh` (scripts are inside `cockroach/`) to start CockroachDB on `xcnc20`.
 - Run `bash init.sh` on `xcnc20` to initialise a cluster.
 - Run `bash status.sh` on `xcnc20` to check that the cluster is live.
