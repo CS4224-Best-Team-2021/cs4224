@@ -6,7 +6,8 @@
 SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 # Remove the current data 
-rm -rf $SCRIPT_DIR/project_files_4
+rm -rf $SCRIPT_DIR/../project_files_4
+rm -rf project_files_4.zip project_files_4.zip.*
 
 # Get the zip file
 wget http://www.comp.nus.edu.sg/~cs4224/project_files_4.zip
