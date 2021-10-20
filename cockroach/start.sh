@@ -22,5 +22,6 @@ cockroach start \
 --max-sql-memory=.25 \
 --background \
 --store=$SCRIPT_DIR/$STORE \
---http-addr=$HOST_NAME:$HTTP_PORT
+--http-addr=$HOST_NAME:$HTTP_PORT \
+--external-io-dir=$SCRIPT_DIR/../common/project_files_4/data_files
 
