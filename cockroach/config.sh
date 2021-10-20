@@ -8,7 +8,7 @@ SERVER5="192.168.48.173"
 
 # Set LAN address and ports
 declare -A ports
-ports[$SERVER1]=5000
+ports[$SERVER1]=5001
 ports[$SERVER2]=5002
 ports[$SERVER3]=5003
 ports[$SERVER4]=5004
@@ -24,7 +24,7 @@ storenames[$SERVER5]="store5"
 
 # Set the http addresses
 declare -A https
-https[$SERVER1]=9000
+https[$SERVER1]=9001
 https[$SERVER2]=9002
 https[$SERVER3]=9003
 https[$SERVER4]=9004
