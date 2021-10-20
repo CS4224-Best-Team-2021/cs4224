@@ -21,14 +21,3 @@ cockroach sql -e="use wholesaledb; IMPORT INTO wholesaledb.order CSV DATA ('user
 cockroach sql -e="use wholesaledb; IMPORT INTO item CSV DATA ('userfile:///item.csv');" --certs-dir=root-cert
 cockroach sql -e="use wholesaledb; IMPORT INTO order_line CSV DATA ('userfile:///order-line.csv') WITH nullif = 'null';" --certs-dir=root-cert
 cockroach sql -e="use wholesaledb; IMPORT INTO stock CSV DATA ('userfile:///stock.csv');" --certs-dir=root-cert
-
-# cockroach start \
-# --certs-dir=$SCRIPT_DIR/$CERTS \
-# --listen-addr=$HOST_NAME:$PORT \
-# --advertise-addr=$HOST_NAME:$PORT \
-# --join=$SERVER1:${ports[$SERVER1]},$SERVER2:${ports[$SERVER2]},$SERVER3:${ports[$SERVER3]},$SERVER4:${ports[$SERVER4]},$SERVER5:${ports[$SERVER5]} \
-# --cache=.25 \
-# --max-sql-memory=.25 \
-# --background \
-# --store=$SCRIPT_DIR/$STORE \
-# --http-addr=$HOST_NAME:$HTTP_PORT
