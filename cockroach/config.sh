@@ -8,7 +8,7 @@ SERVER5="192.168.48.173"
 
 # Set LAN address and ports
 declare -A ports
-ports[$SERVER1]=5001
+ports[$SERVER1]=5000
 ports[$SERVER2]=5002
 ports[$SERVER3]=5003
 ports[$SERVER4]=5004
