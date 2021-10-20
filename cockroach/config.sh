@@ -24,7 +24,7 @@ storenames[$SERVER5]="store5"
 
 # Set the http addresses
 declare -A https
-https[$SERVER1]=9001
+https[$SERVER1]=9000
 https[$SERVER2]=9002
 https[$SERVER3]=9003
 https[$SERVER4]=9004
