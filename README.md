@@ -39,4 +39,4 @@ This repository has three branches.
   
 ### To start a SQL session:
 - Start the CockroachDB cluster.
-- Run `bash start-sql.sh` on any machine.
+- Run `bash sql_cli.sh` on any machine.
