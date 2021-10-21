@@ -22,9 +22,7 @@ def top_balance_transaction(conn):
             """
         )
         result = cur.fetchall()
-        print(f"top_balance_transaction(): Status Message {cur.statusmessage}")
         logging.debug(f"top_balance_transaction(): Status Message {cur.statusmessage}")
-	
 
     conn.commit()
     return result

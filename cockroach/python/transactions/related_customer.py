@@ -9,56 +9,56 @@ def related_customer_transaction(conn, customer):
         cur.execute(
             """
             SELECT 
-                c.c_w_id,
-                c.c_d_id,
-                c.c_id
+                c.C_W_ID,
+                c.C_D_ID,
+                c.C_ID
             FROM   customer AS c
-            WHERE  c.c_w_id != %s EXISTS
+            WHERE  c.C_W_ID != %s EXISTS
                 (
                         SELECT 1
                         FROM   ORDER AS o1
-                        WHERE  o1.o_w_id = %s
-                        AND    o1.o_d_id = %s
-                        AND    o1.o_c_id = %s
+                        WHERE  o1.O_W_ID = %s
+                        AND    o1.O_D_ID = %s
+                        AND    o1.O_C_ID = %s
                         AND    EXISTS
                                 (
                                         SELECT 1
                                         FROM   ORDER AS o2
-                                        WHERE  o1.o_w_id = c.c_w_id
-                                        AND    o1.o_d_id = c.c_d_id
-                                        AND    o1.o_c_id = c.c_id
+                                        WHERE  o1.O_W_ID = c.C_W_ID
+                                        AND    o1.O_D_ID = c.C_D_ID
+                                        AND    o1.O_C_ID = c.C_ID
                                         AND    EXISTS
                                             (
                                                     SELECT 1
                                                     FROM   ORDER-line AS ol1
-                                                    WHERE  ol1.ol_w_id = o1.o_w_id
-                                                    AND    ol1.ol_d_id = o1.o_d_id
-                                                    AND    ol1.ol_o_id = o1.o_id
+                                                    WHERE  ol1.OL_W_ID = o1.O_W_ID
+                                                    AND    ol1.OL_D_ID = o1.O_D_ID
+                                                    AND    ol1.OL_O_ID = o1.OL_O_ID
                                                     AND    EXISTS
                                                             (
                                                                     SELECT 1
                                                                     FROM   ORDER-line AS ol2
-                                                                    WHERE  ol2.ol_w_id = o1.o_w_id
-                                                                    AND ol1.ol_d_id = o1.o_d_id
-                                                                    AND ol2.ol_o_id = o1.o_id
+                                                                    WHERE  ol2.OL_W_ID = o1.O_W_ID
+                                                                    AND ol1.OL_D_ID = o1.O_D_ID
+                                                                    AND ol2.OL_O_ID = o1.OL_O_ID
                                                                     AND    EXISTS
                                                                         (
                                                                                 SELECT 1
                                                                                 FROM   ORDER-line AS ol3
-                                                                                WHERE  ol3.ol_w_id = o2.o_w_id
-                                                                                AND    ol1.ol_d_id = o2.o_d_id
-                                                                                AND    ol3.ol_o_id = o2.o_id
+                                                                                WHERE  ol3.OL_W_ID = o2.O_W_ID
+                                                                                AND    ol1.OL_D_ID = o2.O_D_ID
+                                                                                AND    ol3.OL_O_ID = o2.OL_O_ID
                                                                                 AND    EXISTS
                                                                                         (
                                                                                                 SELECT 1
                                                                                                 FROM   ORDER-line AS ol4
-                                                                                                WHERE  ol4.ol_w_id = o2.o_w_id
-                                                                                                AND    ol1.ol_d_id = o2.o_d_id
-                                                                                                AND    ol4.ol_o_id = o2.o_id
-                                                                                                AND    ol1.ol_i_id != ol2.ol_i_id
-                                                                                                AND    ol3.ol_i_id != ol4.ol_i_id
-                                                                                                AND    ol1.ol_i_id = ol3.ol_i_id
-                                                                                                AND    ol2.ol_i_id = ol4.ol_i_id ) ) ) ) ) );
+                                                                                                WHERE  ol4.OL_W_ID = o2.O_W_ID
+                                                                                                AND    ol1.OL_D_ID = o2.O_D_ID
+                                                                                                AND    ol4.OL_O_ID = o2.OL_O_ID
+                                                                                                AND    ol1.OL_I_ID != ol2.OL_I_ID
+                                                                                                AND    ol3.OL_I_ID != ol4.OL_I_ID
+                                                                                                AND    ol1.OL_I_ID = ol3.OL_I_ID
+                                                                                                AND    ol2.OL_I_ID = ol4.OL_I_ID ) ) ) ) ) );
             """,
             (c_w_id, c_w_id, c_d_id, c_id),
         )
