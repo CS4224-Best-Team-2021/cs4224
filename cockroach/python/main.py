@@ -2,6 +2,7 @@ import time
 import random
 import logging
 import sys
+import argparse
 
 import psycopg2
 
@@ -46,25 +47,34 @@ def run_transaction(conn, op, max_retries=3):
 
 
 def main():
+    parser = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawTextHelpFormatter
+    )
+    parser.add_argument("dsn", help="Database connection string")
+    parser.add_argument("client_number")
+    opt = parser.parse_args()
+
     logging.basicConfig(level=logging.DEBUG)
-    dsn = 'postgresql://cs4224b@xcnc20:5001?sslmode=verify-full&sslrootcert=root-cert/ca.crt' 
-    print(dsn)
-    conn = psycopg2.connect(dsn=dsn)
+    conn = psycopg2.connect(dsn=opt.dsn)
 
     line = sys.stdin.readline()
+    num_transactions_processed = 0
+    processing_times = []
+
     while line:
+        num_transactions_processed += 1
         op = None
         params = []
         tokens = line.split()
         command = tokens[0]
 
-        if command ==  "N":
+        if command == "N":
             c_id, w_id, d_id, m = tuple(map(int, tokens[1:]))
             for _ in range(m):
                 line = sys.stdin.readline()
                 if line:
                     params = tuple(map(int, line.split()))
-                    
+
         elif command == "P":
             c_w_id, c_d_id, c_id, payment = tokens[1:]
 
@@ -81,16 +91,48 @@ def main():
             params = tuple(map(int, tokens[1:]))
             op = popular_item_transaction
         elif command == "T":
-            op = top_balance_transaction    
+            op = top_balance_transaction
         elif command == "R":
             params = tuple(map(int, tokens[1:]))
             op = related_customer_transaction
 
         try:
+            start = time.time_ns()
             run_transaction(conn, lambda conn: op(conn, *params))
+            transaction_processing_time = time.time_ns() - start
+            processing_times.append(transaction_processing_time)
+
         except ValueError as ve:
             logging.debug("run_transaction(conn, op) failed: %s", ve)
             pass
 
-if __name__ == '__main__':
+    total_processing_time = sum(processing_times)
+    total_processing_time_seconds = total_processing_time / 1e9
+    transaction_throughput = num_transactions_processed / total_processing_time_seconds
+    average_transaction_latency_millis = (
+        total_processing_time / 1e6 / num_transactions_processed
+    )
+    sorted_processing_times_millis = sorted([n / 1e6 for n in processing_times])
+    median_processing_time = sorted_processing_times_millis[
+        num_transactions_processed // 2
+    ]
+    _95_percentile_processing_time = sorted_processing_times_millis[
+        int(0.95 * num_transactions_processed)
+    ]
+    _99_percentile_processing_time = sorted_processing_times_millis[
+        int(0.99 * num_transactions_processed)
+    ]
+    print(
+        opt.client_number,
+        total_processing_time,
+        total_processing_time_seconds,
+        transaction_throughput,
+        average_transaction_latency_millis,
+        median_processing_time,
+        _95_percentile_processing_time,
+        _99_percentile_processing_time,
+    )
+
+
+if __name__ == "__main__":
     main()
