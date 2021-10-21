@@ -34,7 +34,7 @@ This repository has three branches.
   
 ### To install/reset `wholesaledb`:
 - Ensure that the project files exist on `xcnc20`.
-- Start the CockroachDB cluster.
+- Start the CockroachDB cluster, and make sure to run `rm -rf store*` in the second step.
 - Run `bash create-db.sh` on `xcnc20` to create the database `wholesaledb`.
   
 ### To start a SQL session:
