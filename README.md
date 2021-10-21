@@ -37,3 +37,6 @@ This repository has three branches.
 - Start the CockroachDB cluster.
 - Run `bash create-db.sh` on `xcnc20` to create the database `wholesaledb`.
   
+### To start a SQL session:
+- Start the CockroachDB cluster.
+- Run `bash start-sql.sh` on any machine.
