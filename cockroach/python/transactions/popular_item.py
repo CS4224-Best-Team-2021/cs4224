@@ -6,7 +6,7 @@ def popular_item_transaction(
 ):
     """
     1. Get items from last L orders at a specified warehouse district   - sort orders by O_ENTRY_D
-    2. Get most popular item and details                                - 
+    2. Get most popular item and details                                -
     """
     result = None
 
@@ -37,33 +37,32 @@ def popular_item_transaction(
         # set of popular items, Px
         cur.execute(
             """
-            WITH last_l_orders AS 
-                (
-                    SELECT 
-                        O_W_ID, O_D_ID, O_ID
-                    FROM
-                        Order o
-                    WHERE
-                        o.O_W_ID = %s 
-                        AND o.O_D_ID = %s
-                    ORDER BY 
-                        o.O_ENTRY_D DESC
-                    LIMIT 
-                        %s
-                ),
-                last_l_order_item_quantities AS 
-                (
-                    SELECT
-                        o.O_W_ID, o.O_D_ID, o.O_ID, ol.OL_I_ID, ol.OL_QUANTITY
-                    FROM 
-                        last_l_orders l
-                        INNER JOIN
-                        Order-Line ol
-                    ON
-                        l.O_W_ID = ol.OL_W_ID
-                        AND l.O_D_ID = ol.OL_D_ID
-                        AND l.O_ID = ol.OL_O_ID
-                )
+            DROP VIEW IF EXISTS last_l_orders;
+            CREATE TEMP VIEW last_l_orders (O_W_ID, O_D_ID, _ID)
+            AS SELECT 
+                    O_W_ID, O_D_ID, O_ID
+                FROM
+                    Order o
+                WHERE
+                    o.O_W_ID = %s 
+                    AND o.O_D_ID = %s
+                ORDER BY 
+                    o.O_ENTRY_D DESC
+                LIMIT 
+                    %s;
+            
+            DROP VIEW IF EXISTS last_l_order_item_quantities;
+            CREATE TEMP VIEW last_l_order_item_quantities (O_W_ID, O_D_ID, O_ID, OL_I_ID, OL_QUANTITY)
+            AS SELECT
+                    o.O_W_ID, o.O_D_ID, o.O_ID, ol.OL_I_ID, ol.OL_QUANTITY
+                FROM 
+                    last_l_orders l
+                    INNER JOIN
+                    Order-Line ol
+                ON
+                    l.O_W_ID = ol.OL_W_ID
+                    AND l.O_D_ID = ol.OL_D_ID
+                    AND l.O_ID = ol.OL_O_ID;
                 
             SELECT 
                 (SELECT I_NAME FROM Item AS i WHERE l1.OL_I_ID = i.I_ID) AS I_NAME,
@@ -89,34 +88,6 @@ def popular_item_transaction(
 
         cur.execute(
             """
-            WITH last_l_orders AS 
-                (
-                    SELECT 
-                        O_W_ID, O_D_ID, O_ID
-                    FROM
-                        Order o
-                    WHERE
-                        o.O_W_ID = %s 
-                        AND o.O_D_ID = %s
-                    ORDER BY 
-                        o.O_ENTRY_D DESC
-                    LIMIT 
-                        %s
-                ),
-                last_l_order_item_quantities AS 
-                (
-                    SELECT
-                        o.O_W_ID, o.O_D_ID, o.O_ID, ol.OL_I_ID, ol.OL_QUANTITY
-                    FROM 
-                        last_l_orders l
-                        INNER JOIN
-                        Order-Line ol
-                    ON
-                        l.O_W_ID = ol.OL_W_ID
-                        AND l.O_D_ID = ol.OL_D_ID
-                        AND l.O_ID = ol.OL_O_ID
-                )
-
             SELECT
                 (SELECT I_NAME FROM Item AS i WHERE l1.OL_I_ID = i.I_ID) AS I_NAME,
                 COUNT(DISTINCT l.O_W_ID, l.O_D_ID, l.O_ID) / %s * 100 AS percentage
@@ -125,9 +96,10 @@ def popular_item_transaction(
             WHERE 
                 l.OL_I_ID IN %s
             GROUP BY
-                l.OL_I_ID
+                l.OL_I_ID;
             """,
-            popular_item_ids, num_last_orders_to_examine
+            popular_item_ids,
+            num_last_orders_to_examine,
         )
 
         logging.debug(f"popular_item_transaction(): Status Message {cur.statusmessage}")
