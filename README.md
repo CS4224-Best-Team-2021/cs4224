@@ -25,7 +25,9 @@ This repository has three branches.
 
 ### To start a CockroachDB cluster:
 - Run `pkill cockroach` on all servers to kill any existing cluster.
+  > On `xcnc20` you will see that some processes cannot be terminated by us. That's ok as long as you see the message from Cockroach about gracefully shutting down the server.
 - Run `rm -rf store*` inside `temp/cs4224/cockroach/` on `xcnc20` and `xcnc24` to remove old session data. (Only do this if you want to remove your existing database!)
+  > If you see a message like `resource busy`, run `netstat -ltnp` and check for any PIDs of old Cockroach processes, and then run `kill -9 <pid number>` on all of them.
 - Run `bash start.sh` (scripts are inside `cockroach/`) to start CockroachDB on `xcnc20`.
 - Run `bash init.sh` on `xcnc20` to initialise a cluster. (You only need to run this if you removed all the `store*` files in step 2).
 - Run `bash status.sh` on `xcnc20` to check that the cluster is live.
