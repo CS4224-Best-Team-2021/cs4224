@@ -61,6 +61,7 @@ CREATE TABLE customer(
     C_DATA STRING,
     PRIMARY KEY (C_W_ID, C_D_ID, C_ID),
     CONSTRAINT customer_district_fk FOREIGN KEY (C_W_ID, C_D_ID) REFERENCES district (D_W_ID, D_ID),
+    INDEX customer_balance_index (C_BALANCE), -- Speed up Top-Balance Transaction
     FAMILY customer_w(C_W_ID, C_D_ID, C_ID, C_BALANCE, C_YTD_PAYMENT, C_PAYMENT_CNT, C_DELIVERY_CNT),
     FAMILY customer_r(C_FIRST, C_MIDDLE, C_LAST, C_STREET_1, C_STREET_2, C_CITY, C_STATE, C_ZIP, C_PHONE, C_SINCE, C_CREDIT, C_CREDIT_LIM, C_DISCOUNT, C_DATA)
 );
@@ -77,6 +78,7 @@ CREATE TABLE "order"(
     O_ENTRY_D TIMESTAMP,
     PRIMARY KEY (O_W_ID, O_D_ID, O_ID),
     CONSTRAINT order_customer_fk FOREIGN KEY(O_W_ID, O_D_ID, O_C_ID) REFERENCES customer(C_W_ID, C_D_ID, C_ID),
+    INDEX order_entry_index(O_ENTRY_D), -- Speed up Order-Status, Stock-Level, Popular-Item transactions
     FAMILY order_w(O_CARRIER_ID, O_ALL_LOCAL),
     FAMILY order_r(O_W_ID, O_D_ID, O_ID, O_ENTRY_D, O_OL_CNT, O_C_ID)
 );
@@ -128,6 +130,24 @@ CREATE TABLE stock(
     S_DIST_10 STRING,
     S_DATA STRING,
     PRIMARY KEY (S_I_ID, S_W_ID),
+    INDEX stock_quantity_index(S_QUANTITY), -- Speed up Stock-Level Transaction
     FAMILY stock_w(S_W_ID, S_I_ID, S_QUANTITY, S_YTD, S_ORDER_CNT, S_REMOTE_CNT),
     FAMILY stock_r(S_DIST_01, S_DIST_02, S_DIST_03, S_DIST_04, S_DIST_05, S_DIST_06, S_DIST_07, S_DIST_08, S_DIST_09, S_DIST_10, S_DATA)
 );
+
+-- VIEWS
+
+CREATE MATERIALIZED VIEW top_balance
+AS 
+SELECT 
+    c.C_FIRST,
+    c.C_MIDDLE,
+    c.C_LAST,
+    c.C_BALANCE,
+    (SELECT W_NAME FROM Warehouse AS w WHERE w.W_ID = c.C_W_ID) AS Warehouse_Name,
+    (SELECT D_NAME FROM District AS d WHERE d.D_ID = c.C_D_ID AND d.D_W_ID = c.C_W_ID) AS District_Name
+FROM 
+    Customer AS c
+ORDER BY
+    c.C_BALANCE DESC
+LIMIT 10;

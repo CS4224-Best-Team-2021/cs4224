@@ -4,6 +4,10 @@ import logging
 def popular_item_transaction(
     conn, warehouse_number, district_number, num_last_orders_to_examine
 ):
+    """
+    1. Get items from last L orders at a specified warehouse district   - sort orders by O_ENTRY_D
+    2. Get most popular item and details                                - 
+    """
     result = None
 
     with conn.cursor() as cur:

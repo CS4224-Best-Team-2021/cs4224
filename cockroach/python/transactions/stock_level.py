@@ -4,6 +4,10 @@ import logging
 def stock_level_transaction(
     conn, warehouse_num, district_num, stock_threshold, num_last_orders_to_examine
 ):
+    """
+    1. Get items from last L orders at a specified warehouse district               - sort orders by O_ENTRY_D
+    2. Get number of those items that have stock level below a given threshold      - items in orders
+    """
     result = 0
 
     with conn.cursor() as cur:
