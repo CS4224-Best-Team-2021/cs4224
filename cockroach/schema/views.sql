@@ -2,8 +2,7 @@ USE wholesaledb;
 
 -- VIEWS
 
-/*
-CREATE MATERIALIZED VIEW top_balance
+CREATE VIEW top_balance
 AS 
 SELECT 
     c.C_FIRST,
@@ -18,7 +17,7 @@ ORDER BY
     c.C_BALANCE DESC
 LIMIT 10;
 
-CREATE MATERIALIZED VIEW related_customer_view
+CREATE VIEW related_customer_view
 AS
 SELECT DISTINCT
     c1.C_W_ID AS C_W_ID1, 
@@ -71,4 +70,4 @@ WHERE
     AND ol1.OL_I_ID = ol3.OL_I_ID 
     -- OL2 and OL4 are the same items
     AND ol2.OL_I_ID = ol4.OL_I_ID;
-*/
+

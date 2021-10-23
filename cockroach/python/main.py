@@ -104,6 +104,7 @@ def main():
             start = time.time()
             run_transaction(conn, lambda conn: op(conn, *params))
             transaction_processing_time = int((time.time() - start) * 1000)
+            print(f'PROCESSING TIME: {transaction_processing_time} ms')
             processing_times.append(transaction_processing_time)
 
         except ValueError as ve:
