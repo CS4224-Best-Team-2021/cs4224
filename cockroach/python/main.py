@@ -69,7 +69,7 @@ def main():
         num_transactions_processed += 1
         op = None
         params = []
-        tokens = line.split(',')
+        tokens = line.rstrip('\n').split(',')
         command = tokens[0]
 
         if command == "N":

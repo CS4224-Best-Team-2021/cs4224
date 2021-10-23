@@ -19,7 +19,7 @@ def stock_level_transaction(
                     SELECT 
                         O_W_ID, O_D_ID, O_ID
                     FROM
-                        Order o
+                        "order" o
                     WHERE
                         o.O_W_ID = %s 
                         AND o.O_D_ID = %s
@@ -42,7 +42,7 @@ def stock_level_transaction(
                         FROM 
                             last_l_orders l
                             INNER JOIN
-                            Order-Line ol
+                            order_line ol
                         ON
                             l.O_W_ID = ol.OL_W_ID
                             AND l.O_D_ID = ol.OL_D_ID

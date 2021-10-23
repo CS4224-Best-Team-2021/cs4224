@@ -17,11 +17,11 @@ def popular_item_transaction(
             SELECT 
                 O_ID, 
                 O_ENTRY_D,
-                (SELECT C_FIRST FROM Customer AS c WHERE c.C_ID = o.O_C_ID) AS C_FIRST,
-                (SELECT C_MIDDLE FROM Customer AS c WHERE c.C_ID = o.O_C_ID) AS C_MIDDLE,
-                (SELECT C_LAST FROM Customer AS c WHERE c.C_ID = o.O_C_ID) AS C_LAST
+                (SELECT C_FIRST FROM Customer AS c WHERE c.C_ID = o.O_C_ID AND c.C_W_ID = o.O_W_ID AND c.C_D_ID = o.O_D_ID) AS C_FIRST,
+                (SELECT C_MIDDLE FROM Customer AS c WHERE c.C_ID = o.O_C_ID AND c.C_W_ID = o.O_W_ID AND c.C_D_ID = o.O_D_ID) AS C_MIDDLE,
+                (SELECT C_LAST FROM Customer AS c WHERE c.C_ID = o.O_C_ID AND c.C_W_ID = o.O_W_ID AND c.C_D_ID = o.O_D_ID) AS C_LAST
             FROM
-                Order o
+                "order" o
             WHERE
                 o.O_W_ID = %s 
                 AND o.O_D_ID = %s
@@ -37,12 +37,13 @@ def popular_item_transaction(
         # set of popular items, Px
         cur.execute(
             """
+            SET experimental_enable_temp_tables = 'on';
             DROP VIEW IF EXISTS last_l_orders;
-            CREATE TEMP VIEW last_l_orders (O_W_ID, O_D_ID, _ID)
+            CREATE TEMP VIEW last_l_orders (O_W_ID, O_D_ID, O_ID)
             AS SELECT 
-                    O_W_ID, O_D_ID, O_ID
+                    O_W_ID AS _W_ID, O_D_ID, O_ID
                 FROM
-                    Order o
+                    "order" o
                 WHERE
                     o.O_W_ID = %s 
                     AND o.O_D_ID = %s
@@ -54,11 +55,11 @@ def popular_item_transaction(
             DROP VIEW IF EXISTS last_l_order_item_quantities;
             CREATE TEMP VIEW last_l_order_item_quantities (O_W_ID, O_D_ID, O_ID, OL_I_ID, OL_QUANTITY)
             AS SELECT
-                    o.O_W_ID, o.O_D_ID, o.O_ID, ol.OL_I_ID, ol.OL_QUANTITY
+                    l.O_W_ID, l.O_D_ID, l.O_ID, ol.OL_I_ID, ol.OL_QUANTITY
                 FROM 
                     last_l_orders l
                     INNER JOIN
-                    Order-Line ol
+                    order_line ol
                 ON
                     l.O_W_ID = ol.OL_W_ID
                     AND l.O_D_ID = ol.OL_D_ID
@@ -89,8 +90,8 @@ def popular_item_transaction(
         cur.execute(
             """
             SELECT
-                (SELECT I_NAME FROM Item AS i WHERE l1.OL_I_ID = i.I_ID) AS I_NAME,
-                COUNT(DISTINCT l.O_W_ID, l.O_D_ID, l.O_ID) / %s * 100 AS percentage
+                (SELECT I_NAME FROM Item AS i WHERE l.OL_I_ID = i.I_ID) AS I_NAME,
+                COUNT(DISTINCT (l.O_W_ID, l.O_D_ID, l.O_ID)) / %s * 100 AS percentage
             FROM
                 last_l_order_item_quantities AS l
             WHERE 
@@ -98,8 +99,7 @@ def popular_item_transaction(
             GROUP BY
                 l.OL_I_ID;
             """,
-            popular_item_ids,
-            num_last_orders_to_examine,
+            (num_last_orders_to_examine, popular_item_ids,),
         )
 
         logging.debug(f"popular_item_transaction(): Status Message {cur.statusmessage}")

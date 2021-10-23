@@ -2,6 +2,7 @@ USE wholesaledb;
 
 -- VIEWS
 
+/*
 CREATE MATERIALIZED VIEW top_balance
 AS 
 SELECT 
@@ -17,7 +18,6 @@ ORDER BY
     c.C_BALANCE DESC
 LIMIT 10;
 
-/*
 CREATE MATERIALIZED VIEW related_customer_view
 AS
 SELECT DISTINCT
