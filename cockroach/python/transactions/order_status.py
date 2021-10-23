@@ -14,7 +14,7 @@ def order_status_transaction(conn, c_w_id, c_d_id, c_id):
             SELECT
                 o.O_ID, o.O_ENTRY_D, o.O_CARRIER_ID
             FROM
-                Order as o
+                "order" as o
             WHERE
                 o.O_W_ID = %s
                 AND o.O_D_ID = %s
@@ -26,14 +26,15 @@ def order_status_transaction(conn, c_w_id, c_d_id, c_id):
             (c_w_id, c_d_id, c_id),
         )
 
-        o_id = cur.fetchone()
+        result = cur.fetchone()
+        o_id = result[0]
 
         cur.execute(
             """
             SELECT 
                 OL_I_ID, OL_SUPPLY_W_ID, OL_QUANTITY, OL_AMOUNT, OL_DELIVERY_D
             FROM 
-                Order-Line
+                order_line
             WHERE 
                 OL_W_ID = %s
                 AND OL_D_ID = %s

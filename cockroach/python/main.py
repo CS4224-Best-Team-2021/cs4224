@@ -7,6 +7,7 @@ import argparse
 import psycopg2
 
 from transactions import (
+    order_status_transaction,
     stock_level_transaction,
     popular_item_transaction,
     related_customer_transaction,
@@ -57,9 +58,9 @@ def main():
     logging.basicConfig(level=logging.DEBUG)
     conn = psycopg2.connect(dsn=opt.dsn)
 
-    line = sys.stdin.readline()
     num_transactions_processed = 0
     processing_times = []
+    line = sys.stdin.readline()
 
     while line:
         if not line:
@@ -68,7 +69,7 @@ def main():
         num_transactions_processed += 1
         op = None
         params = []
-        tokens = line.split()
+        tokens = line.split(',')
         command = tokens[0]
 
         if command == "N":
@@ -85,8 +86,8 @@ def main():
             w_id, carrier_id = tokens[1:]
 
         elif command == "O":
-            c_w_id, c_d_id, c_id = tokens[1:]
-
+            params = tuple(map(int, tokens[1:]))
+            op = order_status_transaction
         elif command == "S":
             params = tuple(map(int, tokens[1:]))
             op = stock_level_transaction
@@ -108,6 +109,8 @@ def main():
         except ValueError as ve:
             logging.debug("run_transaction(conn, op) failed: %s", ve)
             pass
+
+        line = sys.stdin.readline()
 
     total_processing_time = sum(processing_times)
     total_processing_time_seconds = total_processing_time / 1e9

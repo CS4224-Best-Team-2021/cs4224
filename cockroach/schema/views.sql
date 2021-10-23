@@ -17,6 +17,7 @@ ORDER BY
     c.C_BALANCE DESC
 LIMIT 10;
 
+/*
 CREATE MATERIALIZED VIEW related_customer_view
 AS
 SELECT DISTINCT
@@ -70,3 +71,4 @@ WHERE
     AND ol1.OL_I_ID = ol3.OL_I_ID 
     -- OL2 and OL4 are the same items
     AND ol2.OL_I_ID = ol4.OL_I_ID;
+*/
