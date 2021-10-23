@@ -62,6 +62,9 @@ def main():
     processing_times = []
 
     while line:
+        if not line:
+            break
+
         num_transactions_processed += 1
         op = None
         params = []

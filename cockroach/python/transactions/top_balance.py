@@ -14,8 +14,8 @@ def top_balance_transaction(conn):
             SELECT * FROM top_balance;
             """
         )
+        conn.commit()
         result = cur.fetchall()
         logging.debug(f"top_balance_transaction(): Status Message {cur.statusmessage}")
 
-    conn.commit()
     return result
