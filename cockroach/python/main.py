@@ -97,9 +97,9 @@ def main():
             op = related_customer_transaction
 
         try:
-            start = time.time_ns()
+            start = time.time()
             run_transaction(conn, lambda conn: op(conn, *params))
-            transaction_processing_time = time.time_ns() - start
+            transaction_processing_time = int((time.time() - start) * 1000)
             processing_times.append(transaction_processing_time)
 
         except ValueError as ve:
