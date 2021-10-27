@@ -1,10 +1,21 @@
+# Ask for the workload type
+workload="c"
+while [[ "$workload" != "a" && "$workload" != "b" ]]
+do
+    read -p "Enter workload (a/b): " workload
+done
+
 # Read in the configs
 SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 source $SCRIPT_DIR/config.sh
 
-# Creates an empty database using init_db.sql 
-# TODO if testing on local machine, change certs dir to the file your client cert is in
-cockroach sql -f=$SCRIPT_DIR/schema/init_db.sql --certs-dir=$SCRIPT_DIR/root-cert --host=$SERVER1:${ports[$SERVER1]}
+# Creates an empty database using init_db_a.sql or init_db_b.sql 
+if [[ $workload == "a" ]]
+then
+    cockroach sql -f=$SCRIPT_DIR/schema/init_db_a.sql --certs-dir=$SCRIPT_DIR/root-cert --host=$SERVER1:${ports[$SERVER1]}
+else
+    cockroach sql -f=$SCRIPT_DIR/schema/init_db_b.sql --certs-dir=$SCRIPT_DIR/root-cert --host=$SERVER1:${ports[$SERVER1]}
+fi
 
 # Import each CSV file into the database
 cockroach sql -e="use wholesaledb; IMPORT INTO warehouse CSV DATA ('nodelocal://self/warehouse.csv');" --certs-dir=$SCRIPT_DIR/root-cert --host=$SERVER1:${ports[$SERVER1]}
