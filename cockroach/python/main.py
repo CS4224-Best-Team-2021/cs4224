@@ -12,6 +12,9 @@ from transactions import (
     popular_item_transaction,
     related_customer_transaction,
     top_balance_transaction,
+    new_order_transaction,
+    payment_transaction,
+    delivery_transaction
 )
 
 NEW_ORDER = "N"
@@ -80,11 +83,11 @@ def main():
                     params = tuple(map(int, line.split()))
 
         elif command == "P":
-            c_w_id, c_d_id, c_id, payment = tokens[1:]
-
+            params = tuple(map(int, tokens[1:]))
+            op = payment_transaction
         elif command == "D":
-            w_id, carrier_id = tokens[1:]
-
+            params = tuple(map(int, tokens[1:]))
+            op = delivery_transaction
         elif command == "O":
             params = tuple(map(int, tokens[1:]))
             op = order_status_transaction
