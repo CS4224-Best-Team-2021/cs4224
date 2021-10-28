@@ -4,7 +4,6 @@ IntVector = list[int]
 
 def new_order_transaction(conn, c_w_id, c_d_id, c_id, item_number: IntVector, supplier_warehouse: IntVector, quantity: IntVector):
     # 1. Let N denote value of the next available order number D_NEXT_O_ID for district (W_ID,D_ID)
-    result = None
     N = 0
     with conn.cursor() as cur:
         cur.execute(
@@ -60,6 +59,7 @@ def new_order_transaction(conn, c_w_id, c_d_id, c_id, item_number: IntVector, su
     TOTAL_AMOUNT = 0
     
     # 5. For each item, update the relevant tables
+    item_summaries = []
     for i in range(0, len(item_number)):
         # (a) Check stock quantity for the current item
         S_QUANTITY = 0
@@ -109,13 +109,14 @@ def new_order_transaction(conn, c_w_id, c_d_id, c_id, item_number: IntVector, su
                 (ADJUSTED_QTY, quantity[i], S_REMOTE_CNT, supplier_warehouse[i], item_number[i]),
             )
 
-        # (e) Calculate ITEM_AMOUNT
-        I_PRICE = 0
+        # (e) Calculate ITEM_AMOUNT (extract I_NAME also, because you need it in the output)
+        ITEM_AMOUNT = 0
+        I_NAME = ''
         with conn.cursor() as cur:
             cur.execute(
                 """
                 SELECT
-                    I_PRICE
+                    I_PRICE, I_NAME
                 FROM 
                     item
                 WHERE
@@ -125,6 +126,7 @@ def new_order_transaction(conn, c_w_id, c_d_id, c_id, item_number: IntVector, su
             )
             result = cur.fetchone()
             I_PRICE = result[0]
+            I_NAME = result[1]
             ITEM_AMOUNT = quantity[i] * I_PRICE
 
         # (f) Update TOTAL_AMOUNT
@@ -153,6 +155,8 @@ def new_order_transaction(conn, c_w_id, c_d_id, c_id, item_number: IntVector, su
                 """,
                 (N, c_d_id, c_w_id, i + 1, item_number[i], supplier_warehouse[i], quantity[i], ITEM_AMOUNT, OL_DIST_INFO),
             )
+        # Extra step: Record down the I_NAME, OL_AMOUNT and S_QUANTITY for reporting at the end
+        item_summaries.append(ItemSummary(I_NAME, ITEM_AMOUNT, S_QUANTITY))
     
     # 6. Calculate the total value of this transaction
     W_TAX = 0
@@ -173,15 +177,96 @@ def new_order_transaction(conn, c_w_id, c_d_id, c_id, item_number: IntVector, su
             SELECT 
                 D_TAX 
             FROM
-                
-            """
+                district 
+            WHERE
+                (D_W_ID, D_ID) = (%s, %s);
+            """,
+            (c_w_id, c_d_id),
         )
+        result = cur.fetchone()
+        D_TAX = result[0]
+    
+    C_DISCOUNT = 0
+    with conn.cursor as cur:
+        cur.execute(
+            """
+            SELECT C_DISCOUNT FROM customer WHERE (C_W_ID, C_D_ID, C_ID) = (%s, %s, %s);
+            """,
+            (c_w_id, c_d_id, c_id),
+        )
+        result = cur.fetchone()
+        C_DISCOUNT = result[0]
+    
+    TOTAL_AMOUNT = TOTAL_AMOUNT * (1 + D_TAX + W_TAX) * (1 - C_DISCOUNT)
+    
+    # Generate the output
+    logging.info("Output for New Order Transaction")
+
+    with conn.cursor as cur:
+        cur.execute(
+            """
+            SELECT
+                W_ID, D_ID, C_ID, C_LAST, C_CREDIT, C_DISCOUNT
+            FROM
+                customer
+            WHERE 
+                (W_ID, D_ID, C_ID) = (%s, %s, %s);
+            """,
+            (c_w_id, c_d_id, c_id),
+        )
+
+        # Customer identifier
+        result = cur.fetchone()
+        logging.info("Customer identifier: %s", result)
+
+        # Warehouse and district tax
+        logging.info(f"W_TAX:{W_TAX}, D_TAX:{D_TAX}")
+
+        # Order number and entry date
+        cur.execute(
+            """
+            SELECT 
+                O_ENTRY_D
+            FROM 
+                "order"
+            WHERE
+                (O_W_ID, O_D_ID, O_ID) = (%s, %s, %s);
+            """,
+            (c_w_id, c_d_id, N),
+        )
+        result = cur.fetchone()
+        O_ENTRY_D = result[0]
+        logging.info(f"O_ID: {N}, O_ENTRY_D: {O_ENTRY_D}")
+
+        # Number of items and total amount
+        logging.info(f"NUM_ITEMS: {len(item_number)}, TOTAL_AMOUNT: {TOTAL_AMOUNT}")
+
+        # Output summary of each item
+        for i in range(len(item_number)):
+            logging.info(f"Item {i + 1}:")
+            logging.info(f"ITEM_NUMBER: {item_number[i]}")
+            logging.info(f"I_NAME: {item_summaries[i].name}")
+            logging.info(f"SUPPLIER_WAREHOUSE: {supplier_warehouse[i]}")
+            logging.info(f"QUANTITY: {quantity[i]}")
+            logging.info(f"OL_AMOUNT: {item_summaries[i].ol_amount}")
+            logging.info(f"S_QUANTITY: {item_summaries[i].s_quantity}")
+        
+        logging.info("End of output for New Order Transaction")
 
 def district_id_to_string(id: int):
     """
-    Takes id and returns "S_DIST_id", zero-padded to two places.
+    Takes id and returns "S_DIST_id", zero-padded to two places (e.g 3 -> S_DIST_03, 10 -> S_DIST_10).
     """
     if id < 10:
         return "S_DIST_0" + str(id)
     else:
         return "S_DIST_10"
+
+class ItemSummary:
+    """
+    Remember the I_NAME, OL_AMOUNT and S_QUANTITY for the report
+    """
+    def __init__(self, name, ol_amount, s_quantity):
+        self.name = name
+        self.ol_amount = ol_amount
+        self.s_quantity = s_quantity
