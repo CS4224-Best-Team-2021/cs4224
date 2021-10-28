@@ -1,4 +1,5 @@
 import logging
+from psycopg2 import sql
 
 IntVector = list[int]
 
@@ -136,10 +137,14 @@ def new_order_transaction(conn, c_w_id, c_d_id, c_id, item_number: IntVector, su
         OL_DIST_INFO = ""
         with conn.cursor() as cur:
             cur.execute(
+                sql.SQL(
                 """
-                SELECT %s FROM stock WHERE S_W_ID = %s AND S_I_ID = %s;
-                """,
-                (district_id_to_string(c_d_id), supplier_warehouse[i], item_number[i]),
+                SELECT {district_info} FROM stock WHERE S_W_ID = %s AND S_I_ID = %s;
+                """
+                ).format(
+                    district_info=sql.Identifier(district_id_to_string(c_d_id))
+                ),
+                (supplier_warehouse[i], item_number[i]),
             )
             result = cur.fetchone()
             OL_DIST_INFO = result[0]
@@ -252,6 +257,9 @@ def new_order_transaction(conn, c_w_id, c_d_id, c_id, item_number: IntVector, su
             logging.info(f"S_QUANTITY: {item_summaries[i].s_quantity}")
         
         logging.info("End of output for New Order Transaction")
+    
+    conn.commit()
+
 
 def district_id_to_string(id: int):
     """
