@@ -95,3 +95,5 @@ def payment_transaction(conn, c_w_id, c_d_id, c_id, payment):
 
         # 4. Payment amount
         logging.info("Payment amount: {payment}")
+    
+    conn.commit()
