@@ -1,6 +1,6 @@
 import logging
 
-def payment_transaction(conn, c_w_id, c_d_id, c_id, payment):
+def payment_transaction(conn, log_buffer, c_w_id, c_d_id, c_id, payment):
     with conn.cursor() as cur:
         # 1. Update the warehouse C_W_ID by incrementing W_YTD by payment
         cur.execute(

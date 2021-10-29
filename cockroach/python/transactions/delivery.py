@@ -1,6 +1,6 @@
 import logging
 
-def delivery_transaction(conn, w_id, carrier_id):
+def delivery_transaction(conn, log_buffer, w_id, carrier_id):
     for district_no in range(1, 11):
         N = 0
         with conn.cursor() as cur:

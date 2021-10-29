@@ -64,9 +64,10 @@ def main():
     num_transactions_processed = 0
     processing_times = []
     line = sys.stdin.readline()
+    log_buffer = []
 
     while line:
-        if not line:
+        if not line or line == '\n':
             break
 
         num_transactions_processed += 1
@@ -118,8 +119,13 @@ def main():
 
         try:
             start = time.time()
-            run_transaction(conn, lambda conn: op(conn, *params))
+            run_transaction(conn, lambda conn: op(conn, log_buffer, *params))
             transaction_processing_time = int((time.time() - start) * 1000)
+
+            for l in log_buffer:
+                print(l)
+            log_buffer.clear()
+
             print(f'PROCESSING TIME: {transaction_processing_time} ms')
             processing_times.append(transaction_processing_time)
 
@@ -129,32 +135,33 @@ def main():
 
         line = sys.stdin.readline()
 
-    total_processing_time = sum(processing_times)
-    total_processing_time_seconds = total_processing_time / 1e9
-    transaction_throughput = num_transactions_processed / total_processing_time_seconds
-    average_transaction_latency_millis = (
-        total_processing_time / 1e6 / num_transactions_processed
-    )
-    sorted_processing_times_millis = sorted([n / 1e6 for n in processing_times])
-    median_processing_time = sorted_processing_times_millis[
-        num_transactions_processed // 2
-    ]
-    _95_percentile_processing_time = sorted_processing_times_millis[
-        int(0.95 * num_transactions_processed)
-    ]
-    _99_percentile_processing_time = sorted_processing_times_millis[
-        int(0.99 * num_transactions_processed)
-    ]
-    print(
-        opt.client_number,
-        total_processing_time,
-        total_processing_time_seconds,
-        transaction_throughput,
-        average_transaction_latency_millis,
-        median_processing_time,
-        _95_percentile_processing_time,
-        _99_percentile_processing_time,
-    )
+    if num_transactions_processed > 0:
+        total_processing_time = sum(processing_times)
+        total_processing_time_seconds = total_processing_time / 1e9
+        transaction_throughput = num_transactions_processed / total_processing_time_seconds
+        average_transaction_latency_millis = (
+            total_processing_time / 1e6 / num_transactions_processed
+        )
+        sorted_processing_times_millis = sorted([n / 1e6 for n in processing_times])
+        median_processing_time = sorted_processing_times_millis[
+            num_transactions_processed // 2
+        ]
+        _95_percentile_processing_time = sorted_processing_times_millis[
+            int(0.95 * num_transactions_processed)
+        ]
+        _99_percentile_processing_time = sorted_processing_times_millis[
+            int(0.99 * num_transactions_processed)
+        ]
+        print(
+            opt.client_number,
+            total_processing_time,
+            total_processing_time_seconds,
+            transaction_throughput,
+            average_transaction_latency_millis,
+            median_processing_time,
+            _95_percentile_processing_time,
+            _99_percentile_processing_time,
+        )
 
 
 if __name__ == "__main__":

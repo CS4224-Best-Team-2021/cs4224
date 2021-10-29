@@ -2,7 +2,7 @@ import logging
 
 
 def stock_level_transaction(
-    conn, warehouse_num, district_num, stock_threshold, num_last_orders_to_examine
+    conn, log_buffer, warehouse_num, district_num, stock_threshold, num_last_orders_to_examine
 ):
     """
     1. Get items from last L orders at a specified warehouse district               - sort orders by O_ENTRY_D
@@ -53,7 +53,7 @@ def stock_level_transaction(
             (warehouse_num, district_num, num_last_orders_to_examine, stock_threshold, warehouse_num),
         )
         result = cur.fetchone()[0]
-        print(result)
+        log_buffer.append(f'Stock level: {result}')
         logging.debug(f"stock_level_transaction(): Status Message {cur.statusmessage}")
 
     conn.commit()

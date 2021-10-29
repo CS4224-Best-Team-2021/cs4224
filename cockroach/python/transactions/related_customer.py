@@ -1,7 +1,7 @@
 import logging
 
 
-def related_customer_transaction(conn, c_w_id, c_d_id, c_id):
+def related_customer_transaction(conn, log_buffer, c_w_id, c_d_id, c_id):
     result = None
 
     with conn.cursor() as cur:
@@ -19,7 +19,9 @@ def related_customer_transaction(conn, c_w_id, c_d_id, c_id):
             (c_w_id, c_d_id, c_id),
         )
         result = cur.fetchall()
-        print(result)
+        log_buffer.append('Related customers (C_W_ID, C_D_ID, C_ID):')
+        for c in result:
+            log_buffer.append(f'    {c}')
 
         logging.debug(
             f"related_customer_transaction(): Status Message {cur.statusmessage}"
