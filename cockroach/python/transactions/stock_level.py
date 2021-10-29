@@ -35,6 +35,7 @@ def stock_level_transaction(
                 Stock AS s
             WHERE 
                 s.S_QUANTITY < %s
+                AND s.S_W_ID = %s
                 AND s.S_I_ID IN 
                     (
                         SELECT
@@ -49,9 +50,10 @@ def stock_level_transaction(
                             AND l.O_ID = ol.OL_O_ID
                     );
             """,
-            (warehouse_num, district_num, stock_threshold, num_last_orders_to_examine),
+            (warehouse_num, district_num, num_last_orders_to_examine, stock_threshold, warehouse_num),
         )
         result = cur.fetchone()[0]
+        print(result)
         logging.debug(f"stock_level_transaction(): Status Message {cur.statusmessage}")
 
     conn.commit()
