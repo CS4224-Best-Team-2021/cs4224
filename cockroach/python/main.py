@@ -76,11 +76,24 @@ def main():
         command = tokens[0]
 
         if command == "N":
-            c_id, w_id, d_id, m = tuple(map(int, tokens[1:]))
+            params = list(map(int, tokens[1:-1]))
+            m = int(tokens[-1])
+            item_number = []
+            supplier_warehouse = []
+            quantity = []
+
             for _ in range(m):
                 line = sys.stdin.readline()
                 if line:
-                    params = tuple(map(int, line.split()))
+                    i, s, q = list(map(int, line.split(',')))
+                    item_number.append(i)
+                    supplier_warehouse.append(s)
+                    quantity.append(q)
+
+            params.append(item_number)
+            params.append(supplier_warehouse)
+            params.append(quantity)
+            op = new_order_transaction
 
         elif command == "P":
             params = tuple(map(int, tokens[1:]))

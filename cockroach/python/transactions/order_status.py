@@ -44,6 +44,8 @@ def order_status_transaction(conn, c_w_id, c_d_id, c_id):
         )
 
         order_lines = cur.fetchall()
+        for o in order_lines:
+            print(o)
         logging.debug(f"order_status_transaction(): Status Message {cur.statusmessage}")
 
     conn.commit()

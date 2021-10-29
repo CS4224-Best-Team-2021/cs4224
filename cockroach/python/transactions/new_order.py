@@ -1,7 +1,8 @@
 import logging
 from psycopg2 import sql
+from typing import List
 
-IntVector = list[int]
+IntVector = List[int]
 
 def new_order_transaction(conn, c_w_id, c_d_id, c_id, item_number: IntVector, supplier_warehouse: IntVector, quantity: IntVector):
     # 1. Let N denote value of the next available order number D_NEXT_O_ID for district (W_ID,D_ID)
@@ -28,9 +29,9 @@ def new_order_transaction(conn, c_w_id, c_d_id, c_id, item_number: IntVector, su
         cur.execute(
             """
             UPDATE 
-                district
+                district AS d
             SET 
-                D_NEXT_O_DID = D_NEXT_O_DID + 1
+                d.D_NEXT_O_ID = d.D_NEXT_O_ID + 1
             WHERE
                 d.D_W_ID = %s
                 AND d.D_ID = %s;
