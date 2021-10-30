@@ -29,12 +29,12 @@ def new_order_transaction(conn, log_buffer, c_w_id, c_d_id, c_id, item_number: I
         cur.execute(
             """
             UPDATE 
-                district AS d
+                district
             SET 
-                d.D_NEXT_O_ID = d.D_NEXT_O_ID + 1
+                D_NEXT_O_ID = D_NEXT_O_ID + 1
             WHERE
-                d.D_W_ID = %s
-                AND d.D_ID = %s;
+                D_W_ID = %s
+                AND D_ID = %s;
             """,
             (c_w_id, c_d_id)
         )
@@ -69,12 +69,12 @@ def new_order_transaction(conn, log_buffer, c_w_id, c_d_id, c_id, item_number: I
             cur.execute(
                 """
                 SELECT 
-                    s.S_QUANTITY
+                    S_QUANTITY
                 FROM 
-                    stock AS s
+                    stock
                 WHERE
-                    s.S_W_ID = %s
-                    AND s.S_I_ID = %s;
+                    S_W_ID = %s
+                    AND S_I_ID = %s;
                 """,
                 (supplier_warehouse[i], item_number[i]),
             )
