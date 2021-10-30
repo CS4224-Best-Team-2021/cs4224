@@ -1,6 +1,9 @@
 import logging
 
-def delivery_transaction(conn, log_buffer, w_id, carrier_id):
+def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
+    """
+    No output required for this transaction
+    """
     for district_no in range(1, 11):
         N = 0
         with conn.cursor() as cur:
@@ -16,9 +19,14 @@ def delivery_transaction(conn, log_buffer, w_id, carrier_id):
                     AND O_CARRIER_ID IS NULL;
                 """,
                 (w_id, district_no),
-            )
+            ) # uses customer_order index
 
             result = cur.fetchone()
+
+            # If there is no unfulfilled order, go to the next district
+            if result is None:
+                continue
+
             N = result[0]
 
             # (b) Assign this order to the given carrier
@@ -32,12 +40,12 @@ def delivery_transaction(conn, log_buffer, w_id, carrier_id):
                     (O_W_ID, O_D_ID, O_ID) = (%s, %s, %s);
                 """,
                 (carrier_id, w_id, district_no, N),
-            )
+            ) # uses primary key index
 
             # (c) Update all order-lines in this order
             cur.execute(
                 """
-                WITH curr_time AS SELECT current_timestamp()
+                WITH curr_time AS (SELECT current_timestamp)
                 UPDATE
                     order_line
                 SET
@@ -46,10 +54,11 @@ def delivery_transaction(conn, log_buffer, w_id, carrier_id):
                     (OL_W_ID, OL_D_ID, OL_O_ID) = (%s, %s, %s);
                 """,
                 (w_id, district_no, N),
-            )
+            ) # uses order_index
 
             # (d) Update the customer
-            O_C_ID = 0 # Get the customer ID
+            # Get the customer ID
+            O_C_ID = 0 
             cur.execute(
                 """
                 SELECT 
@@ -60,7 +69,7 @@ def delivery_transaction(conn, log_buffer, w_id, carrier_id):
                     (O_W_ID, O_D_ID, O_ID) = (%s, %s, %s);
                 """,
                 (w_id, district_no, N),
-            )
+            ) # uses primary key index
 
             result = cur.fetchone()
             O_C_ID = result[0]
@@ -76,7 +85,8 @@ def delivery_transaction(conn, log_buffer, w_id, carrier_id):
                     (OL_W_ID, OL_D_ID, OL_O_ID) = (%s, %s, %s);
                 """,
                 (w_id, district_no, N),
-            )
+            ) # uses order_index
+
             result = cur.fetchone()
             B = result[0]
 
@@ -84,14 +94,14 @@ def delivery_transaction(conn, log_buffer, w_id, carrier_id):
                 """
                 UPDATE
                     customer
-                SET 
+                SET
                     C_BALANCE = C_BALANCE + %s,
                     C_DELIVERY_CNT = C_DELIVERY_CNT + 1
                 WHERE
                     (C_W_ID, C_D_ID, C_ID) = (%s, %s, %s);
                 """,
                 (B, w_id, district_no, O_C_ID),
-            )
+            ) # uses primary key index
 
         conn.commit()
 

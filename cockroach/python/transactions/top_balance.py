@@ -1,7 +1,7 @@
 import logging
 
 
-def top_balance_transaction(conn, log_buffer):
+def top_balance_transaction(conn, log_buffer, test):
     """
     1. Get top 10 customers in descending order of their outstanding balance payments
     """

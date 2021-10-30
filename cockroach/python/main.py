@@ -6,6 +6,8 @@ import argparse
 
 import psycopg2
 
+test = False
+
 from transactions import (
     order_status_transaction,
     stock_level_transaction,
@@ -119,7 +121,7 @@ def main():
 
         try:
             start = time.time()
-            run_transaction(conn, lambda conn: op(conn, log_buffer, *params))
+            run_transaction(conn, lambda conn: op(conn, log_buffer, test, *params))
             transaction_processing_time = int((time.time() - start) * 1000)
 
             for l in log_buffer:

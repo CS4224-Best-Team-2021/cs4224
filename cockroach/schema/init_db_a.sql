@@ -78,7 +78,8 @@ CREATE TABLE "order"(
     PRIMARY KEY (O_W_ID, O_D_ID, O_ID),
     CONSTRAINT order_customer_fk FOREIGN KEY(O_W_ID, O_D_ID, O_C_ID) REFERENCES customer(C_W_ID, C_D_ID, C_ID),
     FAMILY order_w(O_CARRIER_ID, O_ALL_LOCAL),
-    FAMILY order_r(O_W_ID, O_D_ID, O_ID, O_ENTRY_D, O_OL_CNT, O_C_ID)
+    FAMILY order_r(O_W_ID, O_D_ID, O_ID, O_ENTRY_D, O_OL_CNT, O_C_ID),
+    INDEX customer_order(O_W_ID, O_D_ID)
 );
 
 DROP TABLE IF EXISTS item;
@@ -105,7 +106,8 @@ CREATE TABLE order_line(
     PRIMARY KEY (OL_O_ID, OL_W_ID, OL_D_ID, OL_NUMBER),
     CONSTRAINT orderline_order_fk FOREIGN KEY(OL_W_ID, OL_D_ID, OL_O_ID) REFERENCES "order"(O_W_ID, O_D_ID, O_ID),
     FAMILY order_line_w(OL_DELIVERY_D, OL_W_ID, OL_D_ID, OL_O_ID, OL_NUMBER),
-    FAMILY order_line_r(OL_I_ID, OL_AMOUNT, OL_SUPPLY_W_ID, OL_QUANTITY, OL_DIST_INFO) 
+    FAMILY order_line_r(OL_I_ID, OL_AMOUNT, OL_SUPPLY_W_ID, OL_QUANTITY, OL_DIST_INFO),
+    INDEX order_index(OL_W_ID, OL_D_ID, OL_O_ID)
 );
 
 DROP TABLE IF EXISTS stock;

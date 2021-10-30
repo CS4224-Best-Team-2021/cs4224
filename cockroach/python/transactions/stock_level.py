@@ -2,7 +2,7 @@ import logging
 
 
 def stock_level_transaction(
-    conn, log_buffer, warehouse_num, district_num, stock_threshold, num_last_orders_to_examine
+    conn, log_buffer, test, warehouse_num, district_num, stock_threshold, num_last_orders_to_examine
 ):
     """
     1. Get items from last L orders at a specified warehouse district               - sort orders by O_ENTRY_D
