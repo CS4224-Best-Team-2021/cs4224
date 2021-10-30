@@ -11,12 +11,12 @@ def new_order_transaction(conn, log_buffer, c_w_id, c_d_id, c_id, item_number: I
         cur.execute(
             """
             SELECT
-                d.D_NEXT_O_ID
+                D_NEXT_O_ID
             FROM
-                district AS d
+                district
             WHERE
-                d.D_W_ID = %s
-                AND d.D_ID = %s;
+                D_W_ID = %s
+                AND D_ID = %s;
             """,
             (c_w_id, c_d_id),
         )
