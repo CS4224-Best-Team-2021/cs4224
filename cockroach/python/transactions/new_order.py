@@ -206,7 +206,7 @@ def new_order_transaction(conn, log_buffer, c_w_id, c_d_id, c_id, item_number: I
     TOTAL_AMOUNT = TOTAL_AMOUNT * (1 + D_TAX + W_TAX) * (1 - C_DISCOUNT)
     
     # Generate the output
-    logging.info("Output for New Order Transaction")
+    log_buffer.append("Output for New Order Transaction")
 
     with conn.cursor as cur:
         cur.execute(
@@ -223,10 +223,10 @@ def new_order_transaction(conn, log_buffer, c_w_id, c_d_id, c_id, item_number: I
 
         # Customer identifier
         result = cur.fetchone()
-        logging.info("Customer identifier: %s", result)
+        log_buffer.append("Customer identifier: %s", result)
 
         # Warehouse and district tax
-        logging.info(f"W_TAX:{W_TAX}, D_TAX:{D_TAX}")
+        log_buffer.append(f"W_TAX:{W_TAX}, D_TAX:{D_TAX}")
 
         # Order number and entry date
         cur.execute(
@@ -242,22 +242,22 @@ def new_order_transaction(conn, log_buffer, c_w_id, c_d_id, c_id, item_number: I
         )
         result = cur.fetchone()
         O_ENTRY_D = result[0]
-        logging.info(f"O_ID: {N}, O_ENTRY_D: {O_ENTRY_D}")
+        log_buffer.append(f"O_ID: {N}, O_ENTRY_D: {O_ENTRY_D}")
 
         # Number of items and total amount
-        logging.info(f"NUM_ITEMS: {len(item_number)}, TOTAL_AMOUNT: {TOTAL_AMOUNT}")
+        log_buffer.append(f"NUM_ITEMS: {len(item_number)}, TOTAL_AMOUNT: {TOTAL_AMOUNT}")
 
         # Output summary of each item
         for i in range(len(item_number)):
-            logging.info(f"Item {i + 1}:")
-            logging.info(f"ITEM_NUMBER: {item_number[i]}")
-            logging.info(f"I_NAME: {item_summaries[i].name}")
-            logging.info(f"SUPPLIER_WAREHOUSE: {supplier_warehouse[i]}")
-            logging.info(f"QUANTITY: {quantity[i]}")
-            logging.info(f"OL_AMOUNT: {item_summaries[i].ol_amount}")
-            logging.info(f"S_QUANTITY: {item_summaries[i].s_quantity}")
+            log_buffer.append(f"Item {i + 1}:")
+            log_buffer.append(f"ITEM_NUMBER: {item_number[i]}")
+            log_buffer.append(f"I_NAME: {item_summaries[i].name}")
+            log_buffer.append(f"SUPPLIER_WAREHOUSE: {supplier_warehouse[i]}")
+            log_buffer.append(f"QUANTITY: {quantity[i]}")
+            log_buffer.append(f"OL_AMOUNT: {item_summaries[i].ol_amount}")
+            log_buffer.append(f"S_QUANTITY: {item_summaries[i].s_quantity}")
         
-        logging.info("End of output for New Order Transaction")
+        log_buffer.append("End of output for New Order Transaction")
     
     conn.commit()
 
