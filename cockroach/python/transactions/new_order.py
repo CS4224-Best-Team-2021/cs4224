@@ -126,7 +126,7 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
                 WHERE
                     I_ID = %s;
                 """,
-                (item_number[i]),
+                (item_number[i],),
             )
             result = cur.fetchone()
             I_PRICE = result[0]
