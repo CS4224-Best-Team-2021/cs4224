@@ -42,7 +42,8 @@ def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
                     (w_id, district_no, N),
                 )
                 result = cur.fetchone()
-                print(f"result: {result}, type: {type(result[0])}")
+                assert(result[0] is None)
+            
             # (b) Assign this order to the given carrier
             cur.execute(
                 """
@@ -63,7 +64,7 @@ def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
                 UPDATE
                     order_line
                 SET
-                    OL_DELIVERY_D = curr_time
+                    OL_DELIVERY_D = (SELECT * FROM curr_time)
                 WHERE
                     (OL_W_ID, OL_D_ID, OL_O_ID) = (%s, %s, %s);
                 """,
