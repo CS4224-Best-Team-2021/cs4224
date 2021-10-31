@@ -15,11 +15,10 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
             FROM
                 district
             WHERE
-                D_W_ID = %s
-                AND D_ID = %s;
+                (D_W_ID, D_ID) = (%s, %s);
             """,
             (c_w_id, c_d_id),
-        )
+        ) # uses primary key index
 
         result = cur.fetchone()
         N = result[0] + 1
@@ -33,11 +32,10 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
             SET 
                 D_NEXT_O_ID = D_NEXT_O_ID + 1
             WHERE
-                D_W_ID = %s
-                AND D_ID = %s;
+                (D_W_ID, D_ID) = (%s, %s);
             """,
             (c_w_id, c_d_id)
-        )
+        ) # uses primary key index
 
         # If user wants to test transaction, check that D_NEXT_O_ID == N
         if test:
@@ -91,7 +89,7 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
                     AND S_I_ID = %s;
                 """,
                 (supplier_warehouse[i], item_number[i]),
-            )
+            ) # uses primary key index
 
             result = cur.fetchone()
             S_QUANTITY = result[0]
@@ -123,7 +121,7 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
                     AND S_I_ID = %s;
                 """,
                 (ADJUSTED_QTY, quantity[i], S_REMOTE_CNT, supplier_warehouse[i], item_number[i]),
-            )
+            ) # uses primary key index
 
         # (e) Calculate ITEM_AMOUNT (extract I_NAME also, because you need it in the output)
         ITEM_AMOUNT = 0
@@ -139,7 +137,8 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
                     I_ID = %s;
                 """,
                 (item_number[i],),
-            )
+            ) # uses primary key index
+
             result = cur.fetchone()
             I_PRICE = result[0]
             I_NAME = result[1]
@@ -160,7 +159,7 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
                     district_info=sql.Identifier(district_id_to_string(c_d_id).lower()) # cockroachdb stores column names in lowercase
                 ),
                 (supplier_warehouse[i], item_number[i]),
-            )
+            ) # uses primary key index
             result = cur.fetchone()
             OL_DIST_INFO = result[0]
 
