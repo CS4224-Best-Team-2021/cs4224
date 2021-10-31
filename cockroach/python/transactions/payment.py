@@ -6,6 +6,23 @@ def payment_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id, payment):
     c_d_id = int(c_d_id)
     c_id = int(c_id)
 
+    # If user wants transaction to be tested, get the original c_balance, c_ytd_payment, c_payment_cnt
+    initial_values = None
+    if test:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT
+                    C_BALANCE, C_YTD_PAYMENT, C_PAYMENT_CNT
+                FROM
+                    customer 
+                WHERE 
+                    (C_W_ID, C_D_ID, C_ID) = (%s,%s,%s);
+                """,
+                (c_w_id, c_d_id, c_id),
+            )
+            initial_values = cur.fetchone()
+
     with conn.cursor() as cur:
         # 1. Update the warehouse C_W_ID by incrementing W_YTD by payment
         cur.execute(
@@ -47,6 +64,28 @@ def payment_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id, payment):
             """,
             (payment, payment, c_w_id, c_d_id, c_id),
         )
+
+        # If user wanted transaction to be tested, check the new values of c_balance, c_ytd_payment, c_payment_cnt
+        if test:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    SELECT
+                        C_BALANCE, C_YTD_PAYMENT, C_PAYMENT_CNT
+                    FROM
+                        customer 
+                    WHERE 
+                        (C_W_ID, C_D_ID, C_ID) = (%s,%s,%s);
+                    """,
+                    (c_w_id, c_d_id, c_id),
+                )
+                result = cur.fetchone()
+                # Check c_balance
+                assert(initial_values[0] - result[0] == payment)
+                # Check c_ytd_payment
+                assert(result[1] - initial_values[1] == payment)
+                # Check c_payment_count
+                assert(result[2] - initial_values[2] == 1)
 
         # Generate report
         cur.execute(
