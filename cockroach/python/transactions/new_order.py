@@ -23,8 +23,8 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
         )
 
         result = cur.fetchone()
-        logging.info(f"result for getting next order id: {result}")
-        N = result[0] + 1
+        logging.info(f"result for getting next order id: {result}, type: {type(result)}")
+        N = int(result[0]) + 1
 
     # 2. Update the district (W ID, D ID) by incrementing D_NEXT_O_ID by one
     with conn.cursor() as cur:
