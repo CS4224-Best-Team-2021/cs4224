@@ -67,25 +67,24 @@ def payment_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id, payment):
 
         # If user wanted transaction to be tested, check the new values of c_balance, c_ytd_payment, c_payment_cnt
         if test:
-            with conn.cursor() as cur:
-                cur.execute(
-                    """
-                    SELECT
-                        C_BALANCE, C_YTD_PAYMENT, C_PAYMENT_CNT
-                    FROM
-                        customer 
-                    WHERE 
-                        (C_W_ID, C_D_ID, C_ID) = (%s,%s,%s);
-                    """,
-                    (c_w_id, c_d_id, c_id),
-                )
-                result = cur.fetchone()
-                # Check c_balance
-                assert(initial_values[0] - result[0] == payment)
-                # Check c_ytd_payment
-                assert(result[1] - initial_values[1] == payment)
-                # Check c_payment_count
-                assert(result[2] - initial_values[2] == 1)
+            cur.execute(
+                """
+                SELECT
+                    C_BALANCE, C_YTD_PAYMENT, C_PAYMENT_CNT
+                FROM
+                    customer 
+                WHERE 
+                    (C_W_ID, C_D_ID, C_ID) = (%s,%s,%s);
+                """,
+                (c_w_id, c_d_id, c_id),
+            )
+            result = cur.fetchone()
+            # Check c_balance
+            assert(initial_values[0] - result[0] == payment)
+            # Check c_ytd_payment
+            assert(result[1] - initial_values[1] == payment)
+            # Check c_payment_count
+            assert(result[2] - initial_values[2] == 1)
 
         # Generate report
         cur.execute(
