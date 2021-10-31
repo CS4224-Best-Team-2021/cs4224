@@ -6,7 +6,7 @@ import argparse
 
 import psycopg2
 
-test = False
+test = True
 
 from transactions import (
     order_status_transaction,

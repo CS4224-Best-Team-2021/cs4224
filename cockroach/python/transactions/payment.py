@@ -35,7 +35,7 @@ def payment_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id, payment):
                 W_ID = %s;
             """,
             (payment, c_w_id),
-        )
+        ) # uses primary key index
 
         # 2. Update the district (C_W_ID, C_D_ID) by incrementing D_YTD by payment
         cur.execute(
@@ -48,7 +48,7 @@ def payment_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id, payment):
                 (D_W_ID, D_ID) = (%s, %s);
             """,
             (payment, c_w_id, c_d_id),
-        )
+        ) # uses primary key index
 
         # 3. Update the customer
         cur.execute(
@@ -63,7 +63,7 @@ def payment_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id, payment):
                 (C_W_ID, C_D_ID, C_ID) = (%s, %s, %s);
             """,
             (payment, payment, c_w_id, c_d_id, c_id),
-        )
+        ) # uses primary key index
 
         # If user wanted transaction to be tested, check the new values of c_balance, c_ytd_payment, c_payment_cnt
         if test:
@@ -97,7 +97,7 @@ def payment_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id, payment):
                 (C_W_ID, C_D_ID, C_ID) = (%s, %s, %s);
             """,
             (c_w_id, c_d_id, c_id),
-        )
+        ) # uses primary key index
         result = cur.fetchone()
         
         # 1. Customer's identifier
@@ -113,7 +113,7 @@ def payment_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id, payment):
                 W_ID = %s;
             """,
             (c_w_id,),
-        )
+        ) # uses primary key index
         result = cur.fetchone()
         
         # 2. Warehouse's address
@@ -130,7 +130,7 @@ def payment_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id, payment):
                 (D_W_ID, D_ID) = (%s, %s);
             """,
             (c_w_id, c_d_id),
-        )
+        ) # uses primary key index
         result = cur.fetchone()
 
         # 3. District's address

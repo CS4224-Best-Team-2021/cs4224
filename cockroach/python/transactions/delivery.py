@@ -28,7 +28,21 @@ def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
                 continue
 
             N = result[0]
-
+            # If user wants to test this transaction, check that this order really has no carrier
+            if test:
+                cur.execute(
+                    """
+                    SELECT
+                        O_CARRIER_ID
+                    FROM 
+                        "order"
+                    WHERE
+                        (O_W_ID, O_D_ID, O_ID) = (%s, %s, %s);
+                    """,
+                    (w_id, district_no, N),
+                )
+                result = cur.fetchone()
+                print(f"result: {result}, type: {type(result[0])}")
             # (b) Assign this order to the given carrier
             cur.execute(
                 """
