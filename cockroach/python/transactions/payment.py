@@ -63,7 +63,7 @@ def payment_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id, payment):
         result = cur.fetchone()
         
         # 1. Customer's identifier
-        log_buffer.append(f"Customer info: {'-'.join(str(x) for x in result)}")
+        log_buffer.append(f"Customer info: {result}")
 
         cur.execute(
             """
@@ -96,9 +96,9 @@ def payment_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id, payment):
         result = cur.fetchone()
 
         # 3. District's address
-        log_buffer.append("District's address: {result}")
+        log_buffer.append(f"District's address: {result}")
 
         # 4. Payment amount
-        log_buffer.append("Payment amount: {payment}")
+        log_buffer.append(f"Payment amount: {payment}")
     
     conn.commit()
