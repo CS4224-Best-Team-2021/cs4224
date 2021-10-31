@@ -145,7 +145,7 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
                 SELECT {district_info} FROM stock WHERE S_W_ID = %s AND S_I_ID = %s;
                 """
                 ).format(
-                    district_info=sql.Identifier(district_id_to_string(c_d_id))
+                    district_info=sql.Identifier(district_id_to_string(c_d_id).lower())
                 ),
                 (supplier_warehouse[i], item_number[i]),
             )
