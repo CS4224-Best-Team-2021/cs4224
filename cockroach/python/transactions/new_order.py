@@ -4,8 +4,9 @@ from typing import List
 
 IntVector = List[int]
 
-def new_order_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id, item_number: IntVector, supplier_warehouse: IntVector, quantity: IntVector):
+def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_number: IntVector, supplier_warehouse: IntVector, quantity: IntVector):
     # 1. Let N denote value of the next available order number D_NEXT_O_ID for district (W_ID,D_ID)
+    logging.info(f"c_id: {c_id}, c_w_id: {c_w_id}, c_d_id: {c_d_id}, item_number: {item_number}, supplier_warehouse: {supplier_warehouse}, quantity: {quantity}")
     N = 0
     with conn.cursor() as cur:
         cur.execute(
@@ -22,6 +23,7 @@ def new_order_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id, item_num
         )
 
         result = cur.fetchone()
+        logging.info(f"result for getting next order id: {result}")
         N = result[0] + 1
 
     # 2. Update the district (W ID, D ID) by incrementing D_NEXT_O_ID by one
