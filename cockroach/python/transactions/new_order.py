@@ -145,7 +145,7 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
                 SELECT {district_info} FROM stock WHERE S_W_ID = %s AND S_I_ID = %s;
                 """
                 ).format(
-                    district_info=sql.Identifier(district_id_to_string(c_d_id).lower())
+                    district_info=sql.Identifier(district_id_to_string(c_d_id).lower()) # cockroachdb stores column names in lowercase
                 ),
                 (supplier_warehouse[i], item_number[i]),
             )
@@ -168,7 +168,7 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
     
     # 6. Calculate the total value of this transaction
     W_TAX = 0
-    with conn.cursor as cur:
+    with conn.cursor() as cur:
         cur.execute(
             """
             SELECT W_TAX FROM warehouse WHERE W_ID = %s;
@@ -179,7 +179,7 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
         W_TAX = result[0]
 
     D_TAX = 0
-    with conn.cursor as cur:
+    with conn.cursor() as cur:
         cur.execute(
             """
             SELECT 
@@ -195,7 +195,7 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
         D_TAX = result[0]
     
     C_DISCOUNT = 0
-    with conn.cursor as cur:
+    with conn.cursor() as cur:
         cur.execute(
             """
             SELECT C_DISCOUNT FROM customer WHERE (C_W_ID, C_D_ID, C_ID) = (%s, %s, %s);
@@ -210,7 +210,7 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
     # Generate the output
     log_buffer.append("Output for New Order Transaction")
 
-    with conn.cursor as cur:
+    with conn.cursor() as cur:
         cur.execute(
             """
             SELECT
