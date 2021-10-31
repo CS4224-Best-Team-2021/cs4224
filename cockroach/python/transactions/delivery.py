@@ -60,7 +60,7 @@ def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
             # (c) Update all order-lines in this order
             cur.execute(
                 """
-                WITH curr_time AS (SELECT current_timestamp)
+                WITH curr_time AS (SELECT current_timestamp::timestamp)
                 UPDATE
                     order_line
                 SET
