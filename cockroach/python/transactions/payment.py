@@ -1,6 +1,11 @@
 import logging
 
 def payment_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id, payment):
+    # Convert the id's back into ints
+    c_w_id = int(c_w_id)
+    c_d_id = int(c_d_id)
+    c_id = int(c_id)
+
     with conn.cursor() as cur:
         # 1. Update the warehouse C_W_ID by incrementing W_YTD by payment
         cur.execute(
@@ -69,7 +74,7 @@ def payment_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id, payment):
             WHERE
                 W_ID = %s;
             """,
-            (c_w_id),
+            (c_w_id,),
         )
         result = cur.fetchone()
         
