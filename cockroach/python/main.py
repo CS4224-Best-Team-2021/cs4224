@@ -99,7 +99,7 @@ def main():
             op = new_order_transaction
 
         elif command == "P":
-            params = tuple(map(int, tokens[1:]))
+            params = tuple(map(float, tokens[1:]))
             op = payment_transaction
         elif command == "D":
             params = tuple(map(int, tokens[1:]))
