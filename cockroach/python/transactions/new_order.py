@@ -214,7 +214,7 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
         cur.execute(
             """
             SELECT
-                W_ID, D_ID, C_ID, C_LAST, C_CREDIT, C_DISCOUNT
+                C_W_ID, C_D_ID, C_ID, C_LAST, C_CREDIT, C_DISCOUNT
             FROM
                 customer
             WHERE 
