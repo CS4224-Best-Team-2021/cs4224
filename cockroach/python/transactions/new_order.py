@@ -173,7 +173,7 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
             """
             SELECT W_TAX FROM warehouse WHERE W_ID = %s;
             """,
-            (c_w_id),
+            (c_w_id,),
         )
         result = cur.fetchone()
         W_TAX = result[0]
