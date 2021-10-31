@@ -225,7 +225,7 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
 
         # Customer identifier
         result = cur.fetchone()
-        log_buffer.append("Customer identifier: %s", result)
+        log_buffer.append(f"Customer identifier: {result}")
 
         # Warehouse and district tax
         log_buffer.append(f"W_TAX:{W_TAX}, D_TAX:{D_TAX}")
