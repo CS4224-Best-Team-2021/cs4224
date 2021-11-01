@@ -10,4 +10,4 @@ cockroach gen haproxy \
 --host=$SERVER1:${ports[$SERVER1]} 
 
 # Replace the default port of the load balancer with some unused number, e.g. 7000
-sed -i 's/26257/7000' haproxy.cfg
+sed -i 's/26257/7000/g' haproxy.cfg
