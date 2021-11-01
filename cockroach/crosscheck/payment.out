@@ -1,0 +1,16 @@
+Customer info: (4, 2, 2196, 'rhrmhlbietvqnh', 'OE', 'PRESBAREING', 'oaxdviwwn', 'pbyexqerjoaaf', 'zfllacfsjowxstqjv', 'CI', '226511111', '2876618212323588', datetime.datetime(2021, 8, 27, 9, 50, 26, 746000), 'GC', 50000.0, 0.3539, -141.9)
+Warehouse's address: ('llhwhohfgcfwpndlmw', 'sshwxqqyka', 'aawcmxylmza', 'GD', '123456789')
+District's address: ('gvufphqsr', 'zuaoxbcckorif', 'qrfvylrzu', 'JZ', '123456789')
+Payment amount: 131.9
+PROCESSING TIME: 109 ms
+Customer info: (4, 6, 1580, 'seshfsmcun', 'OE', 'ANTIANTIATION', 'xvedmzktaokfhbpm', 'gzxsypbiov', 'nsbmomftrjapomvknvk', 'ZE', '232411111', '0686464185832081', datetime.datetime(2021, 8, 27, 9, 50, 27, 31000), 'GC', 50000.0, 0.0665, -146.0)
+Warehouse's address: ('llhwhohfgcfwpndlmw', 'sshwxqqyka', 'aawcmxylmza', 'GD', '123456789')
+District's address: ('smfskmzkcbvsvatar', 'oplgryizswyejsw', 'aqadpqdacbaqpjt', 'ZQ', '123456789')
+Payment amount: 136.0
+PROCESSING TIME: 14 ms
+Customer info: (1, 6, 2837, 'yfkamxppbubl', 'OE', 'BARESEABLE', 'sqynxgbsryhjcmyp', 'kvwnlfbxnhle', 'tfhcgzgbk', 'VE', '391611111', '3285223767973776', datetime.datetime(2021, 8, 27, 9, 50, 24, 269000), 'GC', 50000.0, 0.0299, -3435.15)
+Warehouse's address: ('dxvcrastvybcw', 'mgnykrxvzxkgxts', 'sjdgyluegqfl', 'QL', '123456789')
+District's address: ('zkbuswjdxwmekefxevi', 'vcgugnrjroy', 'pnpolmomitvgcjeubtl', 'QK', '123456789')
+Payment amount: 3425.15
+PROCESSING TIME: 13 ms
+1 136 1.36e-07 22058823.529411763 4.5333333333333335e-05 1.4e-05 0.000109 0.000109
