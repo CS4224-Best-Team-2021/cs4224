@@ -13,4 +13,4 @@ cockroach gen haproxy \
 sed -i 's/26257/7000/g' haproxy.cfg
 
 # Check that the config file is valid
-haproxy -f haproxy.cfg -c
+/sbin/haproxy -f haproxy.cfg -c # Cannot use alias here for some reason
