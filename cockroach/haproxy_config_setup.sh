@@ -11,3 +11,6 @@ cockroach gen haproxy \
 
 # Replace the default port of the load balancer with some unused number, e.g. 7000
 sed -i 's/26257/7000/g' haproxy.cfg
+
+# Check that the config file is valid
+haproxy -f haproxy.cfg -c
