@@ -12,5 +12,8 @@ cockroach gen haproxy \
 # Replace the default port of the load balancer with some unused number, e.g. 7000
 sed -i 's/26257/7000/g' haproxy.cfg
 
+# Replace the maxconn to 100 to prevent hitting limit on FDs
+sed -i 's/maxconn 4096/maxconn 100/g' haproxy.cfg
+
 # Check that the config file is valid
 /sbin/haproxy -f haproxy.cfg -c # Cannot use alias here for some reason
