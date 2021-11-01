@@ -1,2 +1,7 @@
 SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-cockroach node status --host=192.168.48.169:5001 --certs-dir=$SCRIPT_DIR/root-cert
+source $SCRIPT_DIR/config.sh
+
+HOST_NAME="$( hostname -i )"
+PORT=${ports[$HOST_NAME]}
+
+cockroach node status --host=$HOST_NAME:$PORT --certs-dir=$SCRIPT_DIR/root-cert
