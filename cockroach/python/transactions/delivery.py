@@ -52,7 +52,6 @@ def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
                 (carrier_id, w_id, district_no, N),
             ) # uses primary key index
         
-        conn.commit() # Try committing early to prevent contention
 
         # (c) Update all order-lines in this order
         with conn.cursor() as cur:
@@ -69,7 +68,6 @@ def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
                 (w_id, district_no, N),
             ) # uses order_index
         
-        conn.commit() # Add more intermittent commits to prevent contention
 
         # (d) Update the customer
         O_C_ID = 0 
@@ -126,4 +124,3 @@ def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
         
         conn.commit() # Add more intermittent commits to prevent contention
 
-    conn.commit()
