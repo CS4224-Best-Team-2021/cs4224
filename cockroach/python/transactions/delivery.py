@@ -13,12 +13,11 @@ def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
             cur.execute(
                 """
                 SELECT 
-                    O_ID
+                    O_ID, O_CARRIER_ID
                 FROM 
                     "order"
                 WHERE
-                    (O_W_ID, O_D_ID) = (%s, %s)
-                    AND O_CARRIER_ID IS NULL
+                    (O_W_ID, O_D_ID, O_CARRIER_ID) = (%s, %s, NULL)
                 ORDER BY O_ID ASC
                 LIMIT 1
                 FOR UPDATE;
@@ -66,7 +65,6 @@ def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
             ) # uses order_index
 
         # (d) Update the customer
-
         O_C_ID = 0 
 
         # Get the customer ID
