@@ -6,7 +6,6 @@ def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
     """
     for district_no in range(1, 11):
         N = 0
-        have_order = False
         
         # (a) Find the earliest unfulfilled order for this warehouse and district
         with conn.cursor() as cur:
@@ -17,9 +16,14 @@ def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
                 FROM 
                     "order"
                 WHERE
-                    (O_W_ID, O_D_ID, O_CARRIER_ID) = (%s, %s, NULL)
-                ORDER BY O_ID ASC
-                LIMIT 1
+                    O_ID = (
+                        SELECT 
+                            MIN(O_ID)
+                        FROM 
+                            "order" 
+                        WHERE
+                            (O_W_ID, O_D_ID, O_CARRIER_ID) = (%s, %s, NULL)
+                    )
                 FOR UPDATE;
                 """,
                 (w_id, district_no),
@@ -27,13 +31,12 @@ def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
 
             result = cur.fetchone()
 
-            if result is not None:
-                have_order = True
-                N = result[0]
+            # If there is no unfulfilled order, go to the next district
+            if result is None:
+                continue
 
-        # If there is no unfulfilled order, go to the next district
-        if not have_order:
-            continue
+            N = result[0]
+
 
         # (b) Assign this order to the given carrier
         with conn.cursor() as cur:   
@@ -67,7 +70,7 @@ def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
             ) # uses order_index
         
         conn.commit() # Add more intermittent commits to prevent contention
-        
+
         # (d) Update the customer
         O_C_ID = 0 
 
