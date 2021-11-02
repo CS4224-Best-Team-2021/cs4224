@@ -62,7 +62,7 @@ def main():
 
     keepalive_kwargs = {
         "keepalives": 1,
-        "keepalives_idle": 100,
+        "keepalives_idle": 10,
         "keepalives_interval": 5,
         "keepalives_count": 5,
     }
