@@ -24,7 +24,7 @@ def stock_level_transaction(
                         o.O_W_ID = %s 
                         AND o.O_D_ID = %s
                     ORDER BY 
-                        o.O_ENTRY_D DESC
+                        o.O_ID DESC
                     LIMIT 
                         %s
                 )
