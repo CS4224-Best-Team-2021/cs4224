@@ -21,4 +21,7 @@ async def main():
 
     await asyncio.gather(*txns)
 
-asyncio.run(main())
+# Since school server's Python version is 3.6.8, need to use older code
+loop = asyncio.get_event_loop()
+loop.run_until_complete(main())
+loop.close()
