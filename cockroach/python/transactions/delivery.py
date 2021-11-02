@@ -4,9 +4,12 @@ def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
     """
     No output required for this transaction
     """
-    with conn.cursor() as cur:
-        for district_no in range(1, 11):
-            # (a) Find the earliest unfulfilled order
+    for district_no in range(1, 11):
+        N = 0
+        have_order = False
+        
+        # (a) Find the earliest unfulfilled order for this warehouse and district
+        with conn.cursor() as cur:
             cur.execute(
                 """
                 SELECT 
@@ -25,13 +28,16 @@ def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
 
             result = cur.fetchone()
 
-            # If there is no unfulfilled order, go to the next district
-            if result is None:
-                continue
+            if result is not None:
+                have_order = True
+                N = result[0]
 
-            N = result[0]
-            
-            # (b) Assign this order to the given carrier
+        # If there is no unfulfilled order, go to the next district
+        if not have_order:
+            continue
+
+        # (b) Assign this order to the given carrier
+        with conn.cursor() as cur:   
             cur.execute(
                 """
                 UPDATE
@@ -44,7 +50,8 @@ def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
                 (carrier_id, w_id, district_no, N),
             ) # uses primary key index
 
-            # (c) Update all order-lines in this order
+        # (c) Update all order-lines in this order
+        with conn.cursor() as cur:
             cur.execute(
                 """
                 WITH curr_time AS (SELECT current_timestamp::timestamp)
@@ -58,9 +65,12 @@ def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
                 (w_id, district_no, N),
             ) # uses order_index
 
-            # (d) Update the customer
-            # Get the customer ID
-            O_C_ID = 0 
+        # (d) Update the customer
+
+        O_C_ID = 0 
+
+        # Get the customer ID
+        with conn.cursor() as cur:
             cur.execute(
                 """
                 SELECT 
@@ -75,8 +85,10 @@ def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
 
             result = cur.fetchone()
             O_C_ID = result[0]
-            
-            B = 0 
+
+        # Get the sum of OL_AMOUNT for all the items in the order
+        B = 0 
+        with conn.cursor() as cur:    
             cur.execute(
                 """
                 SELECT 
@@ -91,7 +103,9 @@ def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
 
             result = cur.fetchone()
             B = result[0]
-
+        
+        # Update C_BALANCE and C_DELIVERY_CNT for the customer
+        with conn.cursor() as cur:
             cur.execute(
                 """
                 UPDATE
