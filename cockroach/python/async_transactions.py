@@ -16,8 +16,8 @@ async def run(cmd):
 
 async def main():
     txns = []
-    for i in range(0, 1):
-        txns.append(run(f'cat ~/temp/cs4224/common/project_files_4/xact_files_A/0.txt'))
+    for i in range(0, 2):
+        txns.append(run(f'cat ~/temp/cs4224/common/project_files_4/xact_files_A/{i}.txt'))
 
     await asyncio.gather(*txns)
 
