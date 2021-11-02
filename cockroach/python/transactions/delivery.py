@@ -24,7 +24,6 @@ def deliver_to_one_district(conn, w_id, carrier_id, d_id):
                     ORDER BY 
                         O_ID ASC
                     LIMIT 1
-                    FOR UPDATE;
                 )
                 
                 SELECT * FROM smallest_order;
