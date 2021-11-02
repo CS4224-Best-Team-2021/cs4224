@@ -31,7 +31,7 @@ val = val.upper()
 
 start = time.time()
 loop = asyncio.get_event_loop()
-loop.run_until_complete(main())
+loop.run_until_complete(main(val))
 loop.close()
 end = time.time()
 print(f"Number of seconds: {end - start}")
