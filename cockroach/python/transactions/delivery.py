@@ -28,27 +28,9 @@ def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
 
             # If there is no unfulfilled order, go to the next district
             if result is None:
-                conn.commit()
                 continue
 
             N = result[0]
-
-            # # If user wants to test this transaction, check that this order really has no carrier
-            # if test:
-            #     cur.execute(
-            #         """
-            #         SELECT
-            #             O_CARRIER_ID
-            #         FROM 
-            #             "order"
-            #         WHERE
-            #             (O_W_ID, O_D_ID, O_ID) = (%s, %s, %s)
-            #         FOR UPDATE;
-            #         """,
-            #         (w_id, district_no, N),
-            #     )
-            #     result = cur.fetchone()
-            #     assert(result[0] is None)
             
             # (b) Assign this order to the given carrier
             cur.execute(
@@ -62,23 +44,6 @@ def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
                 """,
                 (carrier_id, w_id, district_no, N),
             ) # uses primary key index
-            conn.commit()
-
-            # If user wants to test this transaction, check that this order has the carrier we just assigned
-            # if test:
-            #     cur.execute(
-            #         """
-            #         SELECT
-            #             O_CARRIER_ID
-            #         FROM 
-            #             "order"
-            #         WHERE
-            #             (O_W_ID, O_D_ID, O_ID) = (%s, %s, %s);
-            #         """,
-            #         (w_id, district_no, N),
-            #     )
-            #     result = cur.fetchone()
-            #     assert(result[0] == carrier_id)
 
             # (c) Update all order-lines in this order
             cur.execute(
