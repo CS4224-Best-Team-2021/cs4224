@@ -78,7 +78,7 @@ CREATE TABLE "order"(
     PRIMARY KEY (O_W_ID, O_D_ID, O_ID),
     CONSTRAINT order_customer_fk FOREIGN KEY(O_W_ID, O_D_ID, O_C_ID) REFERENCES customer(C_W_ID, C_D_ID, C_ID),
     FAMILY order_w(O_CARRIER_ID, O_ALL_LOCAL),
-    FAMILY order_r(O_W_ID, O_D_ID, O_ID, O_ENTRY_D, O_OL_CNT, O_C_ID),
+    FAMILY order_r(O_W_ID, O_D_ID, O_ID, O_ENTRY_D, O_OL_CNT, O_C_ID)
 );
 
 DROP TABLE IF EXISTS item;
