@@ -62,6 +62,7 @@ def main():
 
     logging.basicConfig(level=logging.DEBUG)
     conn = psycopg2.connect(dsn=opt.dsn)
+    conn.set_session(isolation_level=psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE)
 
     num_transactions_processed = 0
     processing_times = []
