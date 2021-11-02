@@ -26,11 +26,17 @@ def popular_item_transaction(
             SELECT 
                 O_ID, 
                 O_ENTRY_D,
-                (SELECT C_FIRST FROM Customer AS c WHERE c.C_ID = o.O_C_ID AND c.C_W_ID = o.O_W_ID AND c.C_D_ID = o.O_D_ID) AS C_FIRST,
-                (SELECT C_MIDDLE FROM Customer AS c WHERE c.C_ID = o.O_C_ID AND c.C_W_ID = o.O_W_ID AND c.C_D_ID = o.O_D_ID) AS C_MIDDLE,
-                (SELECT C_LAST FROM Customer AS c WHERE c.C_ID = o.O_C_ID AND c.C_W_ID = o.O_W_ID AND c.C_D_ID = o.O_D_ID) AS C_LAST
+                C_FIRST,
+                C_MIDDLE,
+                C_LAST
             FROM
-                "order" o
+                "order" AS o
+                INNER JOIN 
+                customer AS c
+                ON 
+                    c.C_W_ID = o.O_W_ID 
+                    AND c.C_ID = o.O_C_ID 
+                    AND c.C_D_ID = o.O_D_ID
             WHERE
                 o.O_W_ID = %s 
                 AND o.O_D_ID = %s
@@ -91,31 +97,24 @@ def popular_item_transaction(
 
         cur.execute(
             """
-            WITH last_l_order_item_quantities (O_W_ID, O_D_ID, O_ID, OL_I_ID, OL_QUANTITY)
-            AS (SELECT
-                    ol.OL_W_ID, ol.OL_D_ID, ol.OL_O_ID, ol.OL_I_ID, ol.OL_QUANTITY
-                FROM
-                    order_line ol
-                WHERE
-                    ol.OL_W_ID = %s
-                    AND ol.OL_D_ID = %s
-                    AND ol.OL_O_ID IN %s)
-
             SELECT
                 (SELECT I_NAME FROM Item AS i WHERE l.OL_I_ID = i.I_ID) AS I_NAME,
                 COUNT(DISTINCT(l.O_ID)) / %s * 100 AS percentage
             FROM
-                last_l_order_item_quantities AS l
+                order_line ol
             WHERE
-                l.OL_I_ID IN %s
+                ol.OL_W_ID = %s
+                AND ol.OL_D_ID = %s
+                AND ol.OL_O_ID IN %s
+                AND ol.OL_I_ID IN %s
             GROUP BY
-                l.OL_I_ID;
+                ol.OL_I_ID;
             """,
             (
+                num_last_orders_to_examine,
                 warehouse_number,
                 district_number,
                 order_ids,
-                num_last_orders_to_examine,
                 tuple(popular_item_ids),
             ),
         )

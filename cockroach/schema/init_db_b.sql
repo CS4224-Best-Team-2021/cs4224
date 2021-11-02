@@ -78,6 +78,7 @@ CREATE TABLE "order"(
     O_ENTRY_D TIMESTAMP,
     PRIMARY KEY (O_W_ID, O_D_ID, O_ID),
     CONSTRAINT order_customer_fk FOREIGN KEY(O_W_ID, O_D_ID, O_C_ID) REFERENCES customer(C_W_ID, C_D_ID, C_ID),
+    INDEX order_id_index (O_ID), -- Speed up sorting by O_ID, need to test
     FAMILY order_w(O_CARRIER_ID, O_ALL_LOCAL),
     FAMILY order_r(O_W_ID, O_D_ID, O_ID, O_ENTRY_D, O_OL_CNT, O_C_ID)
 );
@@ -105,6 +106,7 @@ CREATE TABLE order_line(
     OL_DIST_INFO STRING,
     PRIMARY KEY (OL_O_ID, OL_W_ID, OL_D_ID, OL_NUMBER),
     CONSTRAINT orderline_order_fk FOREIGN KEY(OL_W_ID, OL_D_ID, OL_O_ID) REFERENCES "order"(O_W_ID, O_D_ID, O_ID),
+    INDEX order_line_quantity_index (OL_QUANTITY), -- Speed up popular-item transaction
     FAMILY order_line_w(OL_DELIVERY_D, OL_W_ID, OL_D_ID, OL_O_ID, OL_NUMBER),
     FAMILY order_line_r(OL_I_ID, OL_AMOUNT, OL_SUPPLY_W_ID, OL_QUANTITY, OL_DIST_INFO) 
 );
@@ -128,7 +130,7 @@ CREATE TABLE stock(
     S_DIST_09 STRING,
     S_DIST_10 STRING,
     S_DATA STRING,
-    PRIMARY KEY (S_I_ID, S_W_ID),
+    PRIMARY KEY (S_W_ID, S_I_ID),
     INDEX stock_quantity_index(S_QUANTITY), -- Speed up Stock-Level Transaction
     FAMILY stock_w(S_W_ID, S_I_ID, S_QUANTITY, S_YTD, S_ORDER_CNT, S_REMOTE_CNT),
     FAMILY stock_r(S_DIST_01, S_DIST_02, S_DIST_03, S_DIST_04, S_DIST_05, S_DIST_06, S_DIST_07, S_DIST_08, S_DIST_09, S_DIST_10, S_DATA)
