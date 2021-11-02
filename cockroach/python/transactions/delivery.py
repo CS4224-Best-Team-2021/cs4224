@@ -31,22 +31,23 @@ def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
                 continue
 
             N = result[0]
-            # If user wants to test this transaction, check that this order really has no carrier
-            if test:
-                cur.execute(
-                    """
-                    SELECT
-                        O_CARRIER_ID
-                    FROM 
-                        "order"
-                    WHERE
-                        (O_W_ID, O_D_ID, O_ID) = (%s, %s, %s)
-                    FOR UPDATE;
-                    """,
-                    (w_id, district_no, N),
-                )
-                result = cur.fetchone()
-                assert(result[0] is None)
+
+            # # If user wants to test this transaction, check that this order really has no carrier
+            # if test:
+            #     cur.execute(
+            #         """
+            #         SELECT
+            #             O_CARRIER_ID
+            #         FROM 
+            #             "order"
+            #         WHERE
+            #             (O_W_ID, O_D_ID, O_ID) = (%s, %s, %s)
+            #         FOR UPDATE;
+            #         """,
+            #         (w_id, district_no, N),
+            #     )
+            #     result = cur.fetchone()
+            #     assert(result[0] is None)
             
             # (b) Assign this order to the given carrier
             cur.execute(
@@ -62,20 +63,20 @@ def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
             ) # uses primary key index
 
             # If user wants to test this transaction, check that this order has the carrier we just assigned
-            if test:
-                cur.execute(
-                    """
-                    SELECT
-                        O_CARRIER_ID
-                    FROM 
-                        "order"
-                    WHERE
-                        (O_W_ID, O_D_ID, O_ID) = (%s, %s, %s);
-                    """,
-                    (w_id, district_no, N),
-                )
-                result = cur.fetchone()
-                assert(result[0] == carrier_id)
+            # if test:
+            #     cur.execute(
+            #         """
+            #         SELECT
+            #             O_CARRIER_ID
+            #         FROM 
+            #             "order"
+            #         WHERE
+            #             (O_W_ID, O_D_ID, O_ID) = (%s, %s, %s);
+            #         """,
+            #         (w_id, district_no, N),
+            #     )
+            #     result = cur.fetchone()
+            #     assert(result[0] == carrier_id)
 
             # (c) Update all order-lines in this order
             cur.execute(
@@ -171,5 +172,5 @@ def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
                 assert(result[0] - initial_values[0] == B)
                 assert(result[1] - initial_values[1] == 1)
 
-        conn.commit()
+    conn.commit()
 
