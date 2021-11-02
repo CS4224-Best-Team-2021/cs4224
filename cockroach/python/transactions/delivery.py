@@ -9,107 +9,107 @@ def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
 
 
 def deliver_to_one_district(conn, w_id, carrier_id, d_id):
-    with conn.cursor() as cur:
-        # (a) Find the earliest unfulfilled order for this warehouse and district
-        cur.execute(
-            """
-            WITH smallest_order AS (
-                SELECT 
-                    O_ID
-                FROM 
-                    "order"
-                WHERE
-                    (O_W_ID, O_D_ID, O_CARRIER_ID) = (%s, %s, NULL)
-                ORDER BY 
-                    O_ID ASC
-                LIMIT 1
-            )
+    with conn:
+        with conn.cursor() as cur:
+            # (a) Find the earliest unfulfilled order for this warehouse and district
+            cur.execute(
+                """
+                WITH smallest_order AS (
+                    SELECT 
+                        O_ID
+                    FROM 
+                        "order"
+                    WHERE
+                        (O_W_ID, O_D_ID, O_CARRIER_ID) = (%s, %s, NULL)
+                    ORDER BY 
+                        O_ID ASC
+                    LIMIT 1
+                    FOR UPDATE;
+                )
+                
+                SELECT * FROM smallest_order;
+                """,
+                (w_id, d_id),
+            ) # uses customer_order index
+
+            result = cur.fetchone()
+
+            # If there is no unfulfilled order, return early
+            if result is None:
+                return
             
-            SELECT * FROM smallest_order;
-            """,
-            (w_id, d_id),
-        ) # uses customer_order index
+            N = result[0]
 
-        result = cur.fetchone()
+            # (b) Assign this order to the given carrier
+            cur.execute(
+                """
+                UPDATE
+                    "order"
+                SET
+                    O_CARRIER_ID = %s
+                WHERE 
+                    (O_W_ID, O_D_ID, O_ID) = (%s, %s, %s);
+                """,
+                (carrier_id, w_id, d_id, N),
+            ) # uses primary key index
+            
+            # (c) Update all order-lines in this order
+            cur.execute(
+                """
+                WITH curr_time AS (SELECT current_timestamp::timestamp)
+                UPDATE
+                    order_line
+                SET
+                    OL_DELIVERY_D = (SELECT * FROM curr_time)
+                WHERE
+                    (OL_W_ID, OL_D_ID, OL_O_ID) = (%s, %s, %s);
+                """,
+                (w_id, d_id, N),
+            ) # uses order_index
 
-        # If there is no unfulfilled order, return early
-        if result is None:
-            return
-        
-        N = result[0]
+            # (d) Update the customer
+            # Get the customer ID
+            cur.execute(
+                """
+                SELECT 
+                    O_C_ID
+                FROM
+                    "order"
+                WHERE 
+                    (O_W_ID, O_D_ID, O_ID) = (%s, %s, %s);
+                """,
+                (w_id, d_id, N),
+            ) # uses primary key index
 
-        # (b) Assign this order to the given carrier
-        cur.execute(
-            """
-            UPDATE
-                "order"
-            SET
-                O_CARRIER_ID = %s
-            WHERE 
-                (O_W_ID, O_D_ID, O_ID) = (%s, %s, %s);
-            """,
-            (carrier_id, w_id, d_id, N),
-        ) # uses primary key index
-        
-        # (c) Update all order-lines in this order
-        cur.execute(
-            """
-            WITH curr_time AS (SELECT current_timestamp::timestamp)
-            UPDATE
-                order_line
-            SET
-                OL_DELIVERY_D = (SELECT * FROM curr_time)
-            WHERE
-                (OL_W_ID, OL_D_ID, OL_O_ID) = (%s, %s, %s);
-            """,
-            (w_id, d_id, N),
-        ) # uses order_index
+            result = cur.fetchone()
+            O_C_ID = result[0]
 
-        # (d) Update the customer
-        # Get the customer ID
-        cur.execute(
-            """
-            SELECT 
-                O_C_ID
-            FROM
-                "order"
-            WHERE 
-                (O_W_ID, O_D_ID, O_ID) = (%s, %s, %s);
-            """,
-            (w_id, d_id, N),
-        ) # uses primary key index
+            # Get the sum of OL_AMOUNT for all the items in the order
+            cur.execute(
+                """
+                SELECT 
+                    SUM(OL_AMOUNT)
+                FROM
+                    order_line
+                WHERE
+                    (OL_W_ID, OL_D_ID, OL_O_ID) = (%s, %s, %s);
+                """,
+                (w_id, d_id, N),
+            ) # uses order_index
 
-        result = cur.fetchone()
-        O_C_ID = result[0]
-
-        # Get the sum of OL_AMOUNT for all the items in the order
-        cur.execute(
-            """
-            SELECT 
-                SUM(OL_AMOUNT)
-            FROM
-                order_line
-            WHERE
-                (OL_W_ID, OL_D_ID, OL_O_ID) = (%s, %s, %s);
-            """,
-            (w_id, d_id, N),
-        ) # uses order_index
-
-        result = cur.fetchone()
-        B = result[0]
-        
-        # Update C_BALANCE and C_DELIVERY_CNT for the customer
-        cur.execute(
-            """
-            UPDATE
-                customer
-            SET
-                C_BALANCE = C_BALANCE + %s,
-                C_DELIVERY_CNT = C_DELIVERY_CNT + 1
-            WHERE
-                (C_W_ID, C_D_ID, C_ID) = (%s, %s, %s);
-            """,
-            (B, w_id, d_id, O_C_ID),
-        ) # uses primary key index
-
-    conn.commit()
+            result = cur.fetchone()
+            B = result[0]
+            
+            # Update C_BALANCE and C_DELIVERY_CNT for the customer
+            cur.execute(
+                """
+                UPDATE
+                    customer
+                SET
+                    C_BALANCE = C_BALANCE + %s,
+                    C_DELIVERY_CNT = C_DELIVERY_CNT + 1
+                WHERE
+                    (C_W_ID, C_D_ID, C_ID) = (%s, %s, %s);
+                """,
+                (B, w_id, d_id, O_C_ID),
+            ) # uses primary key index
