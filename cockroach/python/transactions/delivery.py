@@ -12,24 +12,33 @@ def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
         with conn.cursor() as cur:
             cur.execute(
                 """
+                WITH smallest_unfulfilled_order AS 
+                (
+                    SELECT 
+                        MIN(O_ID)
+                    FROM
+                        "order"
+                    WHERE
+                        (O_W_ID, O_D_ID, O_CARRIER_ID) = (%s, %s, NULL)
+                )
+
                 SELECT 
-                    O_ID, O_CARRIER_ID
+                    O_CARRIER_ID, O_ID
                 FROM 
                     "order"
                 WHERE
-                    (O_W_ID, O_D_ID, O_CARRIER_ID) = (%s, %s, NULL)
-                ORDER BY O_ID ASC
-                LIMIT 1
+                    (O_W_ID, O_D_ID) = (%s, %s)
+                    AND O_ID = (SELECT * FROM smallest_unfulfilled_order)
                 FOR UPDATE;
                 """,
-                (w_id, district_no),
+                (w_id, district_no, w_id, district_no),
             ) # uses customer_order index
 
             result = cur.fetchone()
 
             if result is not None:
                 have_order = True
-                N = result[0]
+                N = result[1]
 
         # If there is no unfulfilled order, go to the next district
         if not have_order:
