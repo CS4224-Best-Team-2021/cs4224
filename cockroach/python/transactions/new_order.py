@@ -10,12 +10,13 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
     with conn.cursor() as cur:
         cur.execute(
             """
-            SELECT FOR UPDATE
+            SELECT
                 D_NEXT_O_ID
             FROM
                 district
             WHERE
-                (D_W_ID, D_ID) = (%s, %s);
+                (D_W_ID, D_ID) = (%s, %s)
+            FOR UPDATE;
             """,
             (c_w_id, c_d_id),
         ) # uses primary key index

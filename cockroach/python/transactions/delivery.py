@@ -32,12 +32,13 @@ def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
             if test:
                 cur.execute(
                     """
-                    SELECT FOR UPDATE
+                    SELECT
                         O_CARRIER_ID
                     FROM 
                         "order"
                     WHERE
-                        (O_W_ID, O_D_ID, O_ID) = (%s, %s, %s);
+                        (O_W_ID, O_D_ID, O_ID) = (%s, %s, %s)
+                    FOR UPDATE;
                     """,
                     (w_id, district_no, N),
                 )
