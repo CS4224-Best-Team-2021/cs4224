@@ -11,12 +11,14 @@ def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
             cur.execute(
                 """
                 SELECT 
-                    MIN(O_ID)
+                    O_ID
                 FROM 
                     "order"
                 WHERE
                     (O_W_ID, O_D_ID) = (%s, %s)
                     AND O_CARRIER_ID IS NULL
+                ORDER BY O_ID ASC
+                LIMIT 1
                 FOR UPDATE;
                 """,
                 (w_id, district_no),
