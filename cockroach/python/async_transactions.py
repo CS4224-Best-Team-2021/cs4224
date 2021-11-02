@@ -1,6 +1,8 @@
 import asyncio
 import time
 
+root = '~/temp/cs4224'
+
 async def run(cmd):
     proc = await asyncio.create_subprocess_shell(
         cmd,
@@ -16,10 +18,10 @@ async def run(cmd):
         print(f'[stderr]\n{stderr.decode()}')
 
 async def main(workload_type):
-    await run('rm -rf ~/temp/cs4224/cockroach/results && mkdir ~/temp/cs4224/cockroach/results')
+    await run(f'rm -rf {root}/cockroach/results && mkdir {root}/cockroach/results')
     txns = []
-    for i in range(0, 40):
-        txns.append(run(f'echo ~/temp/cs4224/common/project_files_4/xact_files_{workload_type}/{i}.txt > ~/temp/cs4224/cockroach/results/{i}_{workload_type}_result.txt'))
+    for i in range(0, 1):
+        txns.append(run(f'bash {root}/cockroach/app.sh < {root}/common/project_files_4/xact_files_{workload_type}/{i}.txt > {root}/cockroach/results/{i}_{workload_type}_result.txt'))
 
     await asyncio.gather(*txns)
 
