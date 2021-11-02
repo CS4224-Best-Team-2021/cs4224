@@ -36,7 +36,7 @@ def order_status_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id):
                 AND o.O_D_ID = %s
                 AND o.O_C_ID = %s
             ORDER BY
-                o.O_ENTRY_D DESC
+                o.O_ID DESC
             LIMIT 1;
             """,
             (c_w_id, c_d_id, c_id),
