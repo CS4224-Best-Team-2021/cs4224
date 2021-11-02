@@ -23,19 +23,12 @@ def deliver_to_one_district(conn, w_id, carrier_id, d_id):
                 ORDER BY 
                     O_ID ASC
                 LIMIT 1
+                FOR UPDATE
             )
-
-            UPDATE
-                "order"
-            SET
-                O_CARRIER_ID = %s
-            WHERE 
-                (O_W_ID, O_D_ID) = (%s, %s)
-                AND O_ID = (SELECT * FROM smallest_order);
             
             SELECT * FROM smallest_order;
             """,
-            (w_id, d_id, carrier_id, w_id, d_id),
+            (w_id, d_id),
         ) # uses customer_order index
 
         result = cur.fetchone()
@@ -47,17 +40,17 @@ def deliver_to_one_district(conn, w_id, carrier_id, d_id):
         N = result[0]
 
         # (b) Assign this order to the given carrier
-        # cur.execute(
-        #     """
-        #     UPDATE
-        #         "order"
-        #     SET
-        #         O_CARRIER_ID = %s
-        #     WHERE 
-        #         (O_W_ID, O_D_ID, O_ID) = (%s, %s, %s);
-        #     """,
-        #     (carrier_id, w_id, d_id, N),
-        # ) # uses primary key index
+        cur.execute(
+            """
+            UPDATE
+                "order"
+            SET
+                O_CARRIER_ID = %s
+            WHERE 
+                (O_W_ID, O_D_ID, O_ID) = (%s, %s, %s);
+            """,
+            (carrier_id, w_id, d_id, N),
+        ) # uses primary key index
         
         # (c) Update all order-lines in this order
         cur.execute(
