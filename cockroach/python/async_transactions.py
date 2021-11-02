@@ -15,9 +15,9 @@ async def run(cmd):
         print(f'[stderr]\n{stderr.decode()}')
 
 async def main():
-    txns = []
+    txns = [run('rm -rf ~/temp/cs4224/cockroach/results && mkdir ~/temp/cs4224/cockroach/results')]
     for i in range(0, 2):
-        txns.append(run(f'cat ~/temp/cs4224/common/project_files_4/xact_files_A/{i}.txt > {i}_result.txt'))
+        txns.append(run(f'cat ~/temp/cs4224/common/project_files_4/xact_files_A/{i}.txt > ~/temp/cs4224/cockroach/results/{i}_result.txt'))
 
     await asyncio.gather(*txns)
 
