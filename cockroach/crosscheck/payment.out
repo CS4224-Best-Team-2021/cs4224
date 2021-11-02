@@ -1,16 +1,16 @@
-Customer info: (4, 2, 2196, 'rhrmhlbietvqnh', 'OE', 'PRESBAREING', 'oaxdviwwn', 'pbyexqerjoaaf', 'zfllacfsjowxstqjv', 'CI', '226511111', '2876618212323588', datetime.datetime(2021, 8, 27, 9, 50, 26, 746000), 'GC', 50000.0, 0.3539, -273.8)
+Customer info: (4, 2, 2196, 'rhrmhlbietvqnh', 'OE', 'PRESBAREING', 'oaxdviwwn', 'pbyexqerjoaaf', 'zfllacfsjowxstqjv', 'CI', '226511111', '2876618212323588', datetime.datetime(2021, 8, 27, 9, 50, 26, 746000), 'GC', 50000.0, 0.3539, -141.9)
 Warehouse's address: ('llhwhohfgcfwpndlmw', 'sshwxqqyka', 'aawcmxylmza', 'GD', '123456789')
 District's address: ('gvufphqsr', 'zuaoxbcckorif', 'qrfvylrzu', 'JZ', '123456789')
 Payment amount: 131.9
-PROCESSING TIME: 12 ms
-Customer info: (4, 6, 1580, 'seshfsmcun', 'OE', 'ANTIANTIATION', 'xvedmzktaokfhbpm', 'gzxsypbiov', 'nsbmomftrjapomvknvk', 'ZE', '232411111', '0686464185832081', datetime.datetime(2021, 8, 27, 9, 50, 27, 31000), 'GC', 50000.0, 0.0665, -282.0)
+PROCESSING TIME: 49 ms
+Customer info: (4, 6, 1580, 'seshfsmcun', 'OE', 'ANTIANTIATION', 'xvedmzktaokfhbpm', 'gzxsypbiov', 'nsbmomftrjapomvknvk', 'ZE', '232411111', '0686464185832081', datetime.datetime(2021, 8, 27, 9, 50, 27, 31000), 'GC', 50000.0, 0.0665, -146.0)
 Warehouse's address: ('llhwhohfgcfwpndlmw', 'sshwxqqyka', 'aawcmxylmza', 'GD', '123456789')
 District's address: ('smfskmzkcbvsvatar', 'oplgryizswyejsw', 'aqadpqdacbaqpjt', 'ZQ', '123456789')
 Payment amount: 136.0
-PROCESSING TIME: 8 ms
-Customer info: (1, 6, 2837, 'yfkamxppbubl', 'OE', 'BARESEABLE', 'sqynxgbsryhjcmyp', 'kvwnlfbxnhle', 'tfhcgzgbk', 'VE', '391611111', '3285223767973776', datetime.datetime(2021, 8, 27, 9, 50, 24, 269000), 'GC', 50000.0, 0.0299, -6860.3)
+PROCESSING TIME: 10 ms
+Customer info: (1, 6, 2837, 'yfkamxppbubl', 'OE', 'BARESEABLE', 'sqynxgbsryhjcmyp', 'kvwnlfbxnhle', 'tfhcgzgbk', 'VE', '391611111', '3285223767973776', datetime.datetime(2021, 8, 27, 9, 50, 24, 269000), 'GC', 50000.0, 0.0299, -3435.15)
 Warehouse's address: ('dxvcrastvybcw', 'mgnykrxvzxkgxts', 'sjdgyluegqfl', 'QL', '123456789')
 District's address: ('zkbuswjdxwmekefxevi', 'vcgugnrjroy', 'pnpolmomitvgcjeubtl', 'QK', '123456789')
 Payment amount: 3425.15
-PROCESSING TIME: 8 ms
-1 28 2.8e-08 107142857.14285715 9.333333333333333e-06 8e-06 1.2e-05 1.2e-05
+PROCESSING TIME: 11 ms
+1 70 7e-08 42857142.85714285 2.3333333333333332e-05 1.1e-05 4.9e-05 4.9e-05

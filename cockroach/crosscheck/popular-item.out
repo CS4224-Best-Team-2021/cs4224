@@ -442,7 +442,7 @@ Percentage of examined orders that contain each popular item (I_NAME, percentage
     ('grcbqxmxpzwlegotosqg', Decimal('5.882352941176470588200'))
     ('vggoluseysypd', Decimal('5.882352941176470588200'))
     ('ycjlxqfcjuopxkdsmtpx', Decimal('5.882352941176470588200'))
-PROCESSING TIME: 39 ms
+PROCESSING TIME: 87 ms
 District identifier (W_ID, D_ID): 6,5
 Number of orders to examine: 20
 Orders in S: (O_ID, O_ENTRY_D, C_FIRST, C_MIDDLE, C_LAST)
@@ -1017,7 +1017,7 @@ Percentage of examined orders that contain each popular item (I_NAME, percentage
     ('qwybcbpetdxmvhr', Decimal('5.00'))
     ('rplulghljwolooxjovriaoy', Decimal('5.00'))
     ('zxtbwrnlfvuopowgxoe', Decimal('5.00'))
-PROCESSING TIME: 37 ms
+PROCESSING TIME: 107 ms
 District identifier (W_ID, D_ID): 7,8
 Number of orders to examine: 15
 Orders in S: (O_ID, O_ENTRY_D, C_FIRST, C_MIDDLE, C_LAST)
@@ -1374,5 +1374,5 @@ Percentage of examined orders that contain each popular item (I_NAME, percentage
     ('bhpqryebxfjokozc', Decimal('6.666666666666666666700'))
     ('kqiharaawubllwqw', Decimal('6.666666666666666666700'))
     ('jgbavrqudknywel', Decimal('6.666666666666666666700'))
-PROCESSING TIME: 32 ms
-1 108 1.08e-07 27777777.777777776 3.6e-05 3.7e-05 3.9e-05 3.9e-05
+PROCESSING TIME: 76 ms
+1 270 2.7e-07 11111111.11111111 9e-05 8.7e-05 0.000107 0.000107

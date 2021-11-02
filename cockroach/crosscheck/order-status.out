@@ -44,7 +44,7 @@ Items in last order: (OL_I_ID, OL_SUPPLY_W_ID, OL_QUANTITY, OL_AMOUNT, OL_DELIVE
     (80619, 8, 5.0, 149.0, datetime.datetime(2021, 8, 27, 9, 50, 38, 276000))
     (86309, 8, 5.0, 150.0, datetime.datetime(2021, 8, 27, 9, 50, 38, 276000))
     (98583, 8, 5.0, 159.0, datetime.datetime(2021, 8, 27, 9, 50, 38, 276000))
-PROCESSING TIME: 8 ms
+PROCESSING TIME: 7 ms
 Customer name and balance (C_FIRST, C_MIDDLE, C_LAST, C_BALANCE): ('bkpccmh', 'OE', 'EINGEINGEING', -10.0)
 Customer last order (O_ID, O_ENTRY_D, O_CARRIER_ID): (612, datetime.datetime(2021, 8, 27, 9, 50, 38, 417000), 9)
 Items in last order: (OL_I_ID, OL_SUPPLY_W_ID, OL_QUANTITY, OL_AMOUNT, OL_DELIVERY_D)
@@ -67,5 +67,5 @@ Items in last order: (OL_I_ID, OL_SUPPLY_W_ID, OL_QUANTITY, OL_AMOUNT, OL_DELIVE
     (89539, 8, 5.0, 105.0, datetime.datetime(2021, 8, 27, 9, 50, 38, 417000))
     (90615, 8, 5.0, 154.0, datetime.datetime(2021, 8, 27, 9, 50, 38, 417000))
     (99167, 8, 5.0, 182.0, datetime.datetime(2021, 8, 27, 9, 50, 38, 417000))
-PROCESSING TIME: 8 ms
-1 24 2.4e-08 125000000.0 8e-06 8e-06 8e-06 8e-06
+PROCESSING TIME: 7 ms
+1 22 2.2e-08 136363636.36363637 7.333333333333333e-06 7e-06 8e-06 8e-06
