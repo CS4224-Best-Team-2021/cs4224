@@ -102,11 +102,10 @@ CREATE TABLE order_line(
     OL_SUPPLY_W_ID INT,
     OL_QUANTITY FLOAT,
     OL_DIST_INFO STRING,
-    PRIMARY KEY (OL_O_ID, OL_W_ID, OL_D_ID, OL_NUMBER),
+    PRIMARY KEY (OL_W_ID, OL_D_ID, OL_O_ID, OL_NUMBER),
     CONSTRAINT orderline_order_fk FOREIGN KEY(OL_W_ID, OL_D_ID, OL_O_ID) REFERENCES "order"(O_W_ID, O_D_ID, O_ID),
     FAMILY order_line_w(OL_DELIVERY_D, OL_W_ID, OL_D_ID, OL_O_ID, OL_NUMBER),
     FAMILY order_line_r(OL_I_ID, OL_AMOUNT, OL_SUPPLY_W_ID, OL_QUANTITY, OL_DIST_INFO),
-    INDEX order_index(OL_W_ID, OL_D_ID, OL_O_ID),
     INDEX order_item_idnex (OL_I_ID), -- Copy from b
 );
 
