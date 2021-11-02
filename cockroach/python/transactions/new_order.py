@@ -22,7 +22,7 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
         ) # uses primary key index
 
         result = cur.fetchone()
-        N = result[0] + 1
+        N = result[0]
 
     # 2. Update the district (W ID, D ID) by incrementing D_NEXT_O_ID by one
     with conn.cursor() as cur:
@@ -38,20 +38,7 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
             (c_w_id, c_d_id)
         ) # uses primary key index
 
-        # If user wants to test transaction, check that D_NEXT_O_ID == N
-        if test:
-            cur.execute(
-                """
-                SELECT
-                    D_NEXT_O_ID
-                FROM
-                    district
-                WHERE
-                    (D_W_ID, D_ID) = (%s, %s);
-                """,
-                (c_w_id, c_d_id),
-            )
-            assert(cur.fetchone()[0] == N)
+
     # 3. Create a new order
     O_ALL_LOCAL = 1
     for warehouse in supplier_warehouse:
