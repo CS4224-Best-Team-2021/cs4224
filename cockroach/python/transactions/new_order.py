@@ -10,7 +10,7 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
     with conn.cursor() as cur:
         cur.execute(
             """
-            SELECT
+            SELECT FOR UPDATE
                 D_NEXT_O_ID
             FROM
                 district
