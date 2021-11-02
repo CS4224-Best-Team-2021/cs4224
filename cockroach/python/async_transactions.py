@@ -1,4 +1,5 @@
 import asyncio
+import time
 
 async def run(cmd):
     proc = await asyncio.create_subprocess_shell(
@@ -23,6 +24,9 @@ async def main():
     await asyncio.gather(*txns)
 
 # Since school server's Python version is 3.6.8, need to use older code
+start = time.time()
 loop = asyncio.get_event_loop()
 loop.run_until_complete(main())
 loop.close()
+end = time.time()
+print(f"Number of seconds: {end - start}")
