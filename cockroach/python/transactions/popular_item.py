@@ -60,9 +60,9 @@ def popular_item_transaction(
             cur.execute(
                 """
                 SELECT 
-                    (SELECT I_NAME FROM Item AS i WHERE l1.OL_I_ID = i.I_ID) AS I_NAME,
-                    l1.OL_I_ID,
-                    l1.OL_QUANTITY
+                    (SELECT I_NAME FROM Item AS i WHERE ol1.OL_I_ID = i.I_ID) AS I_NAME,
+                    ol1.OL_I_ID,
+                    ol1.OL_QUANTITY
                 FROM
                     order_line ol1
                 WHERE 
@@ -98,8 +98,8 @@ def popular_item_transaction(
         cur.execute(
             """
             SELECT
-                (SELECT I_NAME FROM Item AS i WHERE l.OL_I_ID = i.I_ID) AS I_NAME,
-                COUNT(DISTINCT(l.O_ID)) / %s * 100 AS percentage
+                (SELECT I_NAME FROM Item AS i WHERE ol.OL_I_ID = i.I_ID) AS I_NAME,
+                COUNT(DISTINCT(ol.OL_O_ID)) / %s * 100 AS percentage
             FROM
                 order_line ol
             WHERE
