@@ -66,6 +66,8 @@ def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
                 (w_id, district_no, N),
             ) # uses order_index
         
+        conn.commit() # Add more intermittent commits to prevent contention
+        
         # (d) Update the customer
         O_C_ID = 0 
 
