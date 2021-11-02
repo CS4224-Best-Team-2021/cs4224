@@ -118,5 +118,7 @@ def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
                 """,
                 (B, w_id, district_no, O_C_ID),
             ) # uses primary key index
+        
+        conn.commit() # Add more intermittent commits to prevent contention
 
     conn.commit()
