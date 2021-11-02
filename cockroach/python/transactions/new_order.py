@@ -164,8 +164,8 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
                     """,
                     (N, c_d_id, c_w_id, i + 1, item_number[i], supplier_warehouse[i], quantity[i], ITEM_AMOUNT, OL_DIST_INFO),
                 )
-            # Extra step: Record down the I_NAME, OL_AMOUNT and S_QUANTITY for reporting at the end
-            item_summaries.append(ItemSummary(I_NAME, ITEM_AMOUNT, S_QUANTITY))
+            # Extra step: Record down the I_NAME, OL_AMOUNT and S_QUANTITY (which is the ADJUSTED_QTY) for reporting at the end
+            item_summaries.append(ItemSummary(I_NAME, ITEM_AMOUNT, ADJUSTED_QTY))
         
         # 6. Calculate the total value of this transaction
         W_TAX = 0
