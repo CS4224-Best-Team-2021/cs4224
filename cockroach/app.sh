@@ -1,1 +1,1 @@
-python3 ~/temp/cs4224/cockroach/python/main.py "postgresql://root@127.0.0.1:7000/wholesaledb?sslcert=root-cert/client.root.crt&sslkey=root-cert/client.root.key&sslmode=verify-ca&sslrootcert=root-cert/ca.crt" 1
+python3 ~/temp/cs4224/cockroach/python/main.py "postgresql://root@192.168.48.169:5001/wholesaledb?sslcert=root-cert/client.root.crt&sslkey=root-cert/client.root.key&sslmode=verify-ca&sslrootcert=root-cert/ca.crt" 1
