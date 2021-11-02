@@ -21,14 +21,10 @@ def deliver_to_one_district(conn, w_id, carrier_id, d_id):
                 FROM 
                     "order"
                 WHERE
-                    O_ID = (
-                        SELECT 
-                            MIN(O_ID)
-                        FROM 
-                            "order" 
-                        WHERE
-                            (O_W_ID, O_D_ID, O_CARRIER_ID) = (%s, %s, NULL)
-                    )
+                    (O_W_ID, O_D_ID, O_CARRIER_ID) = (%s, %s, NULL)
+                ORDER BY 
+                    O_ID ASC
+                LIMIT 1
                 FOR UPDATE;
                 """,
                 (w_id, d_id),
