@@ -65,11 +65,13 @@ def related_customer_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id):
             )
             related_orders.extend(cur.fetchall())
 
-        result = []
+        result = set()
         for related_order in related_orders:
             cur.execute(
                 """
                 SELECT
+                    O_W_ID,
+                    O_D_ID,
                     O_C_ID
                 FROM
                     "order"
@@ -80,7 +82,8 @@ def related_customer_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id):
                 """,
                 tuple(related_order),
             )
-            result.extend(cur.fetchall())
+            for res in cur.fetchall():
+                result.add(res)
 
         log_buffer.append("Related customers (C_W_ID, C_D_ID, C_ID):")
         for c in result:
