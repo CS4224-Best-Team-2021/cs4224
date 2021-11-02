@@ -4,8 +4,8 @@ def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
     """
     No output required for this transaction
     """
-    with conn.cursor() as cur:
-        for district_no in range(1, 11):
+    for district_no in range(1, 11):
+        with conn.cursor() as cur:
             # (a) Find the earliest unfulfilled order
             cur.execute(
                 """
@@ -106,5 +106,5 @@ def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
                 (B, w_id, district_no, O_C_ID),
             ) # uses primary key index
 
-    conn.commit()
+        conn.commit()
 
