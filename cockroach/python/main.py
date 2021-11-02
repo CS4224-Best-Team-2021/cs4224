@@ -60,8 +60,15 @@ def main():
     parser.add_argument("client_number")
     opt = parser.parse_args()
 
+    keepalive_kwargs = {
+        "keepalives": 1,
+        "keepalives_idle": 30,
+        "keepalives_interval": 5,
+        "keepalives_count": 5,
+    }
+
     logging.basicConfig(level=logging.DEBUG)
-    conn = psycopg2.connect(dsn=opt.dsn)
+    conn = psycopg2.connect(dsn=opt.dsn, **keepalive_kwargs)
     conn.set_session(isolation_level=psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE)
 
     num_transactions_processed = 0
