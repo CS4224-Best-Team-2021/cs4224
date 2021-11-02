@@ -20,7 +20,7 @@ async def run(cmd):
 async def main(workload_type):
     await run(f'rm -rf {root}/cockroach/results && mkdir {root}/cockroach/results')
     txns = []
-    for i in range(0, 1):
+    for i in range(0, 40):
         txns.append(run(f'bash {root}/cockroach/app.sh < {root}/common/project_files_4/xact_files_{workload_type}/{i}.txt > {root}/cockroach/results/{i}_{workload_type}_result.txt'))
 
     await asyncio.gather(*txns)
