@@ -16,7 +16,8 @@ def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
                     "order"
                 WHERE
                     (O_W_ID, O_D_ID) = (%s, %s)
-                    AND O_CARRIER_ID IS NULL;
+                    AND O_CARRIER_ID IS NULL
+                FOR UPDATE;
                 """,
                 (w_id, district_no),
             ) # uses customer_order index
