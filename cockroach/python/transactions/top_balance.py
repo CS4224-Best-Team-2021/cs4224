@@ -7,17 +7,16 @@ def top_balance_transaction(conn, log_buffer, test):
     """
     result = None
 
-    with conn:
-        with conn.cursor() as cur:
-            cur.execute(
-                """
-                SELECT * FROM top_balance;
-                """
-            )
-            result = cur.fetchall()
-            log_buffer.append('In descending order of C_BALANCE (C_FIRST, C_MIDDLE, C_LAST, C_BALANCE, W_NAME, D_NAME):')
-            for i in result:
-                log_buffer.append(f'    {i}')
-            logging.debug(f"top_balance_transaction(): Status Message {cur.statusmessage}")
+    with conn.cursor() as cur:
+        cur.execute(
+            """
+            SELECT * FROM top_balance;
+            """
+        )
+        result = cur.fetchall()
+        log_buffer.append('In descending order of C_BALANCE (C_FIRST, C_MIDDLE, C_LAST, C_BALANCE, W_NAME, D_NAME):')
+        for i in result:
+            log_buffer.append(f'    {i}')
+        logging.debug(f"top_balance_transaction(): Status Message {cur.statusmessage}")
 
     return result
