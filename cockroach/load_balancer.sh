@@ -34,5 +34,6 @@ do
     # Construct the ip address
     ipaddr=${servers[$idx]}:${ports[$idx]}
     # Run main.py (must do this from cockroach/)
+    echo "Sending $c.txt to $ipaddr"
     python3 python/main.py "postgresql://root@$ipaddr/wholesaledb?sslcert=root-cert/client.root.crt&sslkey=root-cert/client.root.key&sslmode=verify-ca&sslrootcert=root-cert/ca.crt" 1 < ../common/project_files_4/xact_files_$workload/$c.txt > results/$c-$workload.txt &
 done

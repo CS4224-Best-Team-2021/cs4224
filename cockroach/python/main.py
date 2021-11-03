@@ -128,7 +128,7 @@ def main():
             transaction_processing_time = int((time.time() - start) * 1000)
 
             for l in log_buffer:
-                print(l)
+                logging.info(f"{l}")
             log_buffer.clear()
 
             print(f'PROCESSING TIME: {transaction_processing_time} ms')
