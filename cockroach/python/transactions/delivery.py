@@ -11,46 +11,39 @@ def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
 def deliver_to_one_district(conn, w_id, carrier_id, d_id):
     with conn:
         with conn.cursor() as cur:
-            # (a) Find the earliest unfulfilled order for this warehouse and district
+            # (a - b) Find the earliest unfulfilled order for this warehouse and district and assign this order to the given carrier
             cur.execute(
                 """
-                SELECT 
-                    O_ID
-                FROM
+                WITH smallest_unfulfilled_order_as (
+                    SELECT 
+                        MIN(O_ID)
+                    FROM
+                        "order"
+                    WHERE
+                        O_W_ID = %s
+                        AND O_D_ID = %s
+                        AND O_CARRIER_ID IS NULL
+                )
+
+                UPDATE
                     "order"
+                SET
+                    O_CARRIER_ID = %s
                 WHERE
-                    O_W_ID = %s
-                    AND O_D_ID = %s
-                    AND O_CARRIER_ID IS NULL
-                ORDER BY
-                    O_ID
-                LIMIT 1
-                FOR UPDATE;
+                    O_ID = (SELECT * FROM smallest_unfulfilled_order)
+                RETURNING 
+                    O_ID;
                 """,
-                (w_id, d_id),
-            )
+                (w_id, d_id, carrier_id),
+            ) # uses primary key index
 
             result = cur.fetchone()
 
             # If there is no unfulfilled order, return early
             if result is None:
                 return
-            
-            N = result[0]
 
-            # (b) Assign this order to the given carrier
-            cur.execute(
-                """
-                UPDATE
-                    "order"
-                SET
-                    O_CARRIER_ID = %s
-                WHERE 
-                    (O_W_ID, O_D_ID, O_ID) = (%s, %s, %s);
-                """,
-                (carrier_id, w_id, d_id, N),
-            ) # uses primary key index
-            conn.commit()
+            N = result[0]
             
             # (c) Update all order-lines in this order
             cur.execute(
