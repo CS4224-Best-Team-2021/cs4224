@@ -28,7 +28,7 @@ def deliver_to_one_district(conn, w_id, carrier_id, d_id):
                 FOR UPDATE;
                 """,
                 (w_id, d_id),
-            ) # uses customer_order index
+            )
 
             result = cur.fetchone()
 
@@ -50,6 +50,7 @@ def deliver_to_one_district(conn, w_id, carrier_id, d_id):
                 """,
                 (carrier_id, w_id, d_id, N),
             ) # uses primary key index
+            conn.commit()
             
             # (c) Update all order-lines in this order
             cur.execute(
