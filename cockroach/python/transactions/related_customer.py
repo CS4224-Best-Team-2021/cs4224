@@ -93,4 +93,4 @@ def related_customer_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id):
             f"related_customer_transaction(): Status Message {cur.statusmessage}"
         )
 
-    return result
+    conn.commit()

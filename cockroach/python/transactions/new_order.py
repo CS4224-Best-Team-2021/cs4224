@@ -23,7 +23,6 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
             (c_w_id, c_d_id)
         ) # uses primary key index
 
-        conn.commit()
         result = cur.fetchone()
         N = result[0]
 
@@ -44,7 +43,6 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
             """,
             (N, c_d_id, c_w_id, c_id, len(item_number), O_ALL_LOCAL),
         )
-        conn.commit()
     
     # 4. Initialise total amount to 0
     TOTAL_AMOUNT = 0
@@ -101,7 +99,6 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
                 (ADJUSTED_QTY, quantity[i], S_REMOTE_CNT, supplier_warehouse[i], item_number[i]),
             ) # uses primary key index
         
-        conn.commit()
 
         # (e) Calculate ITEM_AMOUNT (extract I_NAME also, because you need it in the output)
         ITEM_AMOUNT = 0
@@ -155,7 +152,6 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
                 (N, c_d_id, c_w_id, i + 1, item_number[i], supplier_warehouse[i], quantity[i], ITEM_AMOUNT, OL_DIST_INFO),
             )
 
-            conn.commit()
         # Extra step: Record down the I_NAME, OL_AMOUNT and S_QUANTITY (which is the ADJUSTED_QTY) for reporting at the end
         item_summaries.append(ItemSummary(I_NAME, ITEM_AMOUNT, ADJUSTED_QTY))
     
@@ -200,6 +196,8 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
     
     TOTAL_AMOUNT = TOTAL_AMOUNT * (1 + D_TAX + W_TAX) * (1 - C_DISCOUNT)
     
+    conn.commit()
+
     # Generate the output
     log_buffer.append("Output for New Order Transaction")
 
@@ -253,6 +251,8 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
             log_buffer.append(f"S_QUANTITY: {item_summaries[i].s_quantity}")
         
         log_buffer.append("End of output for New Order Transaction")
+    
+    conn.commit()
     
 
 def district_id_to_string(id: int):

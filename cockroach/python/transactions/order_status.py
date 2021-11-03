@@ -67,4 +67,4 @@ def order_status_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id):
 
         logging.debug(f"order_status_transaction(): Status Message {cur.statusmessage}")
 
-    return result
+    conn.commit()

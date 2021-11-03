@@ -20,7 +20,6 @@ def payment_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id, payment):
             (payment, c_w_id),
         ) # uses primary key index
 
-        conn.commit()
 
         # 2. Update the district (C_W_ID, C_D_ID) by incrementing D_YTD by payment
         cur.execute(
@@ -35,7 +34,6 @@ def payment_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id, payment):
             (payment, c_w_id, c_d_id),
         ) # uses primary key index
 
-        conn.commit()
 
         # 3. Update the customer
         cur.execute(
@@ -52,7 +50,6 @@ def payment_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id, payment):
             (payment, payment, c_w_id, c_d_id, c_id),
         ) # uses primary key index
 
-        conn.commit()
 
         # Generate report
         cur.execute(
@@ -106,3 +103,5 @@ def payment_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id, payment):
 
         # 4. Payment amount
         log_buffer.append(f"Payment amount: {payment}")
+
+    conn.commit()
