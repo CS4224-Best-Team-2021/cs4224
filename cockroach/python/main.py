@@ -62,7 +62,6 @@ def main():
 
     logging.basicConfig(level=logging.DEBUG)
     conn = psycopg2.connect(dsn=opt.dsn)
-    print(conn.get_dsn_parameters()) 
 
     num_transactions_processed = 0
     processing_times = []
