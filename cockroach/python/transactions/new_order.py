@@ -6,25 +6,8 @@ IntVector = List[int]
 
 def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_number: IntVector, supplier_warehouse: IntVector, quantity: IntVector):
     # 1. Let N denote value of the next available order number D_NEXT_O_ID for district (W_ID,D_ID)
-    N = 0
-    with conn.cursor() as cur:
-        cur.execute(
-            """
-            SELECT
-                D_NEXT_O_ID
-            FROM
-                district
-            WHERE
-                (D_W_ID, D_ID) = (%s, %s)
-            FOR UPDATE;
-            """,
-            (c_w_id, c_d_id),
-        ) # uses primary key index
-
-        result = cur.fetchone()
-        N = result[0]
-
     # 2. Update the district (W ID, D ID) by incrementing D_NEXT_O_ID by one
+    N = 0
     with conn.cursor() as cur:
         cur.execute(
             """
@@ -33,11 +16,15 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
             SET 
                 D_NEXT_O_ID = D_NEXT_O_ID + 1
             WHERE
-                (D_W_ID, D_ID) = (%s, %s);
+                (D_W_ID, D_ID) = (%s, %s)
+            RETURNING 
+                D_NEXT_O_ID - 1;
             """,
             (c_w_id, c_d_id)
         ) # uses primary key index
 
+        result = cur.fetchone()
+        N = result[0]
 
     # 3. Create a new order
     O_ALL_LOCAL = 1
