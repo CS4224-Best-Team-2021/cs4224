@@ -18,7 +18,8 @@ def order_status_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id):
             WHERE
                 C_W_ID = %s
                 AND C_D_ID = %s
-                AND C_ID = %s;
+                AND C_ID = %s
+            FOR UPDATE;
             """,
             (c_w_id, c_d_id, c_id)
         )
@@ -37,7 +38,8 @@ def order_status_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id):
                 AND o.O_C_ID = %s
             ORDER BY
                 o.O_ID DESC
-            LIMIT 1;
+            LIMIT 1
+            FOR UPDATE;
             """,
             (c_w_id, c_d_id, c_id),
         )
@@ -55,7 +57,8 @@ def order_status_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id):
             WHERE 
                 OL_W_ID = %s
                 AND OL_D_ID = %s
-                AND OL_O_ID = %s;
+                AND OL_O_ID = %s
+            FOR UPDATE;
             """,
             (c_w_id, c_d_id, o_id),
         )

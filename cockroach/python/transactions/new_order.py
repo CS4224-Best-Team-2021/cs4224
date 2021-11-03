@@ -1,4 +1,5 @@
 import logging
+from sys import addaudithook
 from psycopg2 import sql
 from typing import List
 
@@ -21,9 +22,9 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
                 D_NEXT_O_ID - 1;
             """,
             (c_w_id, c_d_id)
-        ) # uses primary key index
-
+        ) 
         conn.commit()
+        
         result = cur.fetchone()
         N = result[0]
 
@@ -44,8 +45,7 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
             """,
             (N, c_d_id, c_w_id, c_id, len(item_number), O_ALL_LOCAL),
         )
-    
-    conn.commit()
+        conn.commit()
 
     # 4. Initialise total amount to 0
     TOTAL_AMOUNT = 0
@@ -55,6 +55,8 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
     for i in range(0, len(item_number)):
         # (a) Check stock quantity for the current item
         S_QUANTITY = 0
+        ADJUSTED_QTY = 0
+        S_REMOTE_CNT = 0
         with conn.cursor() as cur:
             cur.execute(
                 """
@@ -73,19 +75,17 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
             result = cur.fetchone()
             S_QUANTITY = result[0]
         
-        # (b) Calculate adjusted quantity
-        ADJUSTED_QTY = S_QUANTITY - quantity[i]
+            # (b) Calculate adjusted quantity
+            ADJUSTED_QTY = S_QUANTITY - quantity[i]
 
-        # (c) If adjusted quantity < 10, set adjusted quantity += 100
-        if ADJUSTED_QTY < 10:
-            ADJUSTED_QTY += 100
+            # (c) If adjusted quantity < 10, set adjusted quantity += 100
+            if ADJUSTED_QTY < 10:
+                ADJUSTED_QTY += 100
 
-        # (d) Update the stock for the item and warehouse
-        S_REMOTE_CNT = 0
-        if supplier_warehouse[i] != c_w_id:
-            S_REMOTE_CNT = 1
+            # (d) Update the stock for the item and warehouse
+            if supplier_warehouse[i] != c_w_id:
+                S_REMOTE_CNT = 1
 
-        with conn.cursor() as cur:
             cur.execute(
                 """
                 UPDATE 
@@ -102,7 +102,7 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
                 (ADJUSTED_QTY, quantity[i], S_REMOTE_CNT, supplier_warehouse[i], item_number[i]),
             ) # uses primary key index
 
-        conn.commit()        
+            conn.commit()        
 
         # (e) Calculate ITEM_AMOUNT (extract I_NAME also, because you need it in the output)
         ITEM_AMOUNT = 0
@@ -155,11 +155,11 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
                 """,
                 (N, c_d_id, c_w_id, i + 1, item_number[i], supplier_warehouse[i], quantity[i], ITEM_AMOUNT, OL_DIST_INFO),
             )
+            conn.commit()
 
         # Extra step: Record down the I_NAME, OL_AMOUNT and S_QUANTITY (which is the ADJUSTED_QTY) for reporting at the end
         item_summaries.append(ItemSummary(I_NAME, ITEM_AMOUNT, ADJUSTED_QTY))
 
-        conn.commit()
     
     # 6. Calculate the total value of this transaction
     W_TAX = 0
@@ -202,8 +202,6 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
     
     TOTAL_AMOUNT = TOTAL_AMOUNT * (1 + D_TAX + W_TAX) * (1 - C_DISCOUNT)
     
-    conn.commit()
-
     # Generate the output
     log_buffer.append("Output for New Order Transaction")
 

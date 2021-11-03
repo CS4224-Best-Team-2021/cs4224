@@ -14,7 +14,8 @@ def related_customer_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id):
             WHERE 
                 O_W_ID = %s
                 AND O_D_ID = %s
-                AND O_C_ID = %s;
+                AND O_C_ID = %s
+            FOR UPDATE;
             """,
             (c_w_id, c_d_id, c_id),
         )
@@ -31,7 +32,8 @@ def related_customer_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id):
                 WHERE
                     OL_W_ID = %s
                     AND OL_D_ID = %s
-                    AND OL_O_ID = %s;
+                    AND OL_O_ID = %s
+                FOR UPDATE;
                 """,
                 (c_w_id, c_d_id, order_id),
             )
@@ -59,7 +61,8 @@ def related_customer_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id):
                     AND ol1.OL_O_ID = ol2.OL_O_ID
                     AND ol1.OL_W_ID = ol2.OL_W_ID
                     AND ol1.OL_D_ID = ol2.OL_D_ID
-                    AND ol1.OL_W_ID != %s;
+                    AND ol1.OL_W_ID != %s
+                FOR UPDATE;
                 """,
                 (order_set, order_set, c_w_id),
             )
@@ -78,7 +81,8 @@ def related_customer_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id):
                 WHERE
                     O_W_ID = %s
                     AND O_D_ID = %s
-                    AND O_ID = %s;
+                    AND O_ID = %s
+                FOR UPDATE;
                 """,
                 tuple(related_order),
             )

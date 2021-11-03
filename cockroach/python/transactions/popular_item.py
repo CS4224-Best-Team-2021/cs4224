@@ -44,6 +44,7 @@ def popular_item_transaction(
                 o.O_ID DESC
             LIMIT 
                 %s
+            FOR UPDATE;
             """,
             (warehouse_number, district_number, num_last_orders_to_examine),
         )
@@ -78,7 +79,8 @@ def popular_item_transaction(
                             ol2.OL_W_ID = %s
                             AND ol2.OL_D_ID = %s
                             AND ol2.OL_O_ID = %s
-                        );
+                        )
+                FOR UPDATE;
                 """,
                 (
                     warehouse_number,
@@ -108,7 +110,8 @@ def popular_item_transaction(
                 AND ol.OL_O_ID IN %s
                 AND ol.OL_I_ID IN %s
             GROUP BY
-                ol.OL_I_ID;
+                ol.OL_I_ID
+            FOR UPDATE;
             """,
             (
                 num_last_orders_to_examine,

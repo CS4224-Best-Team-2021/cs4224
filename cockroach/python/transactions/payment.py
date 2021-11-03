@@ -63,7 +63,8 @@ def payment_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id, payment):
             FROM
                 customer
             WHERE
-                (C_W_ID, C_D_ID, C_ID) = (%s, %s, %s);
+                (C_W_ID, C_D_ID, C_ID) = (%s, %s, %s)
+            FOR UPDATE;
             """,
             (c_w_id, c_d_id, c_id),
         ) # uses primary key index

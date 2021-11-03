@@ -27,6 +27,7 @@ def stock_level_transaction(
                         o.O_ID DESC
                     LIMIT 
                         %s
+                    FOR UPDATE
                 )
 
             SELECT 

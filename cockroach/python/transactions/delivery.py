@@ -94,9 +94,7 @@ def deliver_to_one_district(conn, w_id, carrier_id, d_id):
 
         result = cur.fetchone()
         B = result[0]
-        
-        conn.commit()
-        
+
         # Update C_BALANCE and C_DELIVERY_CNT for the customer
         cur.execute(
             """
@@ -111,5 +109,5 @@ def deliver_to_one_district(conn, w_id, carrier_id, d_id):
             (B, w_id, d_id, O_C_ID),
         ) # uses primary key index
 
-    conn.commit()
+        conn.commit()
     
