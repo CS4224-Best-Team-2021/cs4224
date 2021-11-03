@@ -14,7 +14,7 @@ def deliver_to_one_district(conn, w_id, carrier_id, d_id):
             # (a - b) Find the earliest unfulfilled order for this warehouse and district and assign this order to the given carrier
             cur.execute(
                 """
-                WITH smallest_unfulfilled_order_as (
+                WITH smallest_unfulfilled_order AS (
                     SELECT 
                         MIN(O_ID)
                     FROM
