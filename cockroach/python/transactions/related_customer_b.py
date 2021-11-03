@@ -2,8 +2,6 @@ import logging
 
 
 def b_related_customer_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id):
-    result = None
-
     with conn.cursor() as cur:
         cur.execute(
             """
@@ -96,6 +94,5 @@ def b_related_customer_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id)
         logging.debug(
             f"related_customer_transaction(): Status Message {cur.statusmessage}"
         )
-    
-    conn.commit()
 
+    conn.commit()
