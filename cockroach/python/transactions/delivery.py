@@ -41,6 +41,7 @@ def deliver_to_one_district(conn, w_id, carrier_id, d_id):
 
             # If there is no unfulfilled order, return early
             if result is None:
+                logging.info(f"No unfulfilled order for w_id = {w_id}, carrier_id = {carrier_id}, d_id = {d_id}")
                 return
 
             N = result[0]
