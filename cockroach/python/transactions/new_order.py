@@ -1,5 +1,4 @@
 import logging
-from sys import addaudithook
 from psycopg2 import sql
 from typing import List
 
