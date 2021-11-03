@@ -33,6 +33,7 @@ def deliver_to_one_district(conn, w_id, carrier_id, d_id):
             """,
             (carrier_id, w_id, d_id),
         )
+        conn.commit()
         result = cur.fetchone()
 
         # If there is no unfulfilled order, return early
@@ -57,7 +58,7 @@ def deliver_to_one_district(conn, w_id, carrier_id, d_id):
         ) # uses order_index
 
         conn.commit() 
-        
+
         # (d) Update the customer
         # Get the customer ID
         cur.execute(
