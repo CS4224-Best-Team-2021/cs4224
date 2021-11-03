@@ -46,7 +46,7 @@ def run_transaction(conn, op, max_retries=3):
                 return
             except psycopg2.Error as e:
                 logging.debug("got error: %s", e)
-                logging.debug("EXECUTE NON-SERIALIZATION_FAILURE BRANCH")
+                # logging.debug("EXECUTE NON-SERIALIZATION_FAILURE BRANCH")
                 sleep_ms = (2 ** retry) * 0.1 * (random.random() + 0.5)
                 time.sleep(sleep_ms)
 
