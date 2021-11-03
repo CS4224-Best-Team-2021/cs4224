@@ -34,7 +34,7 @@ def related_customer_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id):
                         AND OL_D_ID = %s
                         AND OL_O_ID = %s;
                     """,
-                    (c_w_id, c_d_id, order_ids),
+                    (c_w_id, c_d_id, order_id),
                 )
                 order_map[order_id] = tuple(cur.fetchall())
 
