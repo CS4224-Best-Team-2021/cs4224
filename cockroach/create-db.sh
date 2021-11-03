@@ -28,5 +28,3 @@ cockroach sql -e="use wholesaledb; IMPORT INTO wholesaledb.order CSV DATA ('node
 cockroach sql -e="use wholesaledb; IMPORT INTO item CSV DATA ('nodelocal://self/item.csv');" --certs-dir=$SCRIPT_DIR/root-cert --host=$HOST_NAME:$PORT
 cockroach sql -e="use wholesaledb; IMPORT INTO order_line CSV DATA ('nodelocal://self/order-line.csv') WITH nullif = 'null';" --certs-dir=$SCRIPT_DIR/root-cert --host=$HOST_NAME:$PORT
 cockroach sql -e="use wholesaledb; IMPORT INTO stock CSV DATA ('nodelocal://self/stock.csv');" --certs-dir=$SCRIPT_DIR/root-cert --host=$HOST_NAME:$PORT
-
-cockroach sql -f=$SCRIPT_DIR/schema/views.sql --certs-dir=$SCRIPT_DIR/root-cert --host=$HOST_NAME:$PORT
