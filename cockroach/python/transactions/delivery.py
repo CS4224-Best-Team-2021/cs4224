@@ -20,17 +20,13 @@ def deliver_to_one_district(conn, w_id, carrier_id, d_id):
             WHERE
                 O_ID = (
                     SELECT 
-                        O_ID
+                        MIN(O_ID)
                     FROM
                         "order"
                     WHERE
                         O_W_ID = %s
                         AND O_D_ID = %s
                         AND O_CARRIER_ID IS NULL
-                    ORDER BY
-                        O_ID ASC
-                    LIMIT 1
-                    FOR UPDATE
                 )
             RETURNING 
                 O_ID;
