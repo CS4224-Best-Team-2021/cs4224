@@ -110,8 +110,7 @@ def popular_item_transaction(
                 AND ol.OL_O_ID IN %s
                 AND ol.OL_I_ID IN %s
             GROUP BY
-                ol.OL_I_ID
-            FOR UPDATE;
+                ol.OL_I_ID;
             """,
             (
                 num_last_orders_to_examine,
