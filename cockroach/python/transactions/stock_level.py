@@ -57,4 +57,3 @@ def stock_level_transaction(
         log_buffer.append(f'Stock level: {result}')
         logging.debug(f"stock_level_transaction(): Status Message {cur.statusmessage}")
 
-    conn.commit()
