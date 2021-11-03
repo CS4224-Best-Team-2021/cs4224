@@ -64,7 +64,7 @@ def main():
 
     logging.basicConfig(level=logging.DEBUG)
     conn = psycopg2.connect(dsn=opt.dsn)
-    conn.set_session(autocommit=True)
+    # conn.set_session(autocommit=True)
 
     num_transactions_processed = 0
     processing_times = []
