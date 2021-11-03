@@ -183,6 +183,7 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
         )
         result = cur.fetchone()
         D_TAX = result[0]
+
     
     C_DISCOUNT = 0
     with conn.cursor() as cur:
@@ -250,6 +251,7 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
             log_buffer.append(f"S_QUANTITY: {item_summaries[i].s_quantity}")
         
         log_buffer.append("End of output for New Order Transaction")
+    conn.commit()
     
     
 

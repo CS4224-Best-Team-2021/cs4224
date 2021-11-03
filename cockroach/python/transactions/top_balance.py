@@ -19,3 +19,5 @@ def top_balance_transaction(conn, log_buffer, test):
             log_buffer.append(f'    {i}')
         logging.debug(f"top_balance_transaction(): Status Message {cur.statusmessage}")
 
+    conn.commit()
+

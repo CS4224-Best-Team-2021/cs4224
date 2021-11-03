@@ -6,8 +6,6 @@ def order_status_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id):
     1. Get last order of a customer         - sort orders by O_ENTRY_D
     2. Get order-lines of that last order   - retrieve order lines
     """
-    result = None
-
     with conn.cursor() as cur:
         cur.execute(
             """
@@ -69,4 +67,6 @@ def order_status_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id):
             log_buffer.append(f'    {o}')
 
         logging.debug(f"order_status_transaction(): Status Message {cur.statusmessage}")
+    
+    conn.commit()
 

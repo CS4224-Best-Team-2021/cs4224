@@ -102,3 +102,5 @@ def payment_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id, payment):
 
         # 4. Payment amount
         log_buffer.append(f"Payment amount: {payment}")
+    
+    conn.commit()

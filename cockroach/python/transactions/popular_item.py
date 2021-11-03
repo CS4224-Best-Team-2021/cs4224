@@ -129,4 +129,6 @@ def popular_item_transaction(
             log_buffer.append(f"    {r}")
 
         logging.debug(f"popular_item_transaction(): Status Message {cur.statusmessage}")
+    
+    conn.commit()
 

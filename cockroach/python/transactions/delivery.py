@@ -20,13 +20,17 @@ def deliver_to_one_district(conn, w_id, carrier_id, d_id):
             WHERE
                 O_ID = (
                     SELECT 
-                        MIN(O_ID)
+                        O_ID
                     FROM
                         "order"
                     WHERE
                         O_W_ID = %s
                         AND O_D_ID = %s
                         AND O_CARRIER_ID IS NULL
+                    ORDER BY
+                        O_ID ASC
+                    LIMIT 1
+                    FOR UPDATE
                 )
             RETURNING 
                 O_ID;
@@ -103,5 +107,6 @@ def deliver_to_one_district(conn, w_id, carrier_id, d_id):
             """,
             (B, w_id, d_id, O_C_ID),
         ) # uses primary key index
-
+        
+    conn.commit()
     
