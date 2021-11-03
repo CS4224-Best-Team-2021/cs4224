@@ -29,6 +29,7 @@ def deliver_to_one_district(conn, w_id, carrier_id, d_id):
                         AND O_CARRIER_ID IS NULL
                     ORDER BY
                         O_ID ASC
+                    LIMIT 1
                     FOR UPDATE
                 )
             RETURNING 
