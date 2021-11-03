@@ -14,19 +14,18 @@ def deliver_to_one_district(conn, w_id, carrier_id, d_id):
             # (a) Find the earliest unfulfilled order for this warehouse and district
             cur.execute(
                 """
-                WITH smallest_order AS (
-                    SELECT 
-                        O_ID
-                    FROM 
-                        "order"
-                    WHERE
-                        (O_W_ID, O_D_ID, O_CARRIER_ID) = (%s, %s, NULL)
-                    ORDER BY 
-                        O_ID ASC
-                    LIMIT 1
-                )
-                
-                SELECT * FROM smallest_order;
+                SELECT 
+                    O_ID
+                FROM
+                    "order"
+                WHERE
+                    O_W_ID = %s
+                    AND O_D_ID = %s
+                    AND O_CARRIER_ID IS NULL
+                ORDER BY
+                    O_ID
+                LIMIT 1
+                FOR UPDATE;
                 """,
                 (w_id, d_id),
             ) # uses customer_order index
