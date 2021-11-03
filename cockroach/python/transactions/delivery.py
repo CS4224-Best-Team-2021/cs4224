@@ -6,7 +6,6 @@ def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
     """
     for district_no in range(1, 11):
         deliver_to_one_district(conn, w_id, carrier_id, district_no)
-        conn.commit()
 
 
 def deliver_to_one_district(conn, w_id, carrier_id, d_id):
