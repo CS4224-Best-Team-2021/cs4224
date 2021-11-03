@@ -106,7 +106,6 @@ CREATE TABLE order_line(
     CONSTRAINT orderline_order_fk FOREIGN KEY(OL_W_ID, OL_D_ID, OL_O_ID) REFERENCES "order"(O_W_ID, O_D_ID, O_ID),
     FAMILY order_line_w(OL_DELIVERY_D, OL_W_ID, OL_D_ID, OL_O_ID, OL_NUMBER),
     FAMILY order_line_r(OL_I_ID, OL_AMOUNT, OL_SUPPLY_W_ID, OL_QUANTITY, OL_DIST_INFO),
-    INDEX order_item_idnex (OL_I_ID) -- Copy from b
 );
 
 DROP TABLE IF EXISTS stock;
@@ -132,4 +131,3 @@ CREATE TABLE stock(
     FAMILY stock_w(S_W_ID, S_I_ID, S_QUANTITY, S_YTD, S_ORDER_CNT, S_REMOTE_CNT),
     FAMILY stock_r(S_DIST_01, S_DIST_02, S_DIST_03, S_DIST_04, S_DIST_05, S_DIST_06, S_DIST_07, S_DIST_08, S_DIST_09, S_DIST_10, S_DATA)
 );
-

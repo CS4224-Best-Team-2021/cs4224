@@ -107,7 +107,7 @@ CREATE TABLE order_line(
     PRIMARY KEY (OL_O_ID, OL_W_ID, OL_D_ID, OL_NUMBER),
     CONSTRAINT orderline_order_fk FOREIGN KEY(OL_W_ID, OL_D_ID, OL_O_ID) REFERENCES "order"(O_W_ID, O_D_ID, O_ID),
     INDEX order_line_quantity_index (OL_QUANTITY), -- Speed up popular-item transaction
-    INDEX order_item_idnex (OL_I_ID), -- Speed up related customer
+    INDEX order_item_index (OL_I_ID), -- Speed up related customer
     FAMILY order_line_w(OL_DELIVERY_D, OL_W_ID, OL_D_ID, OL_O_ID, OL_NUMBER),
     FAMILY order_line_r(OL_I_ID, OL_AMOUNT, OL_SUPPLY_W_ID, OL_QUANTITY, OL_DIST_INFO) 
 );

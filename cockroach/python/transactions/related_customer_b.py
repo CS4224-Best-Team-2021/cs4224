@@ -1,7 +1,7 @@
 import logging
 
 
-def related_customer_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id):
+def b_related_customer_transaction(conn, log_buffer, test, c_w_id, c_d_id, c_id):
     result = None
 
     with conn.cursor() as cur:

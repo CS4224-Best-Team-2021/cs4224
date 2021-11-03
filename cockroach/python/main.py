@@ -12,11 +12,12 @@ from transactions import (
     order_status_transaction,
     stock_level_transaction,
     popular_item_transaction,
-    related_customer_transaction,
+    a_related_customer_transaction,
+    b_related_customer_transaction,
     top_balance_transaction,
     new_order_transaction,
     payment_transaction,
-    delivery_transaction
+    delivery_transaction,
 )
 
 NEW_ORDER = "N"
@@ -60,6 +61,7 @@ def main():
     )
     parser.add_argument("dsn", help="Database connection string")
     parser.add_argument("client_number")
+    parser.add_argument("workload")
     opt = parser.parse_args()
 
     logging.basicConfig(level=logging.DEBUG)
@@ -72,13 +74,13 @@ def main():
     log_buffer = []
 
     while line:
-        if not line or line == '\n':
+        if not line or line == "\n":
             break
 
         num_transactions_processed += 1
         op = None
         params = []
-        tokens = line.rstrip('\n').split(',')
+        tokens = line.rstrip("\n").split(",")
         command = tokens[0]
 
         if command == "N":
@@ -91,7 +93,7 @@ def main():
             for _ in range(m):
                 line = sys.stdin.readline()
                 if line:
-                    i, s, q = list(map(int, line.split(',')))
+                    i, s, q = list(map(int, line.split(",")))
                     item_number.append(i)
                     supplier_warehouse.append(s)
                     quantity.append(q)
@@ -120,7 +122,11 @@ def main():
             op = top_balance_transaction
         elif command == "R":
             params = tuple(map(int, tokens[1:]))
-            op = related_customer_transaction
+            op = (
+                a_related_customer_transaction
+                if opt.workload == "a"
+                else b_related_customer_transaction
+            )
 
         try:
             start = time.time()
@@ -131,7 +137,7 @@ def main():
                 print(l)
             log_buffer.clear()
 
-            print(f'PROCESSING TIME: {transaction_processing_time} ms')
+            print(f"PROCESSING TIME: {transaction_processing_time} ms")
             processing_times.append(transaction_processing_time)
 
         except ValueError as ve:
@@ -143,7 +149,9 @@ def main():
     if num_transactions_processed > 0:
         total_processing_time = sum(processing_times)
         total_processing_time_seconds = total_processing_time / 1e9
-        transaction_throughput = num_transactions_processed / total_processing_time_seconds
+        transaction_throughput = (
+            num_transactions_processed / total_processing_time_seconds
+        )
         average_transaction_latency_millis = (
             total_processing_time / 1e6 / num_transactions_processed
         )
@@ -167,8 +175,9 @@ def main():
             _95_percentile_processing_time,
             _99_percentile_processing_time,
         )
-    
+
     conn.close()
+
 
 if __name__ == "__main__":
     main()
