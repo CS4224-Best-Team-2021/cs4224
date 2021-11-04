@@ -3,6 +3,8 @@ import time
 
 root = '~/temp/cs4224'
 
+server
+
 async def run(cmd):
     proc = await asyncio.create_subprocess_shell(
         cmd,
