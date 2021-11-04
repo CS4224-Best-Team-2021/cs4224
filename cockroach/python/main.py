@@ -131,11 +131,11 @@ def main():
             #     print(l)
             log_buffer.clear()
 
-            print(f'PROCESSING TIME: {transaction_processing_time} ms')
+            logging.info(f'PROCESSING TIME: {transaction_processing_time} ms')
             processing_times.append(transaction_processing_time)
 
         except ValueError as ve:
-            print("run_transaction(conn, op) failed: %s", ve)
+            logging.info("run_transaction(conn, op) failed: %s", ve)
             pass
 
         line = sys.stdin.readline()
@@ -157,7 +157,7 @@ def main():
         _99_percentile_processing_time = sorted_processing_times_millis[
             int(0.99 * num_transactions_processed)
         ]
-        print(
+        logging.info(
             opt.client_number,
             total_processing_time,
             total_processing_time_seconds,
