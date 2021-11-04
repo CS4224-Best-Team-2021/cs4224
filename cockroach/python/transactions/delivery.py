@@ -14,23 +14,20 @@ def deliver_to_one_district(conn, w_id, carrier_id, d_id):
         # (a - b) Find the earliest unfulfilled order for this warehouse and district and assign this order to the given carrier
         cur.execute(
             """
-            WITH smallest_order AS (
-                SELECT MIN(O_ID)
-                FROM "order"
-                WHERE (O_W_ID, O_D_ID, O_CARRIER_ID) = (%s, %s, NULL)
-            )
             UPDATE
                 "order"
             SET
                 O_CARRIER_ID = %s
             WHERE
                 O_ID = (
-                    SELECT * FROM smallest_order
+                   SELECT MIN(O_ID)
+                   FROM "order"
+                   WHERE (O_W_ID, O_D_ID, O_CARRIER_ID) = (%s, %s, NULL)
                 )
             RETURNING 
                 O_ID;
             """,
-            (w_id, d_id, carrier_id),
+            (carrier_id, w_id, d_id),
         )
         result = cur.fetchone()
 
