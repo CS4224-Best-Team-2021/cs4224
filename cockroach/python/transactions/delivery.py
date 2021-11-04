@@ -1,6 +1,7 @@
 import logging
 
 def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
+    logging.info(f"Delivery transaction: w_id: {w_id}, carrier_id: {carrier_id}")
     """
     No output required for this transaction
     """
@@ -108,6 +109,5 @@ def deliver_to_one_district(conn, w_id, carrier_id, d_id):
             (B, w_id, d_id, O_C_ID),
         ) # uses primary key index
 
-    logging.debug("delivery finished")
     conn.commit()
     
