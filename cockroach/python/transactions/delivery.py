@@ -1,7 +1,6 @@
 import logging
 
 def delivery_transaction(conn, log_buffer, test, w_id, carrier_id):
-    logging.info(f"Delivery transaction: w_id: {w_id}, carrier_id: {carrier_id}")
     """
     No output required for this transaction
     """
@@ -22,18 +21,21 @@ def deliver_to_one_district(conn, w_id, carrier_id, d_id):
                 O_ID = (
                    SELECT MIN(O_ID)
                    FROM "order"
-                   WHERE (O_W_ID, O_D_ID, O_CARRIER_ID) = (%s, %s, NULL)
+                   WHERE O_W_ID = %s AND O_D_ID = %s AND O_CARRIER_ID = NULL
                 )
-            RETURNING 
+                AND O_W_ID = %s
+                AND O_D_ID = %s
+            RETURNING
                 O_ID;
             """,
-            (carrier_id, w_id, d_id),
+            (carrier_id, w_id, d_id, w_id, d_id),
         )
         result = cur.fetchone()
 
         # If there is no unfulfilled order, return early
         if result is None:
             logging.info(f"No unfulfilled order for w_id = {w_id}, carrier_id = {carrier_id}, d_id = {d_id}")
+            conn.commit()
             return
 
         N = result[0]

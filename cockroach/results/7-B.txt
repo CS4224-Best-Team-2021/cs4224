@@ -1,0 +1,281 @@
+DEBUG:root:top_balance_transaction(): Status Message SELECT 10
+INFO:root:PROCESSING TIME for transaction 1: 18 ms
+DEBUG:root:top_balance_transaction(): Status Message SELECT 10
+INFO:root:PROCESSING TIME for transaction 2: 5 ms
+DEBUG:root:top_balance_transaction(): Status Message SELECT 10
+INFO:root:PROCESSING TIME for transaction 3: 3 ms
+INFO:root:No unfulfilled order for w_id = 8, carrier_id = 5, d_id = 1
+INFO:root:No unfulfilled order for w_id = 8, carrier_id = 5, d_id = 2
+INFO:root:No unfulfilled order for w_id = 8, carrier_id = 5, d_id = 3
+INFO:root:No unfulfilled order for w_id = 8, carrier_id = 5, d_id = 4
+INFO:root:No unfulfilled order for w_id = 8, carrier_id = 5, d_id = 5
+INFO:root:No unfulfilled order for w_id = 8, carrier_id = 5, d_id = 6
+INFO:root:No unfulfilled order for w_id = 8, carrier_id = 5, d_id = 7
+INFO:root:No unfulfilled order for w_id = 8, carrier_id = 5, d_id = 8
+INFO:root:No unfulfilled order for w_id = 8, carrier_id = 5, d_id = 9
+INFO:root:No unfulfilled order for w_id = 8, carrier_id = 5, d_id = 10
+INFO:root:PROCESSING TIME for transaction 4: 315 ms
+DEBUG:root:stock_level_transaction(): Status Message SELECT 1
+INFO:root:PROCESSING TIME for transaction 5: 101 ms
+DEBUG:root:popular_item_transaction(): Status Message SELECT 200
+INFO:root:PROCESSING TIME for transaction 6: 79 ms
+DEBUG:root:popular_item_transaction(): Status Message SELECT 212
+INFO:root:PROCESSING TIME for transaction 7: 95 ms
+DEBUG:root:payment finished
+INFO:root:PROCESSING TIME for transaction 8: 11 ms
+DEBUG:root:new order finished
+INFO:root:PROCESSING TIME for transaction 9: 701 ms
+DEBUG:root:popular_item_transaction(): Status Message SELECT 155
+INFO:root:PROCESSING TIME for transaction 10: 54 ms
+DEBUG:root:stock_level_transaction(): Status Message SELECT 1
+INFO:root:PROCESSING TIME for transaction 11: 165 ms
+DEBUG:root:stock_level_transaction(): Status Message SELECT 1
+INFO:root:PROCESSING TIME for transaction 12: 76 ms
+DEBUG:root:new order finished
+INFO:root:PROCESSING TIME for transaction 13: 130 ms
+DEBUG:root:stock_level_transaction(): Status Message SELECT 1
+INFO:root:PROCESSING TIME for transaction 14: 94 ms
+DEBUG:root:top_balance_transaction(): Status Message SELECT 10
+INFO:root:PROCESSING TIME for transaction 15: 1859 ms
+DEBUG:root:related_customer_transaction(): Status Message SELECT 1
+INFO:root:PROCESSING TIME for transaction 16: 393 ms
+DEBUG:root:top_balance_transaction(): Status Message SELECT 10
+INFO:root:PROCESSING TIME for transaction 17: 4 ms
+DEBUG:root:new order finished
+INFO:root:PROCESSING TIME for transaction 18: 1437 ms
+DEBUG:root:stock_level_transaction(): Status Message SELECT 1
+INFO:root:PROCESSING TIME for transaction 19: 430 ms
+DEBUG:root:stock_level_transaction(): Status Message SELECT 1
+INFO:root:PROCESSING TIME for transaction 20: 163 ms
+DEBUG:root:top_balance_transaction(): Status Message SELECT 10
+INFO:root:PROCESSING TIME for transaction 21: 3 ms
+INFO:root:No unfulfilled order for w_id = 5, carrier_id = 10, d_id = 1
+INFO:root:No unfulfilled order for w_id = 5, carrier_id = 10, d_id = 2
+INFO:root:No unfulfilled order for w_id = 5, carrier_id = 10, d_id = 3
+INFO:root:No unfulfilled order for w_id = 5, carrier_id = 10, d_id = 4
+INFO:root:No unfulfilled order for w_id = 5, carrier_id = 10, d_id = 5
+INFO:root:No unfulfilled order for w_id = 5, carrier_id = 10, d_id = 6
+INFO:root:No unfulfilled order for w_id = 5, carrier_id = 10, d_id = 7
+INFO:root:No unfulfilled order for w_id = 5, carrier_id = 10, d_id = 8
+INFO:root:No unfulfilled order for w_id = 5, carrier_id = 10, d_id = 9
+INFO:root:No unfulfilled order for w_id = 5, carrier_id = 10, d_id = 10
+INFO:root:PROCESSING TIME for transaction 22: 187 ms
+DEBUG:root:stock_level_transaction(): Status Message SELECT 1
+INFO:root:PROCESSING TIME for transaction 23: 375 ms
+DEBUG:root:payment finished
+INFO:root:PROCESSING TIME for transaction 24: 10 ms
+DEBUG:root:popular_item_transaction(): Status Message SELECT 217
+INFO:root:PROCESSING TIME for transaction 25: 88 ms
+DEBUG:root:stock_level_transaction(): Status Message SELECT 1
+INFO:root:PROCESSING TIME for transaction 26: 40 ms
+DEBUG:root:popular_item_transaction(): Status Message SELECT 159
+INFO:root:PROCESSING TIME for transaction 27: 83 ms
+DEBUG:root:top_balance_transaction(): Status Message SELECT 10
+INFO:root:PROCESSING TIME for transaction 28: 4 ms
+DEBUG:root:stock_level_transaction(): Status Message SELECT 1
+INFO:root:PROCESSING TIME for transaction 29: 299 ms
+DEBUG:root:related_customer_transaction(): Status Message SELECT 0
+INFO:root:PROCESSING TIME for transaction 30: 40 ms
+DEBUG:root:top_balance_transaction(): Status Message SELECT 10
+INFO:root:PROCESSING TIME for transaction 31: 4172 ms
+DEBUG:root:related_customer_transaction(): Status Message SELECT 1
+INFO:root:PROCESSING TIME for transaction 32: 942 ms
+DEBUG:root:top_balance_transaction(): Status Message SELECT 10
+INFO:root:PROCESSING TIME for transaction 33: 4 ms
+DEBUG:root:related_customer_transaction(): Status Message SELECT 1
+INFO:root:PROCESSING TIME for transaction 34: 683 ms
+DEBUG:root:related_customer_transaction(): Status Message SELECT 0
+INFO:root:PROCESSING TIME for transaction 35: 313 ms
+DEBUG:root:popular_item_transaction(): Status Message SELECT 237
+INFO:root:PROCESSING TIME for transaction 36: 404 ms
+DEBUG:root:related_customer_transaction(): Status Message SELECT 0
+INFO:root:PROCESSING TIME for transaction 37: 122 ms
+DEBUG:root:order_status_transaction(): Status Message SELECT 16
+INFO:root:PROCESSING TIME for transaction 38: 73 ms
+DEBUG:root:new order finished
+INFO:root:PROCESSING TIME for transaction 39: 1432 ms
+DEBUG:root:popular_item_transaction(): Status Message SELECT 213
+INFO:root:PROCESSING TIME for transaction 40: 91 ms
+DEBUG:root:popular_item_transaction(): Status Message SELECT 196
+INFO:root:PROCESSING TIME for transaction 41: 92 ms
+INFO:root:No unfulfilled order for w_id = 6, carrier_id = 4, d_id = 1
+INFO:root:No unfulfilled order for w_id = 6, carrier_id = 4, d_id = 2
+INFO:root:No unfulfilled order for w_id = 6, carrier_id = 4, d_id = 3
+INFO:root:No unfulfilled order for w_id = 6, carrier_id = 4, d_id = 4
+INFO:root:No unfulfilled order for w_id = 6, carrier_id = 4, d_id = 5
+INFO:root:No unfulfilled order for w_id = 6, carrier_id = 4, d_id = 6
+INFO:root:No unfulfilled order for w_id = 6, carrier_id = 4, d_id = 7
+INFO:root:No unfulfilled order for w_id = 6, carrier_id = 4, d_id = 8
+INFO:root:No unfulfilled order for w_id = 6, carrier_id = 4, d_id = 9
+INFO:root:No unfulfilled order for w_id = 6, carrier_id = 4, d_id = 10
+INFO:root:PROCESSING TIME for transaction 42: 188 ms
+DEBUG:root:payment finished
+INFO:root:PROCESSING TIME for transaction 43: 11 ms
+INFO:root:No unfulfilled order for w_id = 1, carrier_id = 4, d_id = 1
+INFO:root:No unfulfilled order for w_id = 1, carrier_id = 4, d_id = 2
+INFO:root:No unfulfilled order for w_id = 1, carrier_id = 4, d_id = 3
+INFO:root:No unfulfilled order for w_id = 1, carrier_id = 4, d_id = 4
+INFO:root:No unfulfilled order for w_id = 1, carrier_id = 4, d_id = 5
+INFO:root:No unfulfilled order for w_id = 1, carrier_id = 4, d_id = 6
+INFO:root:No unfulfilled order for w_id = 1, carrier_id = 4, d_id = 7
+INFO:root:No unfulfilled order for w_id = 1, carrier_id = 4, d_id = 8
+INFO:root:No unfulfilled order for w_id = 1, carrier_id = 4, d_id = 9
+INFO:root:No unfulfilled order for w_id = 1, carrier_id = 4, d_id = 10
+INFO:root:PROCESSING TIME for transaction 44: 310 ms
+DEBUG:root:related_customer_transaction(): Status Message SELECT 0
+INFO:root:PROCESSING TIME for transaction 45: 123 ms
+DEBUG:root:stock_level_transaction(): Status Message SELECT 1
+INFO:root:PROCESSING TIME for transaction 46: 316 ms
+DEBUG:root:top_balance_transaction(): Status Message SELECT 10
+INFO:root:PROCESSING TIME for transaction 47: 3 ms
+DEBUG:root:related_customer_transaction(): Status Message SELECT 0
+INFO:root:PROCESSING TIME for transaction 48: 94 ms
+DEBUG:root:related_customer_transaction(): Status Message SELECT 0
+INFO:root:PROCESSING TIME for transaction 49: 43 ms
+INFO:root:No unfulfilled order for w_id = 6, carrier_id = 3, d_id = 1
+INFO:root:No unfulfilled order for w_id = 6, carrier_id = 3, d_id = 2
+INFO:root:No unfulfilled order for w_id = 6, carrier_id = 3, d_id = 3
+INFO:root:No unfulfilled order for w_id = 6, carrier_id = 3, d_id = 4
+INFO:root:No unfulfilled order for w_id = 6, carrier_id = 3, d_id = 5
+INFO:root:No unfulfilled order for w_id = 6, carrier_id = 3, d_id = 6
+INFO:root:No unfulfilled order for w_id = 6, carrier_id = 3, d_id = 7
+INFO:root:No unfulfilled order for w_id = 6, carrier_id = 3, d_id = 8
+INFO:root:No unfulfilled order for w_id = 6, carrier_id = 3, d_id = 9
+INFO:root:No unfulfilled order for w_id = 6, carrier_id = 3, d_id = 10
+INFO:root:PROCESSING TIME for transaction 50: 85 ms
+DEBUG:root:order_status_transaction(): Status Message SELECT 11
+INFO:root:PROCESSING TIME for transaction 51: 46 ms
+DEBUG:root:popular_item_transaction(): Status Message SELECT 173
+INFO:root:PROCESSING TIME for transaction 52: 57 ms
+DEBUG:root:popular_item_transaction(): Status Message SELECT 242
+INFO:root:PROCESSING TIME for transaction 53: 151 ms
+INFO:root:No unfulfilled order for w_id = 10, carrier_id = 6, d_id = 1
+INFO:root:No unfulfilled order for w_id = 10, carrier_id = 6, d_id = 2
+INFO:root:No unfulfilled order for w_id = 10, carrier_id = 6, d_id = 3
+INFO:root:No unfulfilled order for w_id = 10, carrier_id = 6, d_id = 4
+INFO:root:No unfulfilled order for w_id = 10, carrier_id = 6, d_id = 5
+INFO:root:No unfulfilled order for w_id = 10, carrier_id = 6, d_id = 6
+INFO:root:No unfulfilled order for w_id = 10, carrier_id = 6, d_id = 7
+INFO:root:No unfulfilled order for w_id = 10, carrier_id = 6, d_id = 8
+INFO:root:No unfulfilled order for w_id = 10, carrier_id = 6, d_id = 9
+INFO:root:No unfulfilled order for w_id = 10, carrier_id = 6, d_id = 10
+INFO:root:PROCESSING TIME for transaction 54: 98 ms
+DEBUG:root:order_status_transaction(): Status Message SELECT 20
+INFO:root:PROCESSING TIME for transaction 55: 27 ms
+DEBUG:root:popular_item_transaction(): Status Message SELECT 116
+INFO:root:PROCESSING TIME for transaction 56: 52 ms
+DEBUG:root:related_customer_transaction(): Status Message SELECT 0
+INFO:root:PROCESSING TIME for transaction 57: 41 ms
+DEBUG:root:top_balance_transaction(): Status Message SELECT 10
+INFO:root:PROCESSING TIME for transaction 58: 6 ms
+DEBUG:root:popular_item_transaction(): Status Message SELECT 187
+INFO:root:PROCESSING TIME for transaction 59: 87 ms
+DEBUG:root:popular_item_transaction(): Status Message SELECT 143
+INFO:root:PROCESSING TIME for transaction 60: 60 ms
+DEBUG:root:stock_level_transaction(): Status Message SELECT 1
+INFO:root:PROCESSING TIME for transaction 61: 64 ms
+DEBUG:root:top_balance_transaction(): Status Message SELECT 10
+INFO:root:PROCESSING TIME for transaction 62: 3 ms
+DEBUG:root:new order finished
+INFO:root:PROCESSING TIME for transaction 63: 2016 ms
+DEBUG:root:related_customer_transaction(): Status Message SELECT 1
+INFO:root:PROCESSING TIME for transaction 64: 164 ms
+DEBUG:root:popular_item_transaction(): Status Message SELECT 132
+INFO:root:PROCESSING TIME for transaction 65: 62 ms
+DEBUG:root:new order finished
+INFO:root:PROCESSING TIME for transaction 66: 1545 ms
+DEBUG:root:top_balance_transaction(): Status Message SELECT 10
+INFO:root:PROCESSING TIME for transaction 67: 1909 ms
+DEBUG:root:stock_level_transaction(): Status Message SELECT 1
+INFO:root:PROCESSING TIME for transaction 68: 68 ms
+DEBUG:root:popular_item_transaction(): Status Message SELECT 138
+INFO:root:PROCESSING TIME for transaction 69: 58 ms
+DEBUG:root:order_status_transaction(): Status Message SELECT 15
+INFO:root:PROCESSING TIME for transaction 70: 181 ms
+DEBUG:root:related_customer_transaction(): Status Message SELECT 1
+INFO:root:PROCESSING TIME for transaction 71: 119 ms
+DEBUG:root:top_balance_transaction(): Status Message SELECT 10
+INFO:root:PROCESSING TIME for transaction 72: 3 ms
+INFO:root:No unfulfilled order for w_id = 5, carrier_id = 9, d_id = 1
+INFO:root:No unfulfilled order for w_id = 5, carrier_id = 9, d_id = 2
+INFO:root:No unfulfilled order for w_id = 5, carrier_id = 9, d_id = 3
+INFO:root:No unfulfilled order for w_id = 5, carrier_id = 9, d_id = 4
+INFO:root:No unfulfilled order for w_id = 5, carrier_id = 9, d_id = 5
+INFO:root:No unfulfilled order for w_id = 5, carrier_id = 9, d_id = 6
+INFO:root:No unfulfilled order for w_id = 5, carrier_id = 9, d_id = 7
+INFO:root:No unfulfilled order for w_id = 5, carrier_id = 9, d_id = 8
+INFO:root:No unfulfilled order for w_id = 5, carrier_id = 9, d_id = 9
+INFO:root:No unfulfilled order for w_id = 5, carrier_id = 9, d_id = 10
+INFO:root:PROCESSING TIME for transaction 73: 144 ms
+DEBUG:root:popular_item_transaction(): Status Message SELECT 147
+INFO:root:PROCESSING TIME for transaction 74: 75 ms
+DEBUG:root:popular_item_transaction(): Status Message SELECT 140
+INFO:root:PROCESSING TIME for transaction 75: 62 ms
+DEBUG:root:related_customer_transaction(): Status Message SELECT 1
+INFO:root:PROCESSING TIME for transaction 76: 119 ms
+DEBUG:root:top_balance_transaction(): Status Message SELECT 10
+INFO:root:PROCESSING TIME for transaction 77: 12 ms
+DEBUG:root:stock_level_transaction(): Status Message SELECT 1
+INFO:root:PROCESSING TIME for transaction 78: 127 ms
+DEBUG:root:related_customer_transaction(): Status Message SELECT 0
+INFO:root:PROCESSING TIME for transaction 79: 148 ms
+DEBUG:root:new order finished
+INFO:root:PROCESSING TIME for transaction 80: 1011 ms
+DEBUG:root:order_status_transaction(): Status Message SELECT 18
+INFO:root:PROCESSING TIME for transaction 81: 62 ms
+DEBUG:root:related_customer_transaction(): Status Message SELECT 1
+INFO:root:PROCESSING TIME for transaction 82: 67 ms
+DEBUG:root:related_customer_transaction(): Status Message SELECT 0
+INFO:root:PROCESSING TIME for transaction 83: 103 ms
+DEBUG:root:top_balance_transaction(): Status Message SELECT 10
+INFO:root:PROCESSING TIME for transaction 84: 4 ms
+DEBUG:root:top_balance_transaction(): Status Message SELECT 10
+INFO:root:PROCESSING TIME for transaction 85: 3 ms
+DEBUG:root:new order finished
+INFO:root:PROCESSING TIME for transaction 86: 2351 ms
+DEBUG:root:payment finished
+INFO:root:PROCESSING TIME for transaction 87: 12 ms
+DEBUG:root:related_customer_transaction(): Status Message SELECT 0
+INFO:root:PROCESSING TIME for transaction 88: 41 ms
+DEBUG:root:popular_item_transaction(): Status Message SELECT 171
+INFO:root:PROCESSING TIME for transaction 89: 80 ms
+DEBUG:root:related_customer_transaction(): Status Message SELECT 0
+INFO:root:PROCESSING TIME for transaction 90: 31 ms
+DEBUG:root:top_balance_transaction(): Status Message SELECT 10
+INFO:root:PROCESSING TIME for transaction 91: 1605 ms
+DEBUG:root:order_status_transaction(): Status Message SELECT 16
+INFO:root:PROCESSING TIME for transaction 92: 319 ms
+DEBUG:root:payment finished
+INFO:root:PROCESSING TIME for transaction 93: 10 ms
+DEBUG:root:related_customer_transaction(): Status Message SELECT 1
+INFO:root:PROCESSING TIME for transaction 94: 324 ms
+DEBUG:root:stock_level_transaction(): Status Message SELECT 1
+INFO:root:PROCESSING TIME for transaction 95: 55 ms
+DEBUG:root:popular_item_transaction(): Status Message SELECT 254
+INFO:root:PROCESSING TIME for transaction 96: 107 ms
+DEBUG:root:order_status_transaction(): Status Message SELECT 10
+INFO:root:PROCESSING TIME for transaction 97: 269 ms
+DEBUG:root:related_customer_transaction(): Status Message SELECT 0
+INFO:root:PROCESSING TIME for transaction 98: 337 ms
+DEBUG:root:stock_level_transaction(): Status Message SELECT 1
+INFO:root:PROCESSING TIME for transaction 99: 172 ms
+DEBUG:root:related_customer_transaction(): Status Message SELECT 1
+INFO:root:PROCESSING TIME for transaction 100: 129 ms
+--- Logging error ---
+Traceback (most recent call last):
+  File "/usr/lib64/python3.6/logging/__init__.py", line 994, in emit
+    msg = self.format(record)
+  File "/usr/lib64/python3.6/logging/__init__.py", line 840, in format
+    return fmt.format(record)
+  File "/usr/lib64/python3.6/logging/__init__.py", line 577, in format
+    record.message = record.getMessage()
+  File "/usr/lib64/python3.6/logging/__init__.py", line 338, in getMessage
+    msg = msg % self.args
+TypeError: not all arguments converted during string formatting
+Call stack:
+  File "python/main.py", line 173, in <module>
+    main()
+  File "python/main.py", line 169, in main
+    _99_percentile_processing_time,
+Message: '7'
+Arguments: (31359, 3.1359e-05, 3188877.1963391686, 0.00031359, 9.4e-05, 0.001859, 0.004172)
