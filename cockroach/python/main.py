@@ -75,8 +75,8 @@ def main():
     while line:
         if not line or line == '\n':
             break
-        if num_transactions_processed == 100:
-            break
+        # if num_transactions_processed == 100:
+        #     break
 
         num_transactions_processed += 1
         op = None
