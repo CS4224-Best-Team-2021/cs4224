@@ -25,7 +25,7 @@ ports[3]=5004
 ports[4]=5005
 
 # Clean out the results folder
-rm -rf ~/temp/cs4224/cockroach/results && mkdir ~/temp/cs4224/cockroach/results
+# rm -rf ~/temp/cs4224/cockroach/results && mkdir ~/temp/cs4224/cockroach/results
 
 for c in {0..39}
 do

@@ -69,6 +69,7 @@ def main():
     processing_times = []
     line = sys.stdin.readline()
     log_buffer = []
+    # test = {}
 
     while line:
         if not line or line == '\n':
@@ -128,6 +129,11 @@ def main():
             run_transaction(conn, lambda conn: op(conn, log_buffer, test, *params))
             transaction_processing_time = int((time.time() - start) * 1000)
 
+            # if op not in test:
+            #     test[op] = [0, 0]
+            # test[op][0] += transaction_processing_time
+            # test[op][1] += 1
+
             # for l in log_buffer:
             #     print(l)
             log_buffer.clear()
@@ -140,6 +146,10 @@ def main():
             pass
 
         line = sys.stdin.readline()
+
+    # print()
+    # for k,v in test.items():
+    #     print(f'{k}: average time {v[0] / v[1]}')
 
     if num_transactions_processed > 0:
         total_processing_time = sum(processing_times)
@@ -158,9 +168,9 @@ def main():
         _99_percentile_processing_time = sorted_processing_times_millis[
             int(0.99 * num_transactions_processed)
         ]
-        logging.info(
+        print(
             opt.client_number,
-            total_processing_time,
+            num_transactions_processed,
             total_processing_time_seconds,
             transaction_throughput,
             average_transaction_latency_millis,

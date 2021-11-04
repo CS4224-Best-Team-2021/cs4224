@@ -13,32 +13,35 @@ def deliver_to_one_district(conn, w_id, carrier_id, d_id):
         # (a - b) Find the earliest unfulfilled order for this warehouse and district and assign this order to the given carrier
         cur.execute(
             """
+            SELECT MIN(O_ID)
+            FROM "order"
+            WHERE O_W_ID = %s AND O_D_ID = %s AND O_CARRIER_ID = NULL;
+            """,
+            (w_id, d_id),
+        )
+        N = cur.fetchone()[0]
+
+        # If there is no unfulfilled order, return early
+        if N is None:
+            logging.info(f"No unfulfilled order for w_id = {w_id}, carrier_id = {carrier_id}, d_id = {d_id}")
+            conn.commit()
+            return
+
+        cur.execute(
+            """
             UPDATE
                 "order"
             SET
                 O_CARRIER_ID = %s
             WHERE
-                O_ID = (
-                   SELECT MIN(O_ID)
-                   FROM "order"
-                   WHERE O_W_ID = %s AND O_D_ID = %s AND O_CARRIER_ID = NULL
-                )
+                O_ID = %s
                 AND O_W_ID = %s
                 AND O_D_ID = %s
             RETURNING
                 O_ID;
             """,
-            (carrier_id, w_id, d_id, w_id, d_id),
+            (carrier_id, N, w_id, d_id),
         )
-        result = cur.fetchone()
-
-        # If there is no unfulfilled order, return early
-        if result is None:
-            logging.info(f"No unfulfilled order for w_id = {w_id}, carrier_id = {carrier_id}, d_id = {d_id}")
-            conn.commit()
-            return
-
-        N = result[0]
         
         # (c) Update all order-lines in this order
         cur.execute(
