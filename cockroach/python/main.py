@@ -44,11 +44,11 @@ def run_transaction(conn, op, max_retries=3):
                 # If we reach this point, we were able to commit, so we break from the retry loop.
                 return
             except psycopg2.Error as e:
-                print("got error: %s", e)
+                logging.debug("got error: %s", e)
                 conn.rollback()
-                print("EXECUTE SERIALIZATION_FAILURE BRANCH")
+                # print("EXECUTE SERIALIZATION_FAILURE BRANCH")
                 sleep_ms = (2 ** retry) * 0.1 * (random.random() + 0.5)
-                print("Sleeping %s seconds", sleep_ms)
+                logging.debug("Sleeping %s seconds", sleep_ms)
                 time.sleep(sleep_ms)
 
         raise ValueError(f"Transaction did not succeed after {max_retries} retries")
@@ -62,7 +62,7 @@ def main():
     parser.add_argument("client_number")
     opt = parser.parse_args()
 
-    logging.basicConfig(level=logging.WARN)
+    logging.basicConfig(level=logging.DEBUG)
     conn = psycopg2.connect(dsn=opt.dsn)
     conn.set_session(autocommit=True)
 
@@ -135,7 +135,7 @@ def main():
             processing_times.append(transaction_processing_time)
 
         except ValueError as ve:
-            logging.debug("run_transaction(conn, op) failed: %s", ve)
+            print("run_transaction(conn, op) failed: %s", ve)
             pass
 
         line = sys.stdin.readline()
@@ -167,8 +167,6 @@ def main():
             _95_percentile_processing_time,
             _99_percentile_processing_time,
         )
-    
-    conn.close()
 
 if __name__ == "__main__":
     main()
