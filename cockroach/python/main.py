@@ -51,6 +51,7 @@ def run_transaction(conn, op, max_retries=3):
                 logging.debug("Sleeping %s seconds", sleep_ms)
                 time.sleep(sleep_ms)
 
+        conn.rollback()
         raise ValueError(f"Transaction did not succeed after {max_retries} retries")
 
 
