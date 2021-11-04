@@ -62,7 +62,8 @@ CREATE TABLE customer(
     PRIMARY KEY (C_W_ID, C_D_ID, C_ID),
     CONSTRAINT customer_district_fk FOREIGN KEY (C_W_ID, C_D_ID) REFERENCES district (D_W_ID, D_ID),
     FAMILY customer_w(C_W_ID, C_D_ID, C_ID, C_BALANCE, C_YTD_PAYMENT, C_PAYMENT_CNT, C_DELIVERY_CNT, C_CREDIT, C_DISCOUNT),
-    FAMILY customer_r(C_FIRST, C_MIDDLE, C_LAST, C_STREET_1, C_STREET_2, C_CITY, C_STATE, C_ZIP, C_PHONE, C_SINCE, C_CREDIT_LIM, C_DATA)
+    FAMILY customer_r(C_FIRST, C_MIDDLE, C_LAST, C_STREET_1, C_STREET_2, C_CITY, C_STATE, C_ZIP, C_PHONE, C_SINCE, C_CREDIT_LIM, C_DATA),
+    INDEX customer_balance_index (C_BALANCE) -- Speed up Top-Balance Transaction
 );
 
 DROP TABLE IF EXISTS "order";
@@ -78,7 +79,8 @@ CREATE TABLE "order"(
     PRIMARY KEY (O_W_ID, O_D_ID, O_ID),
     CONSTRAINT order_customer_fk FOREIGN KEY(O_W_ID, O_D_ID, O_C_ID) REFERENCES customer(C_W_ID, C_D_ID, C_ID),
     FAMILY order_w(O_CARRIER_ID, O_ALL_LOCAL),
-    FAMILY order_r(O_W_ID, O_D_ID, O_ID, O_ENTRY_D, O_OL_CNT, O_C_ID)
+    FAMILY order_r(O_W_ID, O_D_ID, O_ID, O_ENTRY_D, O_OL_CNT, O_C_ID),
+    INDEX order_index(O_ID) -- Speed up delivery transaction
 );
 
 DROP TABLE IF EXISTS item;
@@ -106,7 +108,8 @@ CREATE TABLE order_line(
     CONSTRAINT orderline_order_fk FOREIGN KEY(OL_W_ID, OL_D_ID, OL_O_ID) REFERENCES "order"(O_W_ID, O_D_ID, O_ID),
     FAMILY order_line_w(OL_DELIVERY_D, OL_W_ID, OL_D_ID, OL_O_ID, OL_NUMBER),
     FAMILY order_line_r(OL_I_ID, OL_AMOUNT, OL_SUPPLY_W_ID, OL_QUANTITY, OL_DIST_INFO),
-    INDEX order_item_idnex (OL_I_ID) -- Copy from b
+    INDEX order_line_quantity_index (OL_QUANTITY), -- Speed up popular-item transaction
+    INDEX order_item_index (OL_I_ID) -- Speed up related customer
 );
 
 DROP TABLE IF EXISTS stock;
@@ -130,6 +133,7 @@ CREATE TABLE stock(
     S_DATA STRING,
     PRIMARY KEY (S_I_ID, S_W_ID),
     FAMILY stock_w(S_W_ID, S_I_ID, S_QUANTITY, S_YTD, S_ORDER_CNT, S_REMOTE_CNT),
-    FAMILY stock_r(S_DIST_01, S_DIST_02, S_DIST_03, S_DIST_04, S_DIST_05, S_DIST_06, S_DIST_07, S_DIST_08, S_DIST_09, S_DIST_10, S_DATA)
+    FAMILY stock_r(S_DIST_01, S_DIST_02, S_DIST_03, S_DIST_04, S_DIST_05, S_DIST_06, S_DIST_07, S_DIST_08, S_DIST_09, S_DIST_10, S_DATA),
+    INDEX stock_quantity_index(S_QUANTITY) -- Speed up Stock-Level Transaction
 );
 
