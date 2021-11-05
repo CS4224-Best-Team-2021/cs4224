@@ -1,0 +1,7 @@
+certs/
+my-safe-directory/
+cockroach-v21*/
+common/project_files_*/
+cockroach-data
+cockroach/store*/
+cockroach/*result*/
