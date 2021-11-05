@@ -4,6 +4,7 @@ Using Apache Cassandra and CockroachDB to experiment with distributed database m
 ## Setup instructions
 ### First steps
 - Install CockroachDB according to the [official instructions](https://www.cockroachlabs.com/docs/v21.1/install-cockroachdb-linux).
+- Official repo [here](https://github.com/CS4224-Best-Team-2021/cs4224).
 
 ## Specific steps for troubleshooting CockroachDB
 ### To download a fresh set of project files:
