@@ -1,26 +1,14 @@
 # cs4224
 Using Apache Cassandra and CockroachDB to experiment with distributed database management systems.
 
-## Project organization
-### Folder structure
-This repository has three folders, one for each DDBMS and one for common files (e.g. raw data/queries/bash scripts for setup).
-
-### Branch structure
-This repository has three branches. 
-- `main` branch contains the latest stable release of the two branches. 
-- The other two is for each group to do their development, so that breaking changes in the common files folder don't affect both groups at the same time.
-
 ## Setup instructions
 ### First steps
-- Install CockroachDB and Apache Cassandra.
-- Run `setup.sh` to run all setup scripts.
+- Install CockroachDB according to the [official instructions](https://www.cockroachlabs.com/docs/v21.1/install-cockroachdb-linux).
 
 ## Specific steps for troubleshooting CockroachDB
 ### To download a fresh set of project files:
 - Run `bash download_data.sh` inside `common/scripts` on any server from `xcnc20-24`.
 - Check that the folder `common/project_files_4` exists.
-
-> Note that all bash files can be run from anywhere, the file resolution will work fine (e.g. you can run `bash` from `cs4224/` or inside the directory containing the script, both will work).
 
 
 ### To start a CockroachDB cluster:
@@ -56,4 +44,4 @@ If you want to start a completely fresh cluster, start here. Else if a cluster i
 - The client-side restart loop should take effect in the respective Python client.
 
 ### If you get an error stating that the cert files are not executable:
-- Run the script `make_certs_exe.sh` inside `cs4224` to duplicate the folders.
+- Run the script `make_certs_exe.sh` inside `cs4224` to duplicate the folders. The error should go away.
