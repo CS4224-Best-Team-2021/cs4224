@@ -186,21 +186,7 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
 
     
     C_DISCOUNT = 0
-    with conn.cursor() as cur:
-        cur.execute(
-            """
-            SELECT C_DISCOUNT FROM customer WHERE (C_W_ID, C_D_ID, C_ID) = (%s, %s, %s);
-            """,
-            (c_w_id, c_d_id, c_id),
-        )
-        result = cur.fetchone()
-        C_DISCOUNT = result[0]
-    
-    TOTAL_AMOUNT = TOTAL_AMOUNT * (1 + D_TAX + W_TAX) * (1 - C_DISCOUNT)
-    
-    # Generate the output
-    log_buffer.append("Output for New Order Transaction")
-
+    result = []
     with conn.cursor() as cur:
         cur.execute(
             """
@@ -213,9 +199,16 @@ def new_order_transaction(conn, log_buffer, test, c_id, c_w_id, c_d_id, item_num
             """,
             (c_w_id, c_d_id, c_id),
         )
-
-        # Customer identifier
         result = cur.fetchone()
+        C_DISCOUNT = result[5]
+    
+    TOTAL_AMOUNT = TOTAL_AMOUNT * (1 + D_TAX + W_TAX) * (1 - C_DISCOUNT)
+    
+    # Generate the output
+    log_buffer.append("Output for New Order Transaction")
+
+    with conn.cursor() as cur:
+        # Customer identifier
         log_buffer.append(f"Customer identifier: {result}")
 
         # Warehouse and district tax
