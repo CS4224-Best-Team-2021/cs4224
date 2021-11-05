@@ -66,7 +66,6 @@ def main():
     logging.basicConfig(level=logging.DEBUG)
     conn = psycopg2.connect(dsn=opt.dsn)
 
-    num_transactions_processed = 0
     processing_times = []
     line = sys.stdin.readline()
     log_buffer = []
@@ -78,7 +77,6 @@ def main():
         # if num_transactions_processed == 100:
         #     break
 
-        num_transactions_processed += 1
         op = None
         params = []
         tokens = line.rstrip('\n').split(',')
@@ -152,6 +150,7 @@ def main():
     # for k,v in test.items():
     #     print(f'{k}: average time {v[0] / v[1]}')
 
+    num_transactions_processed = len(processing_times)
     if num_transactions_processed > 0:
         total_processing_time = sum(processing_times)
         total_processing_time_seconds = total_processing_time / 1000
@@ -159,7 +158,7 @@ def main():
         average_transaction_latency_millis = (
             total_processing_time / num_transactions_processed
         )
-        sorted_processing_times_millis = sorted([n for n in processing_times])
+        sorted_processing_times_millis = sorted(processing_times)
         median_processing_time = sorted_processing_times_millis[
             num_transactions_processed // 2
         ]
