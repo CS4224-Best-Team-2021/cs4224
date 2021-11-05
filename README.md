@@ -8,7 +8,7 @@ Using Apache Cassandra and CockroachDB to experiment with distributed database m
 
 ## Specific steps for troubleshooting CockroachDB
 ### To download a fresh set of project files:
-- Run `bash download_data.sh` inside `common/scripts` on any server from `xcnc20-24`.
+- Run `bash download_data.sh` inside `common/scripts` on any server from `xcnc20-24` (or whichever server you are running this project on).
 - Check that the folder `common/project_files_4` exists.
 
 ### Setting the configs for CockroachDB
