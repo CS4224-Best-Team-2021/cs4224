@@ -10,7 +10,11 @@ Using Apache Cassandra and CockroachDB to experiment with distributed database m
 - Run `bash download_data.sh` inside `common/scripts` on any server from `xcnc20-24`.
 - Check that the folder `common/project_files_4` exists.
 
-
+### Setting the configs for CockroachDB
+- Inside `cockroach/`, the file called `config.sh` and `load_balancer.sh` contain server specific configurations.
+- `config.sh` contains the ip addresses, http ports and tcp ports of the 5 servers.
+- `load_balancer.sh` contains the ip addresses and tcp ports of the 5 servers.
+- If you are not using `xcnc20-24` as your five servers, you need to change the configs in these 2 files.
 ### To start a CockroachDB cluster:
 If you want to start a completely fresh cluster, start here. Else if a cluster is already live and you just want to reset the database, go do the next section:
 - Run `pkill cockroach` on all servers to kill any existing cluster.
