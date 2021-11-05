@@ -19,7 +19,7 @@ Using Apache Cassandra and CockroachDB to experiment with distributed database m
 If you want to start a completely fresh cluster, start here. Else if a cluster is already live and you just want to reset the database, go do the next section:
 - Run `pkill cockroach` on all servers to kill any existing cluster.
   > On `xcnc20` you will see that some processes cannot be terminated by us. That's ok as long as you see the message from Cockroach about gracefully shutting down the server.
-- Run `rm -rf store*` inside `temp/cs4224/cockroach/` on any server to remove old session data. (Only do this if you want to remove your existing database!)
+- Run `rm -rf store*` inside `cockroach/` on any server to remove old session data. (Only do this if you want to remove your existing database!)
   > If you see a message like `resource busy`, run `netstat -ltnp` and check for any PIDs of old Cockroach processes, and then run `kill -9 <pid number>` on all of them.
 - Run `bash start.sh` (scripts are inside `cockroach/`) to start CockroachDB on any server.
 - Run `bash init.sh` on just 1 server to initialise a cluster. (You only need to run this if you removed all the `store*` folders in step 2).
