@@ -24,12 +24,12 @@ This repository has three branches.
 
 
 ### To start a CockroachDB cluster:
-If you want to start a completely fresh cluster, start here. Else go do the next section:
+If you want to start a completely fresh cluster, start here. Else if a cluster is already live and you just want to reset the database, go do the next section:
 - Run `pkill cockroach` on all servers to kill any existing cluster.
   > On `xcnc20` you will see that some processes cannot be terminated by us. That's ok as long as you see the message from Cockroach about gracefully shutting down the server.
-- Run `rm -rf store*` inside `temp/cs4224/cockroach/` on `xcnc20` and `xcnc24` to remove old session data. (Only do this if you want to remove your existing database!)
+- Run `rm -rf store*` inside `temp/cs4224/cockroach/` on any server to remove old session data. (Only do this if you want to remove your existing database!)
   > If you see a message like `resource busy`, run `netstat -ltnp` and check for any PIDs of old Cockroach processes, and then run `kill -9 <pid number>` on all of them.
-- Run `bash start.sh` (scripts are inside `cockroach/`) to start CockroachDB on `xcnc20`.
+- Run `bash start.sh` (scripts are inside `cockroach/`) to start CockroachDB on any server.
 - Run `bash init.sh` on just 1 server to initialise a cluster. (You only need to run this if you removed all the `store*` folders in step 2).
 - Run `bash status.sh` on the same server to check that the cluster is live.
 - On the other four servers, run `bash start.sh` to start CockroachDB on every other machine. They will try to join the cluster automatically.
@@ -37,7 +37,7 @@ If you want to start a completely fresh cluster, start here. Else go do the next
 > If a cluster is already running and you just want to reset the database, go to the next section.
  ### To install/reset `wholesaledb`:
 - Ensure that the project files have been downloaded.
-- Start the CockroachDB cluster.
+- Ensure the cluster is running by running `bash status.sh`. If not go to the previous section.
 - Run `bash create-db.sh` on any machine with the project files to create the database `wholesaledb`.
   - The script will ask for `a/b`, so choose a or b depending on your workload.  
 ### To start a SQL session:
