@@ -15,15 +15,16 @@ This repository has three branches.
 - Install CockroachDB and Apache Cassandra.
 - Run `setup.sh` to run all setup scripts.
 
-## Specific steps for troubleshooting
+## Specific steps for troubleshooting CockroachDB
 ### To download a fresh set of project files:
-- Run `bash download_data.sh` inside `common/scripts` on `xcnc20`.
-- Check that the folder `common/project_files_4` exists on `xcnc20`.
+- Run `bash download_data.sh` inside `common/scripts` on any server from `xcnc20-24`.
+- Check that the folder `common/project_files_4` exists.
 
 > Note that all bash files can be run from anywhere, the file resolution will work fine (e.g. you can run `bash` from `cs4224/` or inside the directory containing the script, both will work).
 
 
 ### To start a CockroachDB cluster:
+If you want to start a completely fresh cluster, start here. Else go do the next section:
 - Run `pkill cockroach` on all servers to kill any existing cluster.
   > On `xcnc20` you will see that some processes cannot be terminated by us. That's ok as long as you see the message from Cockroach about gracefully shutting down the server.
 - Run `rm -rf store*` inside `temp/cs4224/cockroach/` on `xcnc20` and `xcnc24` to remove old session data. (Only do this if you want to remove your existing database!)
@@ -33,15 +34,17 @@ This repository has three branches.
 - Run `bash status.sh` on the same server to check that the cluster is live.
 - On the other four servers, run `bash start.sh` to start CockroachDB on every other machine. They will try to join the cluster automatically.
 - Run `bash status.sh` on any server to check that the cluster contains 5 machines inside the cluster.
-- If you removed all the `store*` folders in step 2, run `bash create-db.sh` to initialise the database. You can rerun this script anytime to reset the database. 
-- The script will ask for `a/b`, so choose a or b depending on your workload.
-- To start/restart the load balancer, run `bash start_load_balancer.sh`, this script calls `haproxy_config_setup.sh` automatically to re-check which servers are in the cluster and configure the load balancer for those servers.
-- If you want to rebuild the `haproxy.cfg` file at any time, run the `haproxy_config_setup.sh` script alone.
+> If a cluster is already running and you just want to reset the database, go to the next section.
  ### To install/reset `wholesaledb`:
 - Ensure that the project files have been downloaded.
 - Start the CockroachDB cluster.
 - Run `bash create-db.sh` on any machine with the project files to create the database `wholesaledb`.
-  
+  - The script will ask for `a/b`, so choose a or b depending on your workload.  
 ### To start a SQL session:
 - Start the CockroachDB cluster.
 - Run `bash sql_cli.sh` on any machine.
+
+### To run all 40 clients:
+- Make sure `wholesaledb` has been initialised.
+- Run `bash load_balancer.sh` inside `cockroach/`,
+- Run `ps aux | grep <your username>` to see if 40 clients have started.
