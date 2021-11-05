@@ -15,7 +15,7 @@ def deliver_to_one_district(conn, w_id, carrier_id, d_id):
             """
             SELECT MIN(O_ID)
             FROM "order"
-            WHERE O_W_ID = %s AND O_D_ID = %s AND O_CARRIER_ID = NULL;
+            WHERE O_W_ID = %s AND O_D_ID = %s AND O_CARRIER_ID IS NULL;
             """,
             (w_id, d_id),
         )
@@ -46,13 +46,14 @@ def deliver_to_one_district(conn, w_id, carrier_id, d_id):
         # (c) Update all order-lines in this order
         cur.execute(
             """
-            WITH curr_time AS (SELECT current_timestamp::timestamp)
             UPDATE
                 order_line
             SET
-                OL_DELIVERY_D = (SELECT * FROM curr_time)
+                OL_DELIVERY_D = current_timestamp::timestamp
             WHERE
-                (OL_W_ID, OL_D_ID, OL_O_ID) = (%s, %s, %s);
+                OL_W_ID = %s
+                AND OL_D_ID = %s
+                AND OL_O_ID = %s;
             """,
             (w_id, d_id, N),
         ) # uses order_index
@@ -62,12 +63,14 @@ def deliver_to_one_district(conn, w_id, carrier_id, d_id):
         # Get the customer ID
         cur.execute(
             """
-            SELECT 
+            SELECT
                 O_C_ID
             FROM
                 "order"
-            WHERE 
-                (O_W_ID, O_D_ID, O_ID) = (%s, %s, %s);
+            WHERE
+                O_W_ID = %s
+                AND O_D_ID = %s
+                AND O_ID = %s;
             """,
             (w_id, d_id, N),
         ) # uses primary key index
@@ -83,7 +86,9 @@ def deliver_to_one_district(conn, w_id, carrier_id, d_id):
             FROM
                 order_line
             WHERE
-                (OL_W_ID, OL_D_ID, OL_O_ID) = (%s, %s, %s);
+                OL_W_ID = %s
+                AND OL_D_ID = %s
+                AND OL_O_ID = %s;
             """,
             (w_id, d_id, N),
         ) # uses order_index
@@ -100,7 +105,9 @@ def deliver_to_one_district(conn, w_id, carrier_id, d_id):
                 C_BALANCE = C_BALANCE + %s,
                 C_DELIVERY_CNT = C_DELIVERY_CNT + 1
             WHERE
-                (C_W_ID, C_D_ID, C_ID) = (%s, %s, %s);
+                C_W_ID = %s
+                AND C_D_ID = %s
+                AND C_ID = %s;
             """,
             (B, w_id, d_id, O_C_ID),
         ) # uses primary key index
