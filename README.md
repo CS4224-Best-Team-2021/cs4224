@@ -46,5 +46,14 @@ If you want to start a completely fresh cluster, start here. Else go do the next
 
 ### To run all 40 clients:
 - Make sure `wholesaledb` has been initialised.
-- Run `bash load_balancer.sh` inside `cockroach/`,
+- Run `bash load_balancer.sh` inside `cockroach/`, selecting a or b for the workload.
 - Run `ps aux | grep <your username>` to see if 40 clients have started.
+- The results of the 40 clients will be written into `results/`.
+- Use `tail -f 0-A.txt` for example to see real-time updates.
+- If some python scripts seem to hang, run `bash sql_cli.sh` inside `cockroach`.
+- When you are in the sql client, run `show statements;` to see the queries that are running.
+- If any query is hanging, look for the query id in the first column, and run `cancel query '<query id>;'` to kill the query.
+- The client-side restart loop should take effect in the respective Python client.
+
+### If you get an error stating that the cert files are not executable:
+- Run the script `make_certs_exe.sh` inside `cs4224` to duplicate the folders.
