@@ -83,6 +83,8 @@ CREATE TABLE "order"(
     INDEX order_index(O_ID) -- Speed up delivery transaction
 );
 
+CREATE UNIQUE INDEX unfulfilled_orders on "order" (O_W_ID, O_D_ID, O_ID) WHERE O_CARRIER_ID IS NULL;
+
 DROP TABLE IF EXISTS item;
 CREATE TABLE item(
     I_ID INT PRIMARY KEY,
