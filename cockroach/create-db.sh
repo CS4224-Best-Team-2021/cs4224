@@ -30,3 +30,9 @@ cockroach sql -e="use wholesaledb; IMPORT INTO order_line CSV DATA ('nodelocal:/
 cockroach sql -e="use wholesaledb; IMPORT INTO stock CSV DATA ('nodelocal://self/stock.csv');" --certs-dir=$SCRIPT_DIR/root-cert --host=$HOST_NAME:$PORT
 
 cockroach sql -f=$SCRIPT_DIR/schema/views.sql --certs-dir=$SCRIPT_DIR/root-cert --host=$HOST_NAME:$PORT
+
+# Create the partial index for order after the import (cannot import csv into table with partial index)
+if [[ $workload == "a" ]]
+then
+    cockroach sql --database=wholesaledb -e='CREATE UNIQUE INDEX unfulfilled_orders on "order" (O_W_ID, O_D_ID, O_ID) WHERE O_CARRIER_ID IS NULL;' --certs-dir=$SCRIPT_DIR/root-cert --host=$HOST_NAME:$PORT
+fi
